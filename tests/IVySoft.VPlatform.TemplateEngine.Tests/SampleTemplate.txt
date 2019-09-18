@@ -1,0 +1,2 @@
+﻿@inherits IVySoft.VPlatform.TemplateEngine.Tests.TestTemplate
+Hello @Name!

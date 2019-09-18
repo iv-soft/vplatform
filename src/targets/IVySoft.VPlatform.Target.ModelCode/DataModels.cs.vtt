@@ -1,0 +1,13 @@
+﻿@inherits IVySoft.VPlatform.Target.ModelCode.DataModelContext
+@{
+	foreach(var module in Model.Modules)
+	{
+		var folder = System.IO.Directory.Path.Combine(Options.OutputFolder, module.Name + ".Model");
+		System.IO.Directory.CreateDirectory(folder);
+
+		foreach(var entity_type in module.Types)
+		{
+			Generate("EntityType.cs.vtt", entity_type, System.IO.Directory.Path.Combine(folder, entity_type.Name + ".cs"));
+		}
+	}
+}
