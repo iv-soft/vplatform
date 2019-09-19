@@ -15,7 +15,7 @@ namespace IVySoft.VPlatform.Etl.Cmd
         {
             var source = new XmlSource<Module>
             {
-                FilePath = @"C:\Users\v.malyshev\source\repos\vplatform\projects\VPlatform\module.xml"
+                FilePath = @"C:\Users\User\projects\vplatform\projects\VPlatform\module.xml"
             };
 
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
@@ -52,7 +52,7 @@ namespace IVySoft.VPlatform.Etl.Cmd
             using (var serviceScope = sp.CreateScope())
             {
                 var options = serviceScope.ServiceProvider.GetRequiredService<IOptions<GeneratorOptions>>().Value;
-                options.OutputFolder = @"C: \Users\v.malyshev\source\repos\vplatform\projects\VPlatform\Generated";
+                options.OutputFolder = @"C:\Users\User\projects\vplatform\projects\VPlatform\Generated";
                 System.IO.Directory.CreateDirectory(options.OutputFolder);
 
                 using (var db = serviceScope.ServiceProvider.GetService<DbModel>())

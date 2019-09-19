@@ -11,7 +11,10 @@ namespace IVySoft.VPlatform.TemplateEngine.Tests
         public void Test1()
         {
             var templates = new Templates(
-                Path.Combine(Path.GetDirectoryName(typeof(EngineTests).Assembly.Location)),
+                new TemplateCodeGeneratorOptions
+                {
+                    RootPath = Path.Combine(Path.GetDirectoryName(typeof(EngineTests).Assembly.Location))
+                },
                 context => context.CompilerOptions.References.Add(MetadataReference.CreateFromFile(typeof(TestTemplate).Assembly.Location)));
             var template = templates.Load<TestTemplate>("SampleTemplate.txt");
             template.Name = "world";

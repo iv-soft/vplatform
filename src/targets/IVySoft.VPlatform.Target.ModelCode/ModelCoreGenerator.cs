@@ -1,6 +1,7 @@
 ﻿using IVySoft.VPlatform.Generator.Core;
 using IVySoft.VPlatform.TemplateEngine;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,11 +13,7 @@ namespace IVySoft.VPlatform.Target.ModelCode
     {
         public void Generate(IDbModel db, GeneratorOptions options)
         {
-            var templates = new Templates(
-                Path.Combine(Path.GetDirectoryName(typeof(ModelCoreGenerator).Assembly.Location)),
-                    context => context.CompilerOptions.References.Add(
-                        MetadataReference.CreateFromFile(typeof(ModelCoreGenerator).Assembly.Location)));
-            var template = templates.Load<DataModelContext>("DataModels.cs.vtt");
+            var template = new Razor.DataModelsTemplate();
 
             template.Model = (IDataModel)db;
             template.Options = options;

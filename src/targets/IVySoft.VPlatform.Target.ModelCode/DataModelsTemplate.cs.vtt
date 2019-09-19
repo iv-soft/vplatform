@@ -2,12 +2,12 @@
 @{
 	foreach(var module in Model.Modules)
 	{
-		var folder = System.IO.Directory.Path.Combine(Options.OutputFolder, module.Name + ".Model");
+		var folder = System.IO.Path.Combine(Options.OutputFolder, module.Name + ".Model");
 		System.IO.Directory.CreateDirectory(folder);
 
 		foreach(var entity_type in module.Types)
 		{
-			Generate("EntityType.cs.vtt", entity_type, System.IO.Directory.Path.Combine(folder, entity_type.Name + ".cs"));
+			Generate_EntityType(entity_type, System.IO.Path.Combine(folder, entity_type.Name + ".cs"));
 		}
 	}
 }

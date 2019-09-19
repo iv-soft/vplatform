@@ -13,4 +13,13 @@
     <ProjectReference Include="..\..\generators\IVySoft.VPlatform.TemplateEngine\IVySoft.VPlatform.TemplateEngine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DataModels.cs.vtt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EntityType.cs.vtt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

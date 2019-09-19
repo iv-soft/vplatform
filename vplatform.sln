@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D2E24A5B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateEngine.Tests", "tests\IVySoft.VPlatform.TemplateEngine.Tests\IVySoft.VPlatform.TemplateEngine.Tests.csproj", "{269CF490-E4F5-497C-9EA0-68CEB708DCBF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateEngine.Cmd", "src\generators\IVySoft.VPlatform.TemplateEngine.Cmd\IVySoft.VPlatform.TemplateEngine.Cmd.csproj", "{FD92F9A6-6C95-4499-B974-367CA760A64F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{269CF490-E4F5-497C-9EA0-68CEB708DCBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{269CF490-E4F5-497C-9EA0-68CEB708DCBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{269CF490-E4F5-497C-9EA0-68CEB708DCBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{EDB3B47F-9E69-415E-962A-D4B7C64EC643} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{2850DE83-222E-42A0-9E17-E177169C4F8C} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{269CF490-E4F5-497C-9EA0-68CEB708DCBF} = {D2E24A5B-8C51-4CE7-95A3-13D290238C2E}
+		{FD92F9A6-6C95-4499-B974-367CA760A64F} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D126804-D711-49E5-997D-B0FA8E1F9D44}

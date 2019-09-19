@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace IVySoft.VPlatform.Target.ModelCode
 {
-    public class @Name
+    public class @EntityType.Name
     {
 	    [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-		@foreach(var property in Properties)
+		@foreach(var property in EntityType.Properties)
 		{
-			@if(property.Multiplicity == "1" || property.Multiplicity == "0..1")
+			@if(property.Multiplicity != "0..*" && property.Multiplicity != "1..*")
 			{
-				public @{property.Type} @{property.Name} { get; set; }
+		@:public @property.Type @property.Name { get; set; }
 			}
 		}
 
-		@foreach(var property in Properties)
+		@foreach(var property in EntityType.Properties)
 		{
 			@if(property.Multiplicity == "0..*" || property.Multiplicity == "1..*")
 			{
-				public virtual IList<@{property.Type}> @{property.Name} { get; set; }
+		@:public virtual IList<@property.Type> @property.Name { get; set; }
 			}
 		}
     }

@@ -6,21 +6,28 @@ namespace IVySoft.VPlatform.TemplateEngine
 {
     public class TemplateCodeGenerator
     {
-        private readonly string rootPath_;
+        private readonly TemplateCodeGeneratorOptions options_;
         private readonly RazorProjectFileSystem fs_;
         private readonly RazorProjectEngine engine_;
 
-        public TemplateCodeGenerator(string rootPath)
+        public TemplateCodeGenerator(TemplateCodeGeneratorOptions options)
         {
-            this.rootPath_ = rootPath;
-            this.fs_ = RazorProjectFileSystem.Create(rootPath);
+            this.options_ = options;
+            this.fs_ = RazorProjectFileSystem.Create(options.RootPath);
 
             this.engine_ = RazorProjectEngine.Create(RazorConfiguration.Default, this.fs_, (builder) =>
             {
                 InheritsDirective.Register(builder);
+                if (!string.IsNullOrWhiteSpace(this.options_.TemplateTypeName))
+                {
+                    builder.ConfigureClass((document, @class) =>
+                    {
+                        @class.ClassName = this.options_.TemplateTypeName;
+                    });
+                }
             });
-
         }
+
         public string GenerateCode(string templateFile)
         {
             var item = this.fs_.GetItem(templateFile);
@@ -33,7 +40,7 @@ namespace IVySoft.VPlatform.TemplateEngine
 
         internal string GetFilePath(string templateFile)
         {
-            return System.IO.Path.Combine(this.rootPath_, templateFile);
+            return System.IO.Path.Combine(this.options_.RootPath, templateFile);
         }
     }
 }
