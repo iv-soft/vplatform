@@ -19,23 +19,30 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         [XmlArray()]
 		public Association[] Associations { get; set; }
         [XmlArray()]
-		public EntityType[] Types { get; set; }
+        [XmlArrayItem(ElementName = "EntityType", Type = typeof(IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.EntityType))]
+        [XmlArrayItem(ElementName = "ComplexType", Type = typeof(IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.ComplexType))]
+        [XmlArrayItem(ElementName = "PrimitiveType", Type = typeof(IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.PrimitiveType))]
+		public ModuleType[] Types { get; set; }
         [XmlArray()]
 		public ModuleDependency[] Dependencies { get; set; }
 
 
-		public IVySoft.VPlatform.Target.ModelCode.Module ToModel()
-        {
-            return new IVySoft.VPlatform.Target.ModelCode.Module
-            {
-				Name = this.Name,
-				Namespace = this.Namespace,
-				IsExternal = this.IsExternal,
-				Associations = new List<IVySoft.VPlatform.Target.ModelCode.Association>((this.Associations == null) ? new IVySoft.VPlatform.Target.ModelCode.Association[0] : this.Associations.Select(x => x.ToModel())),
-		Types = new List<IVySoft.VPlatform.Target.ModelCode.EntityType>((this.Types == null) ? new IVySoft.VPlatform.Target.ModelCode.EntityType[0] : this.Types.Select(x => x.ToModel())),
-		Dependencies = new List<IVySoft.VPlatform.Target.ModelCode.ModuleDependency>((this.Dependencies == null) ? new IVySoft.VPlatform.Target.ModelCode.ModuleDependency[0] : this.Dependencies.Select(x => x.ToModel())),
-		            };
-        }
+		public virtual object ToModel()
+		{
+			var result = new IVySoft.VPlatform.Target.ModelCode.Module();
+			this.InitModel(result);
+			return result;
+		}
 
+		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.Module result)
+		{
+
+				result.Name = this.Name;
+				result.Namespace = this.Namespace;
+				result.IsExternal = this.IsExternal;
+				result.Associations = new List<IVySoft.VPlatform.Target.ModelCode.Association>((this.Associations == null) ? new IVySoft.VPlatform.Target.ModelCode.Association[0] : this.Associations.Select(x => (IVySoft.VPlatform.Target.ModelCode.Association)x.ToModel()));
+		result.Types = new List<IVySoft.VPlatform.Target.ModelCode.ModuleType>((this.Types == null) ? new IVySoft.VPlatform.Target.ModelCode.ModuleType[0] : this.Types.Select(x => (IVySoft.VPlatform.Target.ModelCode.ModuleType)x.ToModel()));
+		result.Dependencies = new List<IVySoft.VPlatform.Target.ModelCode.ModuleDependency>((this.Dependencies == null) ? new IVySoft.VPlatform.Target.ModelCode.ModuleDependency[0] : this.Dependencies.Select(x => (IVySoft.VPlatform.Target.ModelCode.ModuleDependency)x.ToModel()));
+		        }
     }
 }

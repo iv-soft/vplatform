@@ -6,15 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace @Module.Namespace
 {
-    public class @EntityType.Name
+    public class @EntityType.Name@((EntityType.ResolvedBaseType == null) ? "" : (" : " + EntityType.ResolvedBaseType.FullName))
     {
-	    [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+		@if(EntityType.ResolvedBaseType == null)
+		{
+		@:[Key]
+		@:[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		@:public int Id { get; set; }
+		}
 
 		@foreach(var property in EntityType.Properties)
 		{
-			if(property.ResolvedType.Kind == "Primitive")
+			if(property.ResolvedType is IVySoft.VPlatform.Target.ModelCode.PrimitiveType)
 			{
 				if(property.Nullable && @property.ResolvedType.FullName != "string")
 				{

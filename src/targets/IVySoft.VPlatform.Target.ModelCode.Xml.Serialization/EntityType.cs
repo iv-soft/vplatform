@@ -7,32 +7,28 @@ using System.Linq;
 namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 {
     [XmlRoot(Namespace = XmlConfig.Namespace)]
-    public class EntityType
+    public class EntityType : IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.ModuleType
     {
 		[XmlElement()]
-		public string Name { get; set; }
-		[XmlElement()]
-		public string BaseType { get; set; }
-		[XmlElement()]
-		public string Kind { get; set; }
-		[XmlElement()]
-		public string FullName { get; set; }
+		public bool Abstract { get; set; }
 
         [XmlArray()]
 		public Property[] Properties { get; set; }
 
 
-		public IVySoft.VPlatform.Target.ModelCode.EntityType ToModel()
-        {
-            return new IVySoft.VPlatform.Target.ModelCode.EntityType
-            {
-				Name = this.Name,
-				BaseType = this.BaseType,
-				Kind = this.Kind,
-				FullName = this.FullName,
-				Properties = new List<IVySoft.VPlatform.Target.ModelCode.Property>((this.Properties == null) ? new IVySoft.VPlatform.Target.ModelCode.Property[0] : this.Properties.Select(x => x.ToModel())),
-		            };
-        }
+		public override object ToModel()
+		{
+			var result = new IVySoft.VPlatform.Target.ModelCode.EntityType();
+			this.InitModel(result);
+			return result;
+		}
 
+		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.EntityType result)
+		{
+			base.InitModel(result);
+
+				result.Abstract = this.Abstract;
+				result.Properties = new List<IVySoft.VPlatform.Target.ModelCode.Property>((this.Properties == null) ? new IVySoft.VPlatform.Target.ModelCode.Property[0] : this.Properties.Select(x => (IVySoft.VPlatform.Target.ModelCode.Property)x.ToModel()));
+		        }
     }
 }

@@ -18,15 +18,19 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 
 
 
-		public IVySoft.VPlatform.Target.ModelCode.Association ToModel()
-        {
-            return new IVySoft.VPlatform.Target.ModelCode.Association
-            {
-				Name = this.Name,
-				Left = this.Left?.ToModel(),
-				Right = this.Right?.ToModel(),
-				            };
-        }
+		public virtual object ToModel()
+		{
+			var result = new IVySoft.VPlatform.Target.ModelCode.Association();
+			this.InitModel(result);
+			return result;
+		}
 
+		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.Association result)
+		{
+
+				result.Name = this.Name;
+				result.Left = (IVySoft.VPlatform.Target.ModelCode.AssociationEnd)this.Left?.ToModel();
+				result.Right = (IVySoft.VPlatform.Target.ModelCode.AssociationEnd)this.Right?.ToModel();
+				        }
     }
 }

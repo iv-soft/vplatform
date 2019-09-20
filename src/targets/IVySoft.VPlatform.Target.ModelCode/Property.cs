@@ -6,16 +6,17 @@ namespace IVySoft.VPlatform.Target.ModelCode
 {
     public class Property
     {
-	    [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
 		public string Name { get; set; } 
 		public string Type { get; set; } 
 		[ForeignKey(nameof(ResolvedType))]
 		public int? ResolvedTypeId { get; set; }
-		public virtual IVySoft.VPlatform.Target.ModelCode.EntityType ResolvedType { get; set; }
+		public virtual IVySoft.VPlatform.Target.ModelCode.ModuleType ResolvedType { get; set; }
 		public bool Nullable { get; set; } 
+		public bool XmlIgnore { get; set; } 
 		public string Default { get; set; } 
 
 

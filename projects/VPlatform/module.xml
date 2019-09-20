@@ -11,6 +11,38 @@
   
   <Types>
     <EntityType>
+      <Name>ModuleType</Name>
+      <Properties>
+        <Property>
+          <Name>Name</Name>
+          <Type>string</Type>
+          <Multiplicity>1</Multiplicity>
+        </Property>
+        <Property>
+          <Name>BaseType</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>ResolvedBaseType</Name>
+          <Type>ModuleType</Type>
+          <XmlIgnore>true</XmlIgnore>
+        </Property>
+        <Property>
+          <Name>Discriminator</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>ElementName</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>FullName</Name>
+          <Type>string</Type>
+        </Property>
+      </Properties>
+    </EntityType>
+
+    <EntityType>
       <Name>Module</Name>
       <Properties>
         <Property>
@@ -43,27 +75,33 @@
 
     <EntityType>
       <Name>EntityType</Name>
+      <BaseType>ModuleType</BaseType>
       <Properties>
         <Property>
-          <Name>Name</Name>
-          <Type>string</Type>
-          <Multiplicity>1</Multiplicity>
-        </Property>
-        <Property>
-          <Name>BaseType</Name>
-          <Type>string</Type>
-        </Property>
-        <Property>
-          <Name>Kind</Name>
-          <Type>string</Type>
-        </Property>
-        <Property>
-          <Name>FullName</Name>
-          <Type>string</Type>
+          <Name>Abstract</Name>
+          <Type>bool</Type>
         </Property>
       </Properties>    
     </EntityType>
- 
+
+    <EntityType>
+      <Name>ComplexType</Name>
+      <BaseType>ModuleType</BaseType>
+      <Properties>
+        <Property>
+          <Name>Abstract</Name>
+          <Type>bool</Type>
+        </Property>
+      </Properties>
+    </EntityType>
+
+    <EntityType>
+      <Name>PrimitiveType</Name>
+      <BaseType>ModuleType</BaseType>
+      <Properties>
+      </Properties>
+    </EntityType>
+
     <EntityType>
       <Name>Property</Name>
       <Properties>
@@ -77,11 +115,16 @@
         </Property>
         <Property>
           <Name>ResolvedType</Name>
-          <Type>EntityType</Type>
+          <Type>ModuleType</Type>
           <Nullable>true</Nullable>
+          <XmlIgnore>true</XmlIgnore>
         </Property>        
         <Property>
           <Name>Nullable</Name>
+          <Type>bool</Type>
+        </Property>
+        <Property>
+          <Name>XmlIgnore</Name>
           <Type>bool</Type>
         </Property>
         <Property>
@@ -117,6 +160,11 @@
           <Type>string</Type>
         </Property>
         <Property>
+          <Name>ResolvedType</Name>
+          <Type>ModuleType</Type>
+          <XmlIgnore>true</XmlIgnore>
+        </Property>        
+        <Property>
           <Name>Property</Name>
           <Type>string</Type>
         </Property>
@@ -151,7 +199,7 @@
         <Multiplicity>0..*</Multiplicity>
       </Left>
       <Right>
-        <Type>EntityType</Type>
+        <Type>ModuleType</Type>
         <Property>Module</Property>
         <Multiplicity>1</Multiplicity>
       </Right>
@@ -185,11 +233,4 @@
     </Association>
   </Associations>
 
-  <Entity>
-    <Name>Modules</Name>
-    <Type>EntityType</Type>
-    <Discriminator>
-      
-    </Discriminator>
-  </Entity>
 </Module>

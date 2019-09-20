@@ -3,7 +3,7 @@
     "IVySoft.VPlatform.Etl.Cmd": {
       "commandName": "Project",
       "commandLineArgs": "projects\\VPlatform\\module.xml",
-      "workingDirectory": "C:\\Users\\User\\projects\\vplatform"
+      "workingDirectory": "C:\\Users\\v.malyshev\\source\\repos\\vplatform\\"
     }
   }
 }

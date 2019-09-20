@@ -7,24 +7,22 @@ using System.Linq;
 namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 {
     [XmlRoot(Namespace = XmlConfig.Namespace)]
-    public class ModuleDependency
+    public class PrimitiveType : IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.ModuleType
     {
-		[XmlElement()]
-		public string Name { get; set; }
 
 
 
-		public virtual object ToModel()
+		public override object ToModel()
 		{
-			var result = new IVySoft.VPlatform.Target.ModelCode.ModuleDependency();
+			var result = new IVySoft.VPlatform.Target.ModelCode.PrimitiveType();
 			this.InitModel(result);
 			return result;
 		}
 
-		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.ModuleDependency result)
+		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.PrimitiveType result)
 		{
+			base.InitModel(result);
 
-				result.Name = this.Name;
 				        }
     }
 }

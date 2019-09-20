@@ -9,12 +9,15 @@ using System.Linq;
 namespace @Module.Namespace@.Xml.Serialization
 {
     [XmlRoot(Namespace = XmlConfig.Namespace)]
-    public class @EntityType.Name
+    public class @EntityType.Name@((EntityType.ResolvedBaseType == null) ? "" : (" : " + EntityType.ResolvedBaseType.Module.Namespace + ".Xml.Serialization." + EntityType.ResolvedBaseType.Name))
     {
 		@foreach(var property in EntityType.Properties)
 		{
+			@if(!property.XmlIgnore)
+			{
 		@:[XmlElement()]
 		@:public @property.Type @property.Name { get; set; }
+			}
 		}
 
 		@foreach(var association in Module.Associations.Where(x => x.Left.Type == EntityType.Name))
@@ -22,6 +25,10 @@ namespace @Module.Namespace@.Xml.Serialization
 			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 			{
         @:[XmlArray()]
+		@foreach(var derived in DerivedTypes(association.Right.ResolvedType))
+		{
+        @:[XmlArrayItem(ElementName = "@derived.Name", Type = typeof(@(derived.Module.Namespace + ".Xml.Serialization." + derived.Name)))]
+		}
 		@:public @(association.Right.Type)[] @association.Left.Property { get; set; }
 			}
 		}
@@ -31,41 +38,56 @@ namespace @Module.Namespace@.Xml.Serialization
 			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
         @:[XmlArray()]
+		@foreach(var derived in DerivedTypes(association.Left.ResolvedType))
+		{
+        @:[XmlArrayItem(ElementName = "@derived.Name", Type = typeof(@(derived.Module.Namespace + ".Xml.Serialization." + derived.Name)))]
+		}
 		@:public @(association.Left.Type)[] @association.Right.Property { get; set; }
 			}
 		}
 
-		public @Module.Namespace.@EntityType.Name ToModel()
-        {
-            return new @Module.Namespace.@EntityType.Name
-            {
+		public @((EntityType.ResolvedBaseType == null) ? "virtual" : "override") object ToModel()
+		{
+			var result = new @Module.Namespace.@(EntityType.Name)();
+			this.InitModel(result);
+			return result;
+		}
+
+		protected void InitModel(@Module.Namespace.@EntityType.Name result)
+		{
+			@if(EntityType.ResolvedBaseType != null)
+			{
+			@:base.InitModel(result);
+			}
+
 			@foreach(var property in EntityType.Properties)
 			{
-				if(property.ResolvedType.Kind == "Primitive")
+				if(!property.XmlIgnore)
 				{
-				@:@property.Name = this.@property.Name,
-				}
-				else
-				{
-				@:@property.Name = this.@property.Name@?.ToModel(),
+					if(property.ResolvedType is IVySoft.VPlatform.Target.ModelCode.PrimitiveType)
+					{
+				@:result.@property.Name = this.@property.Name;
+					}
+					else
+					{
+				@:result.@property.Name = (@property.ResolvedType.FullName)this.@property.Name@?.ToModel();
+					}
 				}
 			}
 		@foreach(var association in Module.Associations.Where(x => x.Left.Type == EntityType.Name))
 		{
 			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 			{
-		@:@association.Left.Property = new List<@Module.Namespace.@association.Right.Type>((this.@association.Left.Property == null) ? new @Module.Namespace.@association.Right.Type@[0] : this.@association.Left.Property@.Select(x => x.ToModel())),
+		@:result.@association.Left.Property = new List<@Module.Namespace.@association.Right.Type>((this.@association.Left.Property == null) ? new @Module.Namespace.@association.Right.Type@[0] : this.@association.Left.Property@.Select(x => (@Module.Namespace.@association.Right.Type@)x.ToModel()));
 			}
 		}
 		@foreach(var association in Module.Associations.Where(x => x.Right.Type == EntityType.Name))
 		{
 			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
-		@:@association.Right.Property = new List<@Module.Namespace.@association.Left.Type>((this.@association.Right.Property == null) ? new @Module.Namespace.@association.Left.Type@[0] : this.@association.Right.Property@.Select(x => x.ToModel())),
+		@:result.@association.Right.Property = new List<@Module.Namespace.@association.Left.Type>((this.@association.Right.Property == null) ? new @Module.Namespace.@association.Left.Type@[0] : this.@association.Right.Property@.Select(x => (@Module.Namespace.@association.Left.Type@)x.ToModel()));
 			}
 		}
-            };
         }
-
     }
 }

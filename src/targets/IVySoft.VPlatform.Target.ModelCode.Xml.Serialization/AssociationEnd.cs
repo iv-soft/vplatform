@@ -18,15 +18,19 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 
 
 
-		public IVySoft.VPlatform.Target.ModelCode.AssociationEnd ToModel()
-        {
-            return new IVySoft.VPlatform.Target.ModelCode.AssociationEnd
-            {
-				Type = this.Type,
-				Property = this.Property,
-				Multiplicity = this.Multiplicity,
-				            };
-        }
+		public virtual object ToModel()
+		{
+			var result = new IVySoft.VPlatform.Target.ModelCode.AssociationEnd();
+			this.InitModel(result);
+			return result;
+		}
 
+		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.AssociationEnd result)
+		{
+
+				result.Type = this.Type;
+				result.Property = this.Property;
+				result.Multiplicity = this.Multiplicity;
+				        }
     }
 }

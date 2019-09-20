@@ -7,9 +7,12 @@
 			var folder = System.IO.Path.Combine(Options.OutputFolder, module.Namespace + ".Xml.Serialization");
 			System.IO.Directory.CreateDirectory(folder);
 
-			foreach(var entity_type in module.Types)
+			foreach(var type in module.Types)
 			{
-				Generate_EntityType(module, entity_type, System.IO.Path.Combine(folder, entity_type.Name + ".cs"));
+				if(type is IVySoft.VPlatform.Target.ModelCode.EntityType)
+				{
+					Generate_EntityType(module, (IVySoft.VPlatform.Target.ModelCode.EntityType)type, System.IO.Path.Combine(folder, type.Name + ".cs"));
+				}
 			}
 		}
 	}

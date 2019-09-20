@@ -49,7 +49,7 @@ namespace IVySoft.VPlatform.Etl.Cmd
             {
                 using (var db = serviceScope.ServiceProvider.GetService<DbModel>())
                 {
-                    db.Modules.Add(source.Load().ToModel());
+                    db.Modules.Add((Target.ModelCode.Module)source.Load().ToModel());
                     db.SaveChanges();
                 }
             }

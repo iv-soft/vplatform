@@ -3,23 +3,20 @@
   <Name>System</Name>
   <Namespace>System</Namespace>
   <Types>
-    <EntityType>
+    <PrimitiveType>
       <Name>string</Name>
       <FullName>string</FullName>
-      <Kind>Primitive</Kind>
-    </EntityType>
-    
-    <EntityType>
+    </PrimitiveType>
+
+    <PrimitiveType>
       <Name>int</Name>
       <FullName>int</FullName>
-      <Kind>Primitive</Kind>
-    </EntityType>
-    
-    <EntityType>
+    </PrimitiveType>
+
+    <PrimitiveType>
       <Name>bool</Name>
       <FullName>bool</FullName>
-      <Kind>Primitive</Kind>
-    </EntityType>
+    </PrimitiveType>
 
   </Types>
 </Module>

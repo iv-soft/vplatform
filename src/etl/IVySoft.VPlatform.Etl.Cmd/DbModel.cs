@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace IVySoft.VPlatform.Etl.Cmd
 {
@@ -17,6 +18,15 @@ namespace IVySoft.VPlatform.Etl.Cmd
         void Core.IDataModel.SaveChanges()
         {
             ((DbContext)this).SaveChanges();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Target.ModelCode.ModuleType>()
+                .HasDiscriminator<string>("class")
+                .HasValue<Target.ModelCode.EntityType>("entity");
         }
     }
 }

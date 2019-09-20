@@ -6,9 +6,9 @@ namespace IVySoft.VPlatform.Target.ModelCode
 {
     public class ModuleDependency
     {
-	    [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
 		public string Name { get; set; } 
 

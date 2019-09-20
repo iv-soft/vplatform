@@ -25,7 +25,7 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
             foreach(var file in System.IO.Directory.GetFiles(context.Get<GeneratorOptions>().ModulesFolder, "*.xml"))
             {
                 var source = new XmlSource<Module> { FilePath = file };
-                var module = source.Load().ToModel();
+                var module = (ModelCode.Module)source.Load().ToModel();
                 module.IsExternal = true;
                 external.Add(module.Name, module);
             }
