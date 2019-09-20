@@ -14,9 +14,12 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 		[XmlElement()]
 		public string Type { get; set; }
 		[XmlElement()]
-		public string Multiplicity { get; set; }
+		public EntityType ResolvedType { get; set; }
+		[XmlElement()]
+		public bool Nullable { get; set; }
 		[XmlElement()]
 		public string Default { get; set; }
+
 
 
 		public IVySoft.VPlatform.Target.ModelCode.Property ToModel()
@@ -25,7 +28,8 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
             {
 					Name = this.Name,
 					Type = this.Type,
-					Multiplicity = this.Multiplicity,
+					ResolvedType = this.ResolvedType?.ToModel(),
+					Nullable = this.Nullable,
 					Default = this.Default,
 		            };
         }

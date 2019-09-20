@@ -12,7 +12,14 @@ namespace IVySoft.VPlatform.Target.ModelCode
 
 		public string Name { get; set; }
 		public string Namespace { get; set; }
+		public bool IsExternal { get; set; }
 
+		[InverseProperty(nameof(Association.Module))]
+		public virtual IList<Association> Associations { get; set; }
+		[InverseProperty(nameof(EntityType.Module))]
 		public virtual IList<EntityType> Types { get; set; }
+		[InverseProperty(nameof(ModuleDependency.Module))]
+		public virtual IList<ModuleDependency> Dependencies { get; set; }
+
     }
 }

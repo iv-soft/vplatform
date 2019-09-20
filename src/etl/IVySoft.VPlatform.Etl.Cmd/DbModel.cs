@@ -1,10 +1,8 @@
-﻿using IVySoft.VPlatform.Generator.Core;
-using IVySoft.VPlatform.Target.ModelCode;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace IVySoft.VPlatform.Etl.Cmd
 {
-    internal class DbModel : DbContext, IDbModel, IDataModel
+    internal class DbModel : DbContext, Target.ModelCode.IDataModel
     {
         public DbModel(DbContextOptions options) : base(options)
         {
@@ -14,6 +12,11 @@ namespace IVySoft.VPlatform.Etl.Cmd
         {
         }
 
-        public DbSet<Module> Modules { get; set; }
+        public DbSet<Target.ModelCode.Module> Modules { get; set; }
+
+        void Core.IDataModel.SaveChanges()
+        {
+            ((DbContext)this).SaveChanges();
+        }
     }
 }

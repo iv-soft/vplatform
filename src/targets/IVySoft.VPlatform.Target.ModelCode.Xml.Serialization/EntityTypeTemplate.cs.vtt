@@ -1,4 +1,5 @@
 ﻿@inherits IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.EntityTypeContext
+@using System.Linq
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,19 +13,25 @@ namespace @Module.Namespace@.Xml.Serialization
     {
 		@foreach(var property in EntityType.Properties)
 		{
-			@if(property.Multiplicity != "0..*" && property.Multiplicity != "1..*")
-			{
 		@:[XmlElement()]
 		@:public @property.Type @property.Name { get; set; }
+		}
+
+		@foreach(var association in Module.Associations.Where(x => x.Left.Type == EntityType.Name))
+		{
+			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
+			{
+        @:[XmlArray()]
+		@:public @(association.Right.Type)[] @association.Left.Property { get; set; }
 			}
 		}
 
-		@foreach(var property in EntityType.Properties)
+		@foreach(var association in Module.Associations.Where(x => x.Right.Type == EntityType.Name))
 		{
-			@if(property.Multiplicity == "0..*" || property.Multiplicity == "1..*")
+			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
         @:[XmlArray()]
-		@:public @property.Type@[] @property.Name { get; set; }
+		@:public @(association.Left.Type)[] @association.Right.Property { get; set; }
 			}
 		}
 
@@ -34,16 +41,27 @@ namespace @Module.Namespace@.Xml.Serialization
             {
 			@foreach(var property in EntityType.Properties)
 			{
-				@if(property.Multiplicity != "0..*" && property.Multiplicity != "1..*")
+				if(property.ResolvedType.Kind == "Primitive")
 				{
-					@:@property.Name = this.@property.Name,
+				@:@property.Name = this.@property.Name,
+				}
+				else
+				{
+				@:@property.Name = this.@property.Name@?.ToModel(),
 				}
 			}
-		@foreach(var property in EntityType.Properties)
+		@foreach(var association in Module.Associations.Where(x => x.Left.Type == EntityType.Name))
 		{
-			@if(property.Multiplicity == "0..*" || property.Multiplicity == "1..*")
+			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 			{
-		@:@property.Name = new List<@Module.Namespace.@property.Type>(this.@property.Name@.Select(x => x.ToModel())),
+		@:@association.Left.Property = new List<@Module.Namespace.@association.Right.Type>((this.@association.Left.Property == null) ? new @Module.Namespace.@association.Right.Type@[0] : this.@association.Left.Property@.Select(x => x.ToModel())),
+			}
+		}
+		@foreach(var association in Module.Associations.Where(x => x.Right.Type == EntityType.Name))
+		{
+			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
+			{
+		@:@association.Right.Property = new List<@Module.Namespace.@association.Left.Type>((this.@association.Right.Property == null) ? new @Module.Namespace.@association.Left.Type@[0] : this.@association.Right.Property@.Select(x => x.ToModel())),
 			}
 		}
             };

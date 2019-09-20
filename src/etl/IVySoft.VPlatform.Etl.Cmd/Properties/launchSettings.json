@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "IVySoft.VPlatform.Etl.Cmd": {
+      "commandName": "Project",
+      "commandLineArgs": "projects\\VPlatform\\module.xml",
+      "workingDirectory": "C:\\Users\\User\\projects\\vplatform"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Module xmlns="http://schemas.iv-soft.ru/schemas/vplatform_module.xsd">
+  <Name>System</Name>
+  <Namespace>System</Namespace>
+  <Types>
+    <EntityType>
+      <Name>string</Name>
+      <FullName>string</FullName>
+      <Kind>Primitive</Kind>
+    </EntityType>
+    
+    <EntityType>
+      <Name>int</Name>
+      <FullName>int</FullName>
+      <Kind>Primitive</Kind>
+    </EntityType>
+    
+    <EntityType>
+      <Name>bool</Name>
+      <FullName>bool</FullName>
+      <Kind>Primitive</Kind>
+    </EntityType>
+
+  </Types>
+</Module>

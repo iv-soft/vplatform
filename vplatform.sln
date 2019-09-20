@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VPlatform", "VPlatform", "{B66181BE-343A-48DD-85DE-D8659AC7A904}"
 	ProjectSection(SolutionItems) = preProject
 		projects\VPlatform\module.xml = projects\VPlatform\module.xml
+		projects\VPlatform\system.xml = projects\VPlatform\system.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{B5365A39-C6F9-4763-A604-861D4EA22551}"
@@ -37,6 +38,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateEngine.Tests", "tests\IVySoft.VPlatform.TemplateEngine.Tests\IVySoft.VPlatform.TemplateEngine.Tests.csproj", "{269CF490-E4F5-497C-9EA0-68CEB708DCBF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateEngine.Cmd", "src\generators\IVySoft.VPlatform.TemplateEngine.Cmd\IVySoft.VPlatform.TemplateEngine.Cmd.csproj", "{FD92F9A6-6C95-4499-B974-367CA760A64F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Etl.Core", "src\etl\IVySoft.VPlatform.Etl.Core\IVySoft.VPlatform.Etl.Core.csproj", "{AF56F1D4-136F-4A40-BBBE-D09FE3066C2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kernel", "Kernel", "{E1603136-B503-4303-85D3-F02C2FE9804C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Utils", "src\kernel\IVySoft.VPlatform.Utils\IVySoft.VPlatform.Utils.csproj", "{E9EBBCE2-D35C-43D3-99EF-88E40802B2E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +87,14 @@ Global
 		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD92F9A6-6C95-4499-B974-367CA760A64F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF56F1D4-136F-4A40-BBBE-D09FE3066C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF56F1D4-136F-4A40-BBBE-D09FE3066C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF56F1D4-136F-4A40-BBBE-D09FE3066C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF56F1D4-136F-4A40-BBBE-D09FE3066C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9EBBCE2-D35C-43D3-99EF-88E40802B2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9EBBCE2-D35C-43D3-99EF-88E40802B2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9EBBCE2-D35C-43D3-99EF-88E40802B2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9EBBCE2-D35C-43D3-99EF-88E40802B2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +109,8 @@ Global
 		{2850DE83-222E-42A0-9E17-E177169C4F8C} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{269CF490-E4F5-497C-9EA0-68CEB708DCBF} = {D2E24A5B-8C51-4CE7-95A3-13D290238C2E}
 		{FD92F9A6-6C95-4499-B974-367CA760A64F} = {B5365A39-C6F9-4763-A604-861D4EA22551}
+		{AF56F1D4-136F-4A40-BBBE-D09FE3066C2B} = {1AB3AD08-B4A7-442B-950D-5D3C02F8788B}
+		{E9EBBCE2-D35C-43D3-99EF-88E40802B2E5} = {E1603136-B503-4303-85D3-F02C2FE9804C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D126804-D711-49E5-997D-B0FA8E1F9D44}

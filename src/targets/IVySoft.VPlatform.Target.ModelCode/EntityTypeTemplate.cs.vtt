@@ -1,4 +1,5 @@
 ﻿@inherits IVySoft.VPlatform.Target.ModelCode.EntityTypeContext
+@using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,17 +14,36 @@ namespace @Module.Namespace
 
 		@foreach(var property in EntityType.Properties)
 		{
-			@if(property.Multiplicity != "0..*" && property.Multiplicity != "1..*")
-			{
 		@:public @property.Type @property.Name { get; set; }
+		}
+
+		@foreach(var association in Module.Associations.Where(x => x.Left.Type == EntityType.Name))
+		{
+			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
+			{
+		@:[InverseProperty(nameof(@association.Right.Type.@association.Right.Property))]
+		@:public virtual IList<@association.Right.Type> @association.Left.Property { get; set; }
+			}
+			else
+			{
+		@:[ForeignKey(nameof(@association.Left.Property))]
+		@:public int @(association.Left.Property)Id { get; set; }
+		@:public virtual @association.Right.Type @association.Left.Property { get; set; }
 			}
 		}
 
-		@foreach(var property in EntityType.Properties)
+		@foreach(var association in Module.Associations.Where(x => x.Right.Type == EntityType.Name))
 		{
-			@if(property.Multiplicity == "0..*" || property.Multiplicity == "1..*")
+			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
-		@:public virtual IList<@property.Type> @property.Name { get; set; }
+		@:[InverseProperty(nameof(@association.Left.Type.@association.Left.Property))]
+		@:public virtual IList<@association.Left.Type> @association.Right.Property { get; set; }
+			}
+			else
+			{
+		@:[ForeignKey(nameof(@association.Right.Property))]
+		@:public int @(association.Right.Property)Id { get; set; }
+		@:public virtual @association.Left.Type @association.Right.Property { get; set; }
 			}
 		}
     }

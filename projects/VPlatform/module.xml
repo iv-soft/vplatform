@@ -2,6 +2,13 @@
 <Module xmlns="http://schemas.iv-soft.ru/schemas/vplatform_module.xsd">
   <Name>ModelCode</Name>
   <Namespace>IVySoft.VPlatform.Target.ModelCode</Namespace>
+
+  <Dependencies>
+    <ModuleDependency>
+      <Name>System</Name>
+    </ModuleDependency>
+  </Dependencies>
+  
   <Types>
     <EntityType>
       <Name>Module</Name>
@@ -17,13 +24,23 @@
           <Multiplicity>1</Multiplicity>
         </Property>
         <Property>
-          <Name>Types</Name>
-          <Type>EntityType</Type>
-          <Multiplicity>0..*</Multiplicity>
-      </Property>
+          <Name>IsExternal</Name>
+          <Type>bool</Type>
+        </Property>
       </Properties>
     </EntityType>
     
+    <EntityType>
+      <Name>ModuleDependency</Name>
+      <Properties>
+        <Property>
+          <Name>Name</Name>
+          <Type>string</Type>
+          <Multiplicity>1</Multiplicity>
+        </Property>
+      </Properties>
+    </EntityType>
+
     <EntityType>
       <Name>EntityType</Name>
       <Properties>
@@ -33,9 +50,16 @@
           <Multiplicity>1</Multiplicity>
         </Property>
         <Property>
-          <Name>Properties</Name>
-          <Type>Property</Type>
-          <Multiplicity>0..*</Multiplicity>
+          <Name>BaseType</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>Kind</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>FullName</Name>
+          <Type>string</Type>
         </Property>
       </Properties>    
     </EntityType>
@@ -52,8 +76,12 @@
           <Type>string</Type>
         </Property>
         <Property>
-          <Name>Multiplicity</Name>
-          <Type>string</Type>
+          <Name>ResolvedType</Name>
+          <Type>EntityType</Type>
+        </Property>        
+        <Property>
+          <Name>Nullable</Name>
+          <Type>bool</Type>
         </Property>
         <Property>
           <Name>Default</Name>
@@ -69,16 +97,14 @@
           <Name>Name</Name>
           <Type>string</Type>
         </Property>
-        <!--<Property>
+        <Property>
           <Name>Left</Name>
           <Type>AssociationEnd</Type>
-          <Multiplicity>1</Multiplicity>
         </Property>
         <Property>
           <Name>Right</Name>
           <Type>AssociationEnd</Type>
-          <Multiplicity>1</Multiplicity>
-        </Property>-->
+        </Property>
       </Properties>
     </EntityType>
 
@@ -101,4 +127,63 @@
     </EntityType>
 
   </Types>
+
+  <Associations>
+    <Association>
+      <Name>Module_Associations</Name>
+      <Left>
+        <Type>Module</Type>
+        <Property>Associations</Property>
+        <Multiplicity>0..*</Multiplicity>
+      </Left>
+      <Right>
+        <Type>Association</Type>
+        <Property>Module</Property>
+        <Multiplicity>1</Multiplicity>
+      </Right>
+    </Association>
+    <Association>
+      <Name>Module_Types</Name>
+      <Left>
+        <Type>Module</Type>
+        <Property>Types</Property>
+        <Multiplicity>0..*</Multiplicity>
+      </Left>
+      <Right>
+        <Type>EntityType</Type>
+        <Property>Module</Property>
+        <Multiplicity>1</Multiplicity>
+      </Right>
+    </Association>
+    <Association>
+      <Name>Module_Dependencies</Name>
+      <Left>
+        <Type>Module</Type>
+        <Property>Dependencies</Property>
+        <Multiplicity>0..*</Multiplicity>
+      </Left>
+      <Right>
+        <Type>ModuleDependency</Type>
+        <Property>Module</Property>
+        <Multiplicity>1</Multiplicity>
+      </Right>
+    </Association>
+    
+    <Association>
+      <Name>EntityType_Properties</Name>
+      <Left>
+        <Type>EntityType</Type>
+        <Property>Properties</Property>
+        <Multiplicity>0..*</Multiplicity>
+      </Left>
+      <Right>
+        <Type>Property</Type>
+        <Property>OwnerType</Property>
+        <Multiplicity>1</Multiplicity>
+      </Right>
+    </Association>
+
+
+
+  </Associations>
 </Module>

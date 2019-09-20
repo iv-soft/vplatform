@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\generators\IVySoft.VPlatform.Generator.Core\IVySoft.VPlatform.Generator.Core.csproj" />
+    <ProjectReference Include="..\..\sources\IVySoft.VPlatform.Source.Xml\IVySoft.VPlatform.Source.Xml.csproj" />
     <ProjectReference Include="..\IVySoft.VPlatform.Target.ModelCode\IVySoft.VPlatform.Target.ModelCode.csproj" />
   </ItemGroup>
 

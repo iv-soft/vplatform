@@ -1,13 +1,17 @@
 ﻿@inherits IVySoft.VPlatform.Target.ModelCode.DataModelContext
+@using Microsoft.EntityFrameworkCore
 @{
 	foreach(var module in Model.Modules)
 	{
-		var folder = System.IO.Path.Combine(Options.OutputFolder, module.Namespace);
-		System.IO.Directory.CreateDirectory(folder);
-
-		foreach(var entity_type in module.Types)
+		if(!module.IsExternal)
 		{
-			Generate_EntityType(module, entity_type, System.IO.Path.Combine(folder, entity_type.Name + ".cs"));
+			var folder = System.IO.Path.Combine(Options.OutputFolder, module.Namespace);
+			System.IO.Directory.CreateDirectory(folder);
+
+			foreach(var entity_type in module.Types)
+			{
+				Generate_EntityType(module, entity_type, System.IO.Path.Combine(folder, entity_type.Name + ".cs"));
+			}
 		}
 	}
 }

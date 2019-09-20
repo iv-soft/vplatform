@@ -12,5 +12,16 @@ namespace IVySoft.VPlatform.Target.ModelCode
 
 		public string Name { get; set; }
 
+		[ForeignKey(nameof(Left))]
+		public int LeftId { get; set; }
+		public virtual AssociationEnd Left { get; set; }
+
+		[ForeignKey(nameof(Right))]
+		public int RightId { get; set; }
+		public virtual AssociationEnd Right { get; set; }
+
+		[ForeignKey(nameof(Module))]
+		public int ModuleId { get; set; }
+		public virtual Module Module { get; set; }
     }
 }

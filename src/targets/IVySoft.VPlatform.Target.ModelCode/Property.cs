@@ -12,8 +12,13 @@ namespace IVySoft.VPlatform.Target.ModelCode
 
 		public string Name { get; set; }
 		public string Type { get; set; }
-		public string Multiplicity { get; set; }
+		public virtual EntityType ResolvedType { get; set; }
+		public bool Nullable { get; set; }
 		public string Default { get; set; }
 
+
+		[ForeignKey(nameof(OwnerType))]
+		public int OwnerTypeId { get; set; }
+		public virtual EntityType OwnerType { get; set; }
     }
 }

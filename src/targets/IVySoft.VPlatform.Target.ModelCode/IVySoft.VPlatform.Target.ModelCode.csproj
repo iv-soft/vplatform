@@ -9,8 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\etl\IVySoft.VPlatform.Etl.Core\IVySoft.VPlatform.Etl.Core.csproj" />
     <ProjectReference Include="..\..\generators\IVySoft.VPlatform.Generator.Core\IVySoft.VPlatform.Generator.Core.csproj" />
     <ProjectReference Include="..\..\generators\IVySoft.VPlatform.TemplateEngine\IVySoft.VPlatform.TemplateEngine.csproj" />
+    <ProjectReference Include="..\..\kernel\IVySoft.VPlatform.Utils\IVySoft.VPlatform.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

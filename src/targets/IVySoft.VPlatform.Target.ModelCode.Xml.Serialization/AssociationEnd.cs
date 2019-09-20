@@ -17,6 +17,7 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 		public string Multiplicity { get; set; }
 
 
+
 		public IVySoft.VPlatform.Target.ModelCode.AssociationEnd ToModel()
         {
             return new IVySoft.VPlatform.Target.ModelCode.AssociationEnd

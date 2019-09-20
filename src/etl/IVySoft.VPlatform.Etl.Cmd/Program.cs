@@ -6,6 +6,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using IVySoft.VPlatform.Generator.Core;
 using IVySoft.VPlatform.Target.ModelCode.Xml.Serialization;
+using IVySoft.VPlatform.Etl.Core;
 
 namespace IVySoft.VPlatform.Etl.Cmd
 {
@@ -35,11 +36,14 @@ namespace IVySoft.VPlatform.Etl.Cmd
                 options.UseLazyLoadingProxies();
             });
 
-            services.AddTransient<IGenerator, Target.ModelCode.ModelCoreGenerator>();
-            services.AddTransient<IGenerator, Target.ModelCode.Xml.Serialization.ModelCoreGenerator>();
+            services.AddTransient<IEtlStep, Target.ModelCode.ModelCoreGenerator>();
+            services.AddTransient<IEtlStep, Target.ModelCode.Xml.Serialization.ModelCoreGenerator>();
+            services.AddTransient<IEtlStep, Target.ModelCode.ResolveTypeEtlStep>();
+            services.AddTransient<IEtlStep, Target.ModelCode.ResolveNamespaceEtlStep>();
+            services.AddTransient<IEtlStep, LoadDependenciesEtlStep>();
 
-            // Create a new service provider.
-            var sp = services.BuildServiceProvider();
+           // Create a new service provider.
+           var sp = services.BuildServiceProvider();
 
             using (var serviceScope = sp.CreateScope())
             {
@@ -53,16 +57,16 @@ namespace IVySoft.VPlatform.Etl.Cmd
             using (var serviceScope = sp.CreateScope())
             {
                 var options = serviceScope.ServiceProvider.GetRequiredService<IOptions<GeneratorOptions>>().Value;
-                options.OutputFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(args[0]), "Generated");
+                options.ModulesFolder = System.IO.Path.GetDirectoryName(args[0]);
+                options.OutputFolder = System.IO.Path.Combine(options.ModulesFolder, "Generated");
                 System.IO.Directory.CreateDirectory(options.OutputFolder);
 
                 using (var db = serviceScope.ServiceProvider.GetService<DbModel>())
                 {
-                    var generators = serviceScope.ServiceProvider.GetServices<IGenerator>();
-                    foreach (var generator in generators)
-                    {
-                        generator.Generate(db, options);
-                    }
+                    var context = new EtlContext();
+                    context.DataModel = db;
+                    context.Set(options);
+                    context.Execute(serviceScope.ServiceProvider.GetServices<IEtlStep>());
                 }
             }
 

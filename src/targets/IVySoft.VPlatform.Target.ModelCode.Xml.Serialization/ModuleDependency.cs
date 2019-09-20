@@ -7,24 +7,18 @@ using System.Linq;
 namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 {
     [XmlRoot(Namespace = XmlConfig.Namespace)]
-    public class Association
+    public class ModuleDependency
     {
 		[XmlElement()]
 		public string Name { get; set; }
-		[XmlElement()]
-		public AssociationEnd Left { get; set; }
-		[XmlElement()]
-		public AssociationEnd Right { get; set; }
 
 
 
-		public IVySoft.VPlatform.Target.ModelCode.Association ToModel()
+		public IVySoft.VPlatform.Target.ModelCode.ModuleDependency ToModel()
         {
-            return new IVySoft.VPlatform.Target.ModelCode.Association
+            return new IVySoft.VPlatform.Target.ModelCode.ModuleDependency
             {
 					Name = this.Name,
-					Left = this.Left?.ToModel(),
-					Right = this.Right?.ToModel(),
 		            };
         }
 
