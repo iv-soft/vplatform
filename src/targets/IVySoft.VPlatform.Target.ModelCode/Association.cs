@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IVySoft.VPlatform.Target.ModelCode
 {
-    public class EntityType
+    public class Association
     {
 	    [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -12,6 +12,5 @@ namespace IVySoft.VPlatform.Target.ModelCode
 
 		public string Name { get; set; }
 
-		public virtual IList<Property> Properties { get; set; }
     }
 }

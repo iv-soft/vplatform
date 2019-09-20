@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Source.Xm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{EBB0293C-42D8-4378-A2E1-658C5AB277B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Target.Xml.Serialization", "src\targets\IVySoft.VPlatform.Target.Xml.Serialization\IVySoft.VPlatform.Target.Xml.Serialization.csproj", "{56269D4E-FFDF-4102-B0BC-ED03F2A7D6FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Target.ModelCode.Xml.Serialization", "src\targets\IVySoft.VPlatform.Target.ModelCode.Xml.Serialization\IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.csproj", "{56269D4E-FFDF-4102-B0BC-ED03F2A7D6FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Target.ModelCode", "src\targets\IVySoft.VPlatform.Target.ModelCode\IVySoft.VPlatform.Target.ModelCode.csproj", "{AE4446D9-A26A-43C8-810A-D4114666F131}"
 EndProject
@@ -25,8 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VPlatform", "VPlatform", "{
 	ProjectSection(SolutionItems) = preProject
 		projects\VPlatform\module.xml = projects\VPlatform\module.xml
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Source.ModuleSchema", "src\sources\IVySoft.VPlatform.Source.ModuleSchema\IVySoft.VPlatform.Source.ModuleSchema.csproj", "{B3C96EB2-A62B-4467-A569-2993DCBB439B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{B5365A39-C6F9-4763-A604-861D4EA22551}"
 EndProject
@@ -66,10 +64,6 @@ Global
 		{AE4446D9-A26A-43C8-810A-D4114666F131}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE4446D9-A26A-43C8-810A-D4114666F131}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE4446D9-A26A-43C8-810A-D4114666F131}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3C96EB2-A62B-4467-A569-2993DCBB439B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3C96EB2-A62B-4467-A569-2993DCBB439B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3C96EB2-A62B-4467-A569-2993DCBB439B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3C96EB2-A62B-4467-A569-2993DCBB439B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDB3B47F-9E69-415E-962A-D4B7C64EC643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDB3B47F-9E69-415E-962A-D4B7C64EC643}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDB3B47F-9E69-415E-962A-D4B7C64EC643}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -96,7 +90,6 @@ Global
 		{56269D4E-FFDF-4102-B0BC-ED03F2A7D6FF} = {EBB0293C-42D8-4378-A2E1-658C5AB277B5}
 		{AE4446D9-A26A-43C8-810A-D4114666F131} = {EBB0293C-42D8-4378-A2E1-658C5AB277B5}
 		{B66181BE-343A-48DD-85DE-D8659AC7A904} = {0F1C1438-40B9-4F66-9A8A-A4CB50BBC7A4}
-		{B3C96EB2-A62B-4467-A569-2993DCBB439B} = {9688E414-8F4D-483D-AC89-9F9180029A5B}
 		{EDB3B47F-9E69-415E-962A-D4B7C64EC643} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{2850DE83-222E-42A0-9E17-E177169C4F8C} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{269CF490-E4F5-497C-9EA0-68CEB708DCBF} = {D2E24A5B-8C51-4CE7-95A3-13D290238C2E}

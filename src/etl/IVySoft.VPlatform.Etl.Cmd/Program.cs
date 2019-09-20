@@ -1,11 +1,11 @@
-﻿using IVySoft.VPlatform.Source.ModuleSchema;
-using IVySoft.VPlatform.Source.Xml;
+﻿using IVySoft.VPlatform.Source.Xml;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using Microsoft.EntityFrameworkCore;
 using IVySoft.VPlatform.Generator.Core;
+using IVySoft.VPlatform.Target.ModelCode.Xml.Serialization;
 
 namespace IVySoft.VPlatform.Etl.Cmd
 {
@@ -15,7 +15,7 @@ namespace IVySoft.VPlatform.Etl.Cmd
         {
             var source = new XmlSource<Module>
             {
-                FilePath = @"C:\Users\User\projects\vplatform\projects\VPlatform\module.xml"
+                FilePath = args[0]
             };
 
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
@@ -36,6 +36,7 @@ namespace IVySoft.VPlatform.Etl.Cmd
             });
 
             services.AddTransient<IGenerator, Target.ModelCode.ModelCoreGenerator>();
+            services.AddTransient<IGenerator, Target.ModelCode.Xml.Serialization.ModelCoreGenerator>();
 
             // Create a new service provider.
             var sp = services.BuildServiceProvider();
@@ -52,7 +53,7 @@ namespace IVySoft.VPlatform.Etl.Cmd
             using (var serviceScope = sp.CreateScope())
             {
                 var options = serviceScope.ServiceProvider.GetRequiredService<IOptions<GeneratorOptions>>().Value;
-                options.OutputFolder = @"C:\Users\User\projects\vplatform\projects\VPlatform\Generated";
+                options.OutputFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(args[0]), "Generated");
                 System.IO.Directory.CreateDirectory(options.OutputFolder);
 
                 using (var db = serviceScope.ServiceProvider.GetService<DbModel>())

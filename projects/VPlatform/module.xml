@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Module xmlns="http://schemas.iv-soft.ru/schemas/vplatform_module.xsd">
-  <Name>VPlatform</Name>
+  <Name>ModelCode</Name>
+  <Namespace>IVySoft.VPlatform.Target.ModelCode</Namespace>
   <Types>
     <EntityType>
       <Name>Module</Name>
@@ -8,7 +9,12 @@
         <Property>
           <Name>Name</Name>
           <Type>string</Type>
-          <MinOccurs>1</MinOccurs>
+          <Multiplicity>1</Multiplicity>
+        </Property>
+        <Property>
+          <Name>Namespace</Name>
+          <Type>string</Type>
+          <Multiplicity>1</Multiplicity>
         </Property>
         <Property>
           <Name>Types</Name>
@@ -55,5 +61,44 @@
         </Property>
       </Properties>
     </EntityType>
+
+    <EntityType>
+      <Name>Association</Name>
+      <Properties>
+        <Property>
+          <Name>Name</Name>
+          <Type>string</Type>
+        </Property>
+        <!--<Property>
+          <Name>Left</Name>
+          <Type>AssociationEnd</Type>
+          <Multiplicity>1</Multiplicity>
+        </Property>
+        <Property>
+          <Name>Right</Name>
+          <Type>AssociationEnd</Type>
+          <Multiplicity>1</Multiplicity>
+        </Property>-->
+      </Properties>
+    </EntityType>
+
+    <EntityType>
+      <Name>AssociationEnd</Name>
+      <Properties>
+        <Property>
+          <Name>Type</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>Property</Name>
+          <Type>string</Type>
+        </Property>
+        <Property>
+          <Name>Multiplicity</Name>
+          <Type>string</Type>
+        </Property>
+      </Properties>
+    </EntityType>
+
   </Types>
 </Module>

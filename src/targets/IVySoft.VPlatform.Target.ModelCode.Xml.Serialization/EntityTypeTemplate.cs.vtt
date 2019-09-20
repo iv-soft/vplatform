@@ -1,0 +1,53 @@
+﻿@inherits IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.EntityTypeContext
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Serialization;
+using System.Linq;
+
+namespace @Module.Namespace@.Xml.Serialization
+{
+    [XmlRoot(Namespace = XmlConfig.Namespace)]
+    public class @EntityType.Name
+    {
+		@foreach(var property in EntityType.Properties)
+		{
+			@if(property.Multiplicity != "0..*" && property.Multiplicity != "1..*")
+			{
+		@:[XmlElement()]
+		@:public @property.Type @property.Name { get; set; }
+			}
+		}
+
+		@foreach(var property in EntityType.Properties)
+		{
+			@if(property.Multiplicity == "0..*" || property.Multiplicity == "1..*")
+			{
+        @:[XmlArray()]
+		@:public @property.Type@[] @property.Name { get; set; }
+			}
+		}
+
+		public @Module.Namespace.@EntityType.Name ToModel()
+        {
+            return new @Module.Namespace.@EntityType.Name
+            {
+			@foreach(var property in EntityType.Properties)
+			{
+				@if(property.Multiplicity != "0..*" && property.Multiplicity != "1..*")
+				{
+					@:@property.Name = this.@property.Name,
+				}
+			}
+		@foreach(var property in EntityType.Properties)
+		{
+			@if(property.Multiplicity == "0..*" || property.Multiplicity == "1..*")
+			{
+		@:@property.Name = new List<@Module.Namespace.@property.Type>(this.@property.Name@.Select(x => x.ToModel())),
+			}
+		}
+            };
+        }
+
+    }
+}

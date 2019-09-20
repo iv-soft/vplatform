@@ -1,8 +1,8 @@
-﻿@inherits IVySoft.VPlatform.Target.ModelCode.DataModelContext
+﻿@inherits IVySoft.VPlatform.Target.ModelCode.Xml.Serialization.DataModelContext
 @{
 	foreach(var module in Model.Modules)
 	{
-		var folder = System.IO.Path.Combine(Options.OutputFolder, module.Namespace);
+		var folder = System.IO.Path.Combine(Options.OutputFolder, module.Namespace + ".Xml.Serialization");
 		System.IO.Directory.CreateDirectory(folder);
 
 		foreach(var entity_type in module.Types)

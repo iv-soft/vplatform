@@ -1,4 +1,8 @@
-﻿namespace IVySoft.VPlatform.Source.ModuleSchema
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 {
     internal static class XmlConfig
     {

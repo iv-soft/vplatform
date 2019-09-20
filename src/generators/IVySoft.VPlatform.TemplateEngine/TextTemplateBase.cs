@@ -31,5 +31,8 @@ namespace IVySoft.VPlatform.TemplateEngine
         {
             this.outStream_.Write(obj);
         }
+        protected void Write()
+        {
+        }
     }
 }
