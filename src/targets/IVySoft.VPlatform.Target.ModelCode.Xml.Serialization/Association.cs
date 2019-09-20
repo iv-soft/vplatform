@@ -22,10 +22,10 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         {
             return new IVySoft.VPlatform.Target.ModelCode.Association
             {
-					Name = this.Name,
-					Left = this.Left?.ToModel(),
-					Right = this.Right?.ToModel(),
-		            };
+				Name = this.Name,
+				Left = this.Left?.ToModel(),
+				Right = this.Right?.ToModel(),
+				            };
         }
 
     }

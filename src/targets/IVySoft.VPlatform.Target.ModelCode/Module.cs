@@ -10,9 +10,9 @@ namespace IVySoft.VPlatform.Target.ModelCode
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-		public string Name { get; set; }
-		public string Namespace { get; set; }
-		public bool IsExternal { get; set; }
+		public string Name { get; set; } 
+		public string Namespace { get; set; } 
+		public bool IsExternal { get; set; } 
 
 		[InverseProperty(nameof(Association.Module))]
 		public virtual IList<Association> Associations { get; set; }

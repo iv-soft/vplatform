@@ -14,7 +14,30 @@ namespace @Module.Namespace
 
 		@foreach(var property in EntityType.Properties)
 		{
-		@:public @property.Type @property.Name { get; set; }
+			if(property.ResolvedType.Kind == "Primitive")
+			{
+				if(property.Nullable && @property.ResolvedType.FullName != "string")
+				{
+		@:public @property.ResolvedType.FullName? @property.Name { get; set; } @(string.IsNullOrWhiteSpace(property.Default) ? "" : "=" + property.Default)
+				}
+				else
+				{
+		@:public @property.ResolvedType.FullName @property.Name { get; set; } @(string.IsNullOrWhiteSpace(property.Default) ? "" : "=" + property.Default)
+				}
+			}
+			else
+			{
+		@:[ForeignKey(nameof(@property.Name))]
+				if(property.Nullable)
+				{
+		@:public int? @(property.Name)Id { get; set; }
+				}
+				else
+				{
+		@:public int @(property.Name)Id { get; set; }
+				}
+		@:public virtual @property.ResolvedType.FullName @property.Name { get; set; }
+			}
 		}
 
 		@foreach(var association in Module.Associations.Where(x => x.Left.Type == EntityType.Name))

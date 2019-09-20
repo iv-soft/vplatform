@@ -26,12 +26,12 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         {
             return new IVySoft.VPlatform.Target.ModelCode.EntityType
             {
-					Name = this.Name,
-					BaseType = this.BaseType,
-					Kind = this.Kind,
-					FullName = this.FullName,
-                Properties = new List<ModelCode.Property>((this.Properties == null) ? new ModelCode.Property[0] : this.Properties.Select(x => x.ToModel()))
-            };
+				Name = this.Name,
+				BaseType = this.BaseType,
+				Kind = this.Kind,
+				FullName = this.FullName,
+				Properties = new List<IVySoft.VPlatform.Target.ModelCode.Property>((this.Properties == null) ? new IVySoft.VPlatform.Target.ModelCode.Property[0] : this.Properties.Select(x => x.ToModel())),
+		            };
         }
 
     }

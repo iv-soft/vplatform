@@ -28,14 +28,13 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         {
             return new IVySoft.VPlatform.Target.ModelCode.Module
             {
-					Name = this.Name,
-					Namespace = this.Namespace,
-					IsExternal = this.IsExternal,
-                Associations = new List<ModelCode.Association>((this.Associations == null) ? new ModelCode.Association[0] : this.Associations.Select(x => x.ToModel())),
-                Types = new List<ModelCode.EntityType>((this.Types == null) ? new ModelCode.EntityType[0] : this.Types.Select(x => x.ToModel())),
-                Dependencies = new List<ModelCode.ModuleDependency>((this.Dependencies == null) ? new ModelCode.ModuleDependency[0] : this.Dependencies.Select(x => x.ToModel())),
-
-            };
+				Name = this.Name,
+				Namespace = this.Namespace,
+				IsExternal = this.IsExternal,
+				Associations = new List<IVySoft.VPlatform.Target.ModelCode.Association>((this.Associations == null) ? new IVySoft.VPlatform.Target.ModelCode.Association[0] : this.Associations.Select(x => x.ToModel())),
+		Types = new List<IVySoft.VPlatform.Target.ModelCode.EntityType>((this.Types == null) ? new IVySoft.VPlatform.Target.ModelCode.EntityType[0] : this.Types.Select(x => x.ToModel())),
+		Dependencies = new List<IVySoft.VPlatform.Target.ModelCode.ModuleDependency>((this.Dependencies == null) ? new IVySoft.VPlatform.Target.ModelCode.ModuleDependency[0] : this.Dependencies.Select(x => x.ToModel())),
+		            };
         }
 
     }

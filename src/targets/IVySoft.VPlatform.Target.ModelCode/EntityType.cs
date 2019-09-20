@@ -10,10 +10,10 @@ namespace IVySoft.VPlatform.Target.ModelCode
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-		public string Name { get; set; }
-		public string BaseType { get; set; }
-		public string Kind { get; set; }
-		public string FullName { get; set; }
+		public string Name { get; set; } 
+		public string BaseType { get; set; } 
+		public string Kind { get; set; } 
+		public string FullName { get; set; } 
 
 		[InverseProperty(nameof(Property.OwnerType))]
 		public virtual IList<Property> Properties { get; set; }

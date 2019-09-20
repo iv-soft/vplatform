@@ -18,8 +18,8 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         {
             return new IVySoft.VPlatform.Target.ModelCode.ModuleDependency
             {
-					Name = this.Name,
-		            };
+				Name = this.Name,
+				            };
         }
 
     }

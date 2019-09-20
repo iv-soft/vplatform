@@ -10,7 +10,7 @@ namespace IVySoft.VPlatform.Target.ModelCode
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-		public string Name { get; set; }
+		public string Name { get; set; } 
 
 
 		[ForeignKey(nameof(Module))]

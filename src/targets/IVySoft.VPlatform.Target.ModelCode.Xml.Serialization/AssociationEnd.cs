@@ -22,10 +22,10 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         {
             return new IVySoft.VPlatform.Target.ModelCode.AssociationEnd
             {
-					Type = this.Type,
-					Property = this.Property,
-					Multiplicity = this.Multiplicity,
-		            };
+				Type = this.Type,
+				Property = this.Property,
+				Multiplicity = this.Multiplicity,
+				            };
         }
 
     }

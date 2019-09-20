@@ -78,6 +78,7 @@
         <Property>
           <Name>ResolvedType</Name>
           <Type>EntityType</Type>
+          <Nullable>true</Nullable>
         </Property>        
         <Property>
           <Name>Nullable</Name>
@@ -182,8 +183,13 @@
         <Multiplicity>1</Multiplicity>
       </Right>
     </Association>
-
-
-
   </Associations>
+
+  <Entity>
+    <Name>Modules</Name>
+    <Type>EntityType</Type>
+    <Discriminator>
+      
+    </Discriminator>
+  </Entity>
 </Module>

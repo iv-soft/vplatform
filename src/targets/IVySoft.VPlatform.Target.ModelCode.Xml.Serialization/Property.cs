@@ -26,12 +26,12 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
         {
             return new IVySoft.VPlatform.Target.ModelCode.Property
             {
-					Name = this.Name,
-					Type = this.Type,
-					ResolvedType = this.ResolvedType?.ToModel(),
-					Nullable = this.Nullable,
-					Default = this.Default,
-		            };
+				Name = this.Name,
+				Type = this.Type,
+				ResolvedType = this.ResolvedType?.ToModel(),
+				Nullable = this.Nullable,
+				Default = this.Default,
+				            };
         }
 
     }

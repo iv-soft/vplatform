@@ -10,11 +10,13 @@ namespace IVySoft.VPlatform.Target.ModelCode
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-		public string Name { get; set; }
-		public string Type { get; set; }
-		public virtual EntityType ResolvedType { get; set; }
-		public bool Nullable { get; set; }
-		public string Default { get; set; }
+		public string Name { get; set; } 
+		public string Type { get; set; } 
+		[ForeignKey(nameof(ResolvedType))]
+		public int? ResolvedTypeId { get; set; }
+		public virtual IVySoft.VPlatform.Target.ModelCode.EntityType ResolvedType { get; set; }
+		public bool Nullable { get; set; } 
+		public string Default { get; set; } 
 
 
 		[ForeignKey(nameof(OwnerType))]
