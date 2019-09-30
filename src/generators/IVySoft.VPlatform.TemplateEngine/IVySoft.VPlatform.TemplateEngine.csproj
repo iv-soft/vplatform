@@ -4,13 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Vadim Malyshev</Authors>
     <Company>IVy Soft</Company>
     <Product>VPlatform</Product>
     <Description>Text Template Engine based on Razor</Description>
     <Copyright>Vadim Malyshev</Copyright>
-    <PackageProjectUrl>https://gitlab.com/lboss75/templateengine</PackageProjectUrl>
+    <PackageProjectUrl>https://gitlab.com/ivsoft/vplatform/tree/master/src/generators/IVySoft.VPlatform.TemplateEngine</PackageProjectUrl>
     <PackageLicenseUrl>https://gitlab.com/lboss75/templateengine/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
