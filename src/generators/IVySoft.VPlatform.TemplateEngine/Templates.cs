@@ -7,7 +7,7 @@ namespace IVySoft.VPlatform.TemplateEngine
 {
     public class Templates
     {
-        private readonly TemplateCodeGenerator generator_;
+        private readonly RazorTemplateCodeGenerator generator_;
         private readonly TemplateCompiler compiler_;
         private readonly TemplateCodeGeneratorOptions generatorOptions_;
 
@@ -18,7 +18,7 @@ namespace IVySoft.VPlatform.TemplateEngine
             {
                 options(context);
             }
-            this.generator_ = new TemplateCodeGenerator(generatorOptions);
+            this.generator_ = new RazorTemplateCodeGenerator(generatorOptions);
             this.compiler_ = new TemplateCompiler(generatorOptions.RootPath, context.CompilerOptions);
             this.generatorOptions_ = generatorOptions;
         }

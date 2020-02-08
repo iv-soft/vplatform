@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Razor.Language.Extensions;
 
 namespace IVySoft.VPlatform.TemplateEngine
 {
-    public class TemplateCodeGenerator
+    public class RazorTemplateCodeGenerator : ITemplateCodeGenerator
     {
         private readonly TemplateCodeGeneratorOptions options_;
         private readonly RazorProjectFileSystem fs_;
         private readonly RazorProjectEngine engine_;
 
-        public TemplateCodeGenerator(TemplateCodeGeneratorOptions options)
+        public RazorTemplateCodeGenerator(TemplateCodeGeneratorOptions options)
         {
             this.options_ = options;
             this.fs_ = RazorProjectFileSystem.Create(options.RootPath);
@@ -38,7 +38,7 @@ namespace IVySoft.VPlatform.TemplateEngine
             return cs.GeneratedCode;
         }
 
-        internal string GetFilePath(string templateFile)
+        public string GetFilePath(string templateFile)
         {
             return System.IO.Path.Combine(this.options_.RootPath, templateFile);
         }

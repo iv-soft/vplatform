@@ -2,7 +2,7 @@
   "profiles": {
     "IVySoft.VPlatform.TemplateEngine.Cmd": {
       "commandName": "Project",
-      "commandLineArgs": "-s C:\\Users\\User\\projects\\vplatform\\src\\targets\\IVySoft.VPlatform.Target.ModelCode\\DataModelsTemplate.cs.vtt -t C:\\Users\\User\\projects\\vplatform\\src\\targets\\IVySoft.VPlatform.Target.ModelCode\\DataModelsTemplate.cs -n DataModelsTemplate"
+      "commandLineArgs": "build -s C:\\Users\\vadim\\source\\repos\\vds_web\\src\\site_template -t C:\\Users\\vadim\\source\\repos\\vds_web\\src\\site_result "
     }
   }
 }

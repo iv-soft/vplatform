@@ -23,22 +23,24 @@ namespace IVySoft.VPlatform.TemplateEngine
             this.options_ = options;
         }
 
-        public Assembly LoadTemplate(TemplateCodeGenerator generator, string templateFile)
+        public Assembly LoadTemplate(ITemplateCodeGenerator generator, string templateFile)
         {
-            var dllPath = this.CompileTemplate(generator, templateFile);
             Assembly result;
             if(!this.loaded_assemblies_.TryGetValue(templateFile, out result))
             {
+                var dllPath = this.CompileTemplate(generator, templateFile);
                 result = Assembly.LoadFile(dllPath);
             }
 
             return result;
         }
 
-        public string CompileTemplate(TemplateCodeGenerator generator, string templateFile)
+        public string CompileTemplate(ITemplateCodeGenerator generator, string templateFile)
         {
             var dllPath = Path.Combine(this.tmpPath_, templateFile + ".dll");
-            if(!File.Exists(dllPath) || new FileInfo(dllPath).LastWriteTime < new FileInfo(generator.GetFilePath(templateFile)).LastWriteTime)
+            if(!File.Exists(dllPath)
+                || new FileInfo(dllPath).LastWriteTime < new FileInfo(
+                    generator.GetFilePath(templateFile)).LastWriteTime)
             {
                 this.loaded_assemblies_.Remove(templateFile);
                 Compile(generator.GenerateCode(templateFile), dllPath);
