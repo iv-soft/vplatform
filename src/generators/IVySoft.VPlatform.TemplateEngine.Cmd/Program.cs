@@ -28,11 +28,23 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
         }
         private static int RunAddAndReturnExitCode(BuildOptions opts)
         {
-            var context = new DirectoryBuildContext();
-            context.RootFolder = opts.Source;
-            context.TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Environment.CurrentDirectory : opts.Target;
+            try
+            {
+                var context = new IndexScript.BuildContext
+                {
+                    SourceFolder = opts.Source,
+                    TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Path.Combine(opts.Source, "build") : opts.Target,
+                    BuildFolder = Environment.CurrentDirectory
+                };
 
-            return context.Process();
+                context.Process();
+                return 0;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 1;
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace IVySoft.VPlatform.TemplateEngine
                 options(context);
             }
             this.generator_ = new RazorTemplateCodeGenerator(generatorOptions);
-            this.compiler_ = new TemplateCompiler(generatorOptions.RootPath, context.CompilerOptions);
+            this.compiler_ = new TemplateCompiler(generatorOptions.TempPath, context.CompilerOptions);
             this.generatorOptions_ = generatorOptions;
         }
 

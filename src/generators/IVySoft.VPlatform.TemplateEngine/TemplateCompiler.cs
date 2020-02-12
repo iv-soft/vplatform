@@ -37,7 +37,7 @@ namespace IVySoft.VPlatform.TemplateEngine
 
         public string CompileTemplate(ITemplateCodeGenerator generator, string templateFile)
         {
-            var dllPath = Path.Combine(this.tmpPath_, templateFile + ".dll");
+            var dllPath = Path.Combine(this.tmpPath_, Path.GetFileName(templateFile) + ".dll");
             if(!File.Exists(dllPath)
                 || new FileInfo(dllPath).LastWriteTime < new FileInfo(
                     generator.GetFilePath(templateFile)).LastWriteTime)

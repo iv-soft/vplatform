@@ -15,15 +15,22 @@ namespace IVySoft.VPlatform.TemplateEngine
             this.options_ = options;
             this.fs_ = RazorProjectFileSystem.Create(options.RootPath);
 
-            this.engine_ = RazorProjectEngine.Create(RazorConfiguration.Default, this.fs_, (builder) =>
+            this.engine_ = RazorProjectEngine.Create(
+                RazorConfiguration.Default,
+                this.fs_, (builder) =>
             {
                 InheritsDirective.Register(builder);
+                SectionDirective.Register(builder);
                 if (!string.IsNullOrWhiteSpace(this.options_.TemplateTypeName))
                 {
                     builder.ConfigureClass((document, @class) =>
                     {
                         @class.ClassName = this.options_.TemplateTypeName;
                     });
+                }
+                if (!string.IsNullOrWhiteSpace(this.options_.BaseType))
+                {
+                    builder.SetBaseType(this.options_.BaseType);
                 }
             });
         }
