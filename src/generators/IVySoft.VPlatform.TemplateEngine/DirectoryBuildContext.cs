@@ -11,7 +11,10 @@ namespace IVySoft.VPlatform.TemplateEngine
 
         public void Process(IndexScript.IndexScriptContext context)
         {
-            var index_file = System.IO.Path.Combine(context.Context.SourceFolder, context.CurrentFolder, "index.vgen");
+            var index_file = System.IO.Path.Combine(
+                context.Context.SourceFolder,
+                context.CurrentFolder,
+                "index.vgen");
             if (!System.IO.File.Exists(index_file))
             {
                 throw new Exception($"File {index_file} not found");

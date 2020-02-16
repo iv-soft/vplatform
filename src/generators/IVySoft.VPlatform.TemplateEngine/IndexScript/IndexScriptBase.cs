@@ -26,20 +26,14 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
             this.Context.CopyFileOrFolder(file_name);
         }
 
-        protected IXmlTemplateBuilder add_xml_template(
-            string name,
-            string file)
+        protected EntityModel.EntityType add_entity_type(string name, string ns)
         {
-            return new XmlTemplateBuilder(this, name, file);
+            return this.Context.Context.GlobalContext.AddEntityType(name, ns);
         }
 
-        protected void process_razor_template(string file_name, string output_file)
+        protected void create_collection(string name, EntityModel.EntityType itemType)
         {
-            var output_path = System.IO.Path.Combine(this.Context.Context.TargetFolder, this.Context.CurrentFolder, output_file);
-            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(output_path));
 
-            var body = this.Context.ProcessRazorTemplate(file_name);
-            System.IO.File.WriteAllText(output_path, body);
         }
     }
 }

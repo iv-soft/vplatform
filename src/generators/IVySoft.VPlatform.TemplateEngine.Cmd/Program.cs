@@ -30,11 +30,17 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
         {
             try
             {
-                var context = new IndexScript.BuildContext
+                var context = new Module.ModuleContext
                 {
                     SourceFolder = opts.Source,
-                    TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Path.Combine(opts.Source, "build") : opts.Target,
-                    BuildFolder = Environment.CurrentDirectory
+                    BuildFolder = Environment.CurrentDirectory,
+                    GlobalContext = new IndexScript.GlobalContext
+                    {
+                        SourceFolder = opts.Source,
+                        TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Path.Combine(opts.Source, "build") : opts.Target,
+                        BuildFolder = Environment.CurrentDirectory,
+                        ModulesFolder = Path.Combine(opts.Source, "v_modules")
+                    }
                 };
 
                 context.Process();

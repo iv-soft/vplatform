@@ -17,7 +17,7 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
         internal void CopyFileOrFolder(string file_name)
         {
             var source_path = System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder, file_name);
-            var dest_path = System.IO.Path.Combine(this.Context.TargetFolder, this.CurrentFolder, file_name);
+            var dest_path = System.IO.Path.Combine(this.Context.GlobalContext.TargetFolder, this.CurrentFolder, file_name);
             System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(dest_path));
 
             if (System.IO.Directory.Exists(source_path))
@@ -49,30 +49,30 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
             }
         }
 
-        internal string ProcessRazorTemplate(string file_path)
-        {
-            var templates = new Templates(
-                new TemplateCodeGeneratorOptions
-                {
-                    RootPath = System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder),
-                    TempPath = System.IO.Path.Combine(this.Context.BuildFolder, this.CurrentFolder),
-                    BaseType = typeof(TemplateInstanceBase).FullName
-                },
-                context =>
-                {
-                    context.CompilerOptions.References.Add(
-                        Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(
-                        typeof(TemplateInstanceBase).Assembly.Location));
-                });
-            var instance = templates.Load<TemplateInstanceBase>(
-                System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder, file_path));
-            var result = instance.Execute().Result;
-            if (string.IsNullOrWhiteSpace(instance.Layout))
-            {
-                return result;
-            }
+        //internal string ProcessRazorTemplate(string file_path)
+        //{
+        //    var templates = new Templates(
+        //        new TemplateCodeGeneratorOptions
+        //        {
+        //            RootPath = System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder),
+        //            TempPath = System.IO.Path.Combine(this.Context.BuildFolder, this.CurrentFolder),
+        //            BaseType = typeof(TemplateInstanceBase).FullName
+        //        },
+        //        context =>
+        //        {
+        //            context.CompilerOptions.References.Add(
+        //                Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(
+        //                typeof(TemplateInstanceBase).Assembly.Location));
+        //        });
+        //    var instance = templates.Load<TemplateInstanceBase>(
+        //        System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder, file_path));
+        //    var result = instance.Execute().Result;
+        //    if (string.IsNullOrWhiteSpace(instance.Layout))
+        //    {
+        //        return result;
+        //    }
 
-            return this.Context.ProcessRazorTemplate(instance.Layout, instance.Parameters);
-        }
+        //    return this.Context.ProcessRazorTemplate(instance.Layout, instance.Parameters);
+        //}
     }
 }

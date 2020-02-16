@@ -6,15 +6,21 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
     public class BuildContext
     {
         public string SourceFolder { get; set; }
-        public string TargetFolder { get; set; }
         public string BuildFolder { get; set; }
+        public GlobalContext GlobalContext { get; set; }
 
-        private Dictionary<string, ITemplateDescription> templates = new Dictionary<string, ITemplateDescription>();
+        private Dictionary<string, Module.ModuleCompile> imports = new Dictionary<string, Module.ModuleCompile>();
 
         internal void ImportModule(string module_name)
         {
-            this.AddDirectory(System.IO.Path.Combine("v_modules", module_name));
+            Module.ModuleCompile module;
+            if (!this.imports.TryGetValue(module_name, out module))
+            {
+                module = this.GlobalContext.ImportModule(module_name);
+                this.imports.Add(module_name, module);
+            }
         }
+
         internal void AddDirectory(string folder_name)
         {
             var context = new IndexScriptContext
@@ -28,29 +34,6 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
         public void Process()
         {
             this.AddDirectory(string.Empty);
-        }
-
-        internal ITemplateDescription AddTemplate(string name)
-        {
-            if (this.templates.ContainsKey(name))
-            {
-                throw new Exception($"Template {name} already exists");
-            }
-
-            var result = new TemplateDescription(name);
-            this.templates.Add(name, result);
-            return result;
-        }
-
-        internal string ProcessRazorTemplate(string layout, Dictionary<string, object> parameters)
-        {
-            ITemplateDescription template;
-            if(!this.templates.TryGetValue(layout, out template))
-            {
-                throw new Exception($"Template {layout} is not exists");
-            }
-
-            return template.Execute(parameters);
         }
     }
 }
