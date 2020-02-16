@@ -33,7 +33,12 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
 
         protected void create_collection(string name, EntityModel.EntityType itemType)
         {
+            this.Context.Context.GlobalContext.CreateCollection(name, itemType);
+        }
 
+        protected List<T> get_collection<T>(string name)
+        {
+            return this.Context.Context.GlobalContext.GetCollection<T>(name);
         }
     }
 }

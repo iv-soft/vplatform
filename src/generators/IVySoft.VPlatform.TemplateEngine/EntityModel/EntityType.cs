@@ -8,6 +8,8 @@ namespace IVySoft.VPlatform.TemplateEngine.EntityModel
     {
         public List<TypeProperty> Properties = new List<TypeProperty>();
 
+        public Type CLSType { get; set; }
+
         public EntityType with_string_property(string name)
         {
             this.Properties.Add(new TypeProperty

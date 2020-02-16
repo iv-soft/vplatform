@@ -64,7 +64,8 @@ namespace IVySoft.VPlatform.TemplateEngine
                     MetadataReference.CreateFromFile(typeof(TemplateCompiler).Assembly.Location),
 
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Runtime.dll")),
-                    MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "netstandard.dll"))
+                    MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "netstandard.dll")),
+                    MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Collections.dll"))
                 }),
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 

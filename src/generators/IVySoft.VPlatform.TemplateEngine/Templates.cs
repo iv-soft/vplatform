@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -28,6 +29,11 @@ namespace IVySoft.VPlatform.TemplateEngine
             var asm = this.compiler_.LoadTemplate(this.generator_, templateFile);
             return (T)Activator.CreateInstance(asm.GetType(
                 "Razor." + (string.IsNullOrWhiteSpace(this.generatorOptions_.TemplateTypeName) ? "Template" : this.generatorOptions_.TemplateTypeName)));
+        }
+        public Assembly Compile(string code, string dllPath)
+        {
+            this.compiler_.Compile(code, dllPath);
+            return Assembly.LoadFile(dllPath);
         }
     }
 }

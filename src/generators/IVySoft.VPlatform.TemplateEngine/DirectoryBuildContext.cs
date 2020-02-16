@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace IVySoft.VPlatform.TemplateEngine
@@ -36,6 +37,10 @@ namespace IVySoft.VPlatform.TemplateEngine
                 References = new List<Microsoft.CodeAnalysis.MetadataReference>(this.CompilerOptions.References)
             };
             options.References.Add(MetadataReference.CreateFromFile(typeof(IndexScript.IndexScriptBase).Assembly.Location));
+            options.References.AddRange(
+                context.Context.GlobalContext.EntityTypes.Select(
+                    x => MetadataReference.CreateFromFile(
+                        context.Context.GlobalContext.GetCLSType(x.Value).Assembly.Location)));
             var compiler = new TemplateCompiler(
                 System.IO.Path.Combine(context.Context.BuildFolder, context.CurrentFolder),
                 options);
