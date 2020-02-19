@@ -2,6 +2,7 @@
 using IVySoft.VPlatform.TemplateEngine.Razor;
 using IVySoft.VPlatform.TemplateService.Entity;
 using IVySoft.VPlatform.TemplateService.Runtime;
+using IVySoft.VPlatform.TemplateService.Razor;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -38,6 +39,7 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
                 var services = new ServiceCollection();
                 services.UseTemplateServiceRuntime();
                 services.UseTemplateServiceEntity();
+                services.UseTemplateServiceRazor();
 
                 var context = new TemplateService.Runtime.IndexScript.ModuleContext
                 {
@@ -55,7 +57,8 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
                             new Microsoft.CodeAnalysis.MetadataReference[]
                             {
                                 MetadataReference.CreateFromFile(typeof(TemplateService.Runtime.IndexScript.BuildContext).Assembly.Location),
-                                MetadataReference.CreateFromFile(typeof(TemplateService.Entity.IEntityManager).Assembly.Location)
+                                MetadataReference.CreateFromFile(typeof(IEntityManager).Assembly.Location),
+                                MetadataReference.CreateFromFile(typeof(IRazorManger).Assembly.Location)
                             }
                         )
                     }

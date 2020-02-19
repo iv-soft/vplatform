@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IVySoft.VPlatform.TemplateEngine\IVySoft.VPlatform.TemplateEngine.csproj" />
     <ProjectReference Include="..\TemplateService\IVySoft.VPlatform.TemplateService.Entity\IVySoft.VPlatform.TemplateService.Entity.csproj" />
+    <ProjectReference Include="..\TemplateService\IVySoft.VPlatform.TemplateService.Razor\IVySoft.VPlatform.TemplateService.Razor.csproj" />
     <ProjectReference Include="..\TemplateService\IVySoft.VPlatform.TemplateService.Runtime\IVySoft.VPlatform.TemplateService.Runtime.csproj" />
   </ItemGroup>
 
