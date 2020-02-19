@@ -9,10 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IVySoft.VPlatform.TemplateEngine\IVySoft.VPlatform.TemplateEngine.csproj" />
+    <ProjectReference Include="..\TemplateService\IVySoft.VPlatform.TemplateService.Entity\IVySoft.VPlatform.TemplateService.Entity.csproj" />
+    <ProjectReference Include="..\TemplateService\IVySoft.VPlatform.TemplateService.Runtime\IVySoft.VPlatform.TemplateService.Runtime.csproj" />
   </ItemGroup>
 
 </Project>

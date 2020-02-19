@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 
-namespace IVySoft.VPlatform.TemplateEngine
+namespace IVySoft.VPlatform.TemplateEngine.Razor
 {
     public class RazorTemplateCodeGenerator : ITemplateCodeGenerator
     {

@@ -1,4 +1,8 @@
-﻿namespace IVySoft.VPlatform.TemplateEngine.EntityModel
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IVySoft.VPlatform.TemplateService.Entity
 {
     public class TypeProperty
     {

@@ -1,4 +1,9 @@
 ﻿using CommandLine;
+using IVySoft.VPlatform.TemplateEngine.Razor;
+using IVySoft.VPlatform.TemplateService.Entity;
+using IVySoft.VPlatform.TemplateService.Runtime;
+using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 
@@ -30,16 +35,29 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
         {
             try
             {
-                var context = new Module.ModuleContext
+                var services = new ServiceCollection();
+                services.UseTemplateServiceRuntime();
+                services.UseTemplateServiceEntity();
+
+                var context = new TemplateService.Runtime.IndexScript.ModuleContext
                 {
                     SourceFolder = opts.Source,
                     BuildFolder = Environment.CurrentDirectory,
-                    GlobalContext = new IndexScript.GlobalContext
+                    GlobalContext = new TemplateService.Runtime.IndexScript.GlobalContext
                     {
                         SourceFolder = opts.Source,
                         TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Path.Combine(opts.Source, "build") : opts.Target,
                         BuildFolder = Environment.CurrentDirectory,
-                        ModulesFolder = Path.Combine(opts.Source, "v_modules")
+                        ModulesFolder = Path.Combine(opts.Source, "v_modules"),
+                        ServiceProvider = services.BuildServiceProvider(),
+                        References = new System.Collections.Generic.List<Microsoft.CodeAnalysis.MetadataReference>
+                        (
+                            new Microsoft.CodeAnalysis.MetadataReference[]
+                            {
+                                MetadataReference.CreateFromFile(typeof(TemplateService.Runtime.IndexScript.BuildContext).Assembly.Location),
+                                MetadataReference.CreateFromFile(typeof(TemplateService.Entity.IEntityManager).Assembly.Location)
+                            }
+                        )
                     }
                 };
 

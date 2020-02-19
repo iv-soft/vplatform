@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IVySoft.VPlatform.TemplateEngine.EntityModel
+namespace IVySoft.VPlatform.TemplateService.Entity
 {
     public class EntityType : ModelType
     {

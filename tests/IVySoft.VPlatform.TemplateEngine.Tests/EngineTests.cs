@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using IVySoft.VPlatform.TemplateEngine.Razor;
 using Microsoft.CodeAnalysis;
 using Xunit;
 
@@ -10,7 +11,7 @@ namespace IVySoft.VPlatform.TemplateEngine.Tests
         [Fact]
         public void Test1()
         {
-            var templates = new Templates(
+            var templates = new RazorTemplates(
                 new TemplateCodeGeneratorOptions
                 {
                     RootPath = Path.Combine(Path.GetDirectoryName(typeof(EngineTests).Assembly.Location))

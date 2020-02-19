@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IVySoft.VPlatform.TemplateEngine.Module
+namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 {
     public class ModuleCompile
     {

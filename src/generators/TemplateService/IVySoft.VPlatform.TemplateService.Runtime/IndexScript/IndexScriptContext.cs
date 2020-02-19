@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IVySoft.VPlatform.TemplateEngine.IndexScript
+namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 {
     public class IndexScriptContext
     {
@@ -14,10 +14,10 @@ namespace IVySoft.VPlatform.TemplateEngine.IndexScript
         {
             this.Context.AddDirectory(System.IO.Path.Combine(this.CurrentFolder, folder_name));
         }
-        internal void CopyFileOrFolder(string file_name)
+        internal void CopyFileOrFolder(string file_name, string target_path)
         {
             var source_path = System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder, file_name);
-            var dest_path = System.IO.Path.Combine(this.Context.GlobalContext.TargetFolder, this.CurrentFolder, file_name);
+            var dest_path = System.IO.Path.Combine(this.Context.GlobalContext.TargetFolder, this.CurrentFolder, target_path);
             System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(dest_path));
 
             if (System.IO.Directory.Exists(source_path))

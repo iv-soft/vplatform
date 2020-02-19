@@ -4,15 +4,17 @@ using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace IVySoft.VPlatform.TemplateEngine
+namespace IVySoft.VPlatform.TemplateEngine.Razor
 {
-    public class Templates
+    public class RazorTemplates
     {
         private readonly RazorTemplateCodeGenerator generator_;
         private readonly TemplateCompiler compiler_;
         private readonly TemplateCodeGeneratorOptions generatorOptions_;
 
-        public Templates(TemplateCodeGeneratorOptions generatorOptions, Action<TemplateContext> options = null)
+        public RazorTemplates(
+            TemplateCodeGeneratorOptions generatorOptions,
+            Action<TemplateContext> options = null)
         {
             var context = new TemplateContext();
             if (options != null)
