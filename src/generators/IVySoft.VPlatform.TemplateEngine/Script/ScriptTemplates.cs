@@ -1,9 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Reflection;
-using System.Text;
 
 namespace IVySoft.VPlatform.TemplateEngine.Script
 {
@@ -38,7 +34,7 @@ namespace IVySoft.VPlatform.TemplateEngine.Script
         public Assembly Compile(string code, string dllPath)
         {
             this.compiler_.Compile(code, dllPath);
-            return Assembly.LoadFile(dllPath);
+            return System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(dllPath);
         }
     }
 }

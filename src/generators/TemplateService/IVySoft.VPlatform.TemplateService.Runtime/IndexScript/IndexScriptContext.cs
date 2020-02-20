@@ -4,7 +4,6 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 {
     public class IndexScriptContext
     {
-        public string CurrentFolder { get; set; }
         public BuildContext Context { get; set; }
         internal void ImportModule(string module_name)
         {
@@ -12,12 +11,12 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
         }
         internal void AddDirectory(string folder_name)
         {
-            this.Context.AddDirectory(System.IO.Path.Combine(this.CurrentFolder, folder_name));
+            this.Context.AddDirectory(folder_name);
         }
         internal void CopyFileOrFolder(string file_name, string target_path)
         {
-            var source_path = System.IO.Path.Combine(this.Context.SourceFolder, this.CurrentFolder, file_name);
-            var dest_path = System.IO.Path.Combine(this.Context.GlobalContext.TargetFolder, this.CurrentFolder, target_path);
+            var source_path = System.IO.Path.Combine(this.Context.SourceFolder, file_name);
+            var dest_path = System.IO.Path.Combine(this.Context.GlobalContext.TargetFolder, target_path);
             System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(dest_path));
 
             if (System.IO.Directory.Exists(source_path))
@@ -35,9 +34,11 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
         {
             foreach(var file_name in System.IO.Directory.GetFiles(source_path))
             {
+                var dest_file = System.IO.Path.Combine(dest_path, System.IO.Path.GetFileName(file_name));
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(dest_file));
                 System.IO.File.Copy(
                     file_name,
-                    System.IO.Path.Combine(dest_path, System.IO.Path.GetFileName(file_name)),
+                    dest_file,
                     true);
 
             }

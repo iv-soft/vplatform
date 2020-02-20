@@ -13,16 +13,9 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
         public string BuildFolder { get; set; }
         public GlobalContext GlobalContext { get; set; }
 
-        private Dictionary<string, ModuleCompile> imports = new Dictionary<string, ModuleCompile>();
-
         internal void ImportModule(string module_name)
         {
-            ModuleCompile module;
-            if (!this.imports.TryGetValue(module_name, out module))
-            {
-                module = this.GlobalContext.ImportModule(module_name);
-                this.imports.Add(module_name, module);
-            }
+            this.GlobalContext.ImportModule(module_name);
         }
 
         public bool TryGetVariable(string name, out object value)
@@ -37,15 +30,20 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
         internal void AddDirectory(string folder_name)
         {
+            var ctx = new BuildContext
+            {
+                SourceFolder = System.IO.Path.Combine(this.SourceFolder, folder_name),
+                BuildFolder = System.IO.Path.Combine(this.BuildFolder, folder_name),
+                GlobalContext = this.GlobalContext
+            };
+            
             var context = new IndexScriptContext
             {
-                CurrentFolder = folder_name,
-                Context = this
+                Context = ctx
             };
 
             var index_file = System.IO.Path.Combine(
-                context.Context.SourceFolder,
-                context.CurrentFolder,
+                ctx.SourceFolder,
                 "index.vgen");
             if (!System.IO.File.Exists(index_file))
             {
@@ -54,8 +52,8 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
             var templates = new ScriptTemplates(new TemplateCodeGeneratorOptions
             {
-                RootPath = System.IO.Path.Combine(context.Context.SourceFolder, context.CurrentFolder),
-                TempPath = System.IO.Path.Combine(context.Context.BuildFolder, context.CurrentFolder),
+                RootPath = ctx.SourceFolder,
+                TempPath = ctx.BuildFolder,
                 TemplateTypeName = "IndexScript",
                 BaseType = typeof(IndexScript.IndexScriptBase).FullName
             },

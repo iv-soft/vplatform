@@ -34,5 +34,25 @@ namespace IVySoft.VPlatform.TemplateEngine
         protected void Write()
         {
         }
+
+        public virtual void BeginWriteAttribute(
+            string name,
+            string prefix,
+            int prefixOffset,
+            string suffix,
+            int suffixOffset,
+            int attributeValuesCount)
+        {
+            this.outStream_.Write(name);
+            this.outStream_.Write("=\"");
+        }
+        public void WriteAttributeValue(string prefix, int prefixOffset, object value, int valueOffset, int valueLength, bool isLiteral)
+        {
+            this.outStream_.Write(value);
+        }
+        public virtual void EndWriteAttribute()
+        {
+            this.outStream_.Write("\"");
+        }
     }
 }

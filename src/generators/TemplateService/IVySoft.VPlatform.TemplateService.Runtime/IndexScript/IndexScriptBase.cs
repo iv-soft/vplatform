@@ -24,7 +24,9 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
         protected void copy(string file_name, string target_path)
         {
-            this.Context.CopyFileOrFolder(file_name, target_path);
+            this.Context.CopyFileOrFolder(
+                file_name.Replace('/', System.IO.Path.DirectorySeparatorChar),
+                target_path.Replace('/', System.IO.Path.DirectorySeparatorChar));
         }
 
         protected T get_service<T>()

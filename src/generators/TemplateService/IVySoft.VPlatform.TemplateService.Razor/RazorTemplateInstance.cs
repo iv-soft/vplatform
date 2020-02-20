@@ -7,7 +7,7 @@ namespace IVySoft.VPlatform.TemplateService.Razor
 {
     public class RazorTemplateInstance
     {
-        private readonly Dictionary<string, object> parameters = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> parameters_ = new Dictionary<string, object>();
         private readonly BuildContext context_;
         private readonly string file_path_;
 
@@ -19,8 +19,13 @@ namespace IVySoft.VPlatform.TemplateService.Razor
 
         public RazorTemplateInstance with_parameter(string name, object value)
         {
-            this.parameters.Add(name, value);
+            this.parameters_.Add(name, value);
             return this;
+        }
+
+        public void process(string output_path)
+        {
+            this.process(string.Empty, output_path);
         }
 
         public void process(string file_name, string output_path)
@@ -38,10 +43,18 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             });
 
             var script = templates.Load<RazorRuntimeBase>(System.IO.Path.Combine(this.context_.SourceFolder, this.file_path_));
-            script.Content = System.IO.File.ReadAllText(System.IO.Path.Combine(this.context_.SourceFolder, file_name));
-
+            if (!string.IsNullOrWhiteSpace(file_name)) { 
+                script.Content = System.IO.File.ReadAllText(
+                    System.IO.Path.Combine(this.context_.SourceFolder, file_name));
+            }
+            
+            script.Context = this.context_;
+            script.Parameters = this.parameters_;
             var body = script.Execute().Result;
-            System.IO.File.WriteAllText(System.IO.Path.Combine(this.context_.GlobalContext.TargetFolder), body);
+            var dest_path = System.IO.Path.Combine(
+                this.context_.GlobalContext.TargetFolder, output_path);
+            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(dest_path));
+            System.IO.File.WriteAllText(dest_path, body);
         }
     }
 }
