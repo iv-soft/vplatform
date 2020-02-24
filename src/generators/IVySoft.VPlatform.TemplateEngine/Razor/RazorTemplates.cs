@@ -9,32 +9,27 @@ namespace IVySoft.VPlatform.TemplateEngine.Razor
     public class RazorTemplates
     {
         private readonly RazorTemplateCodeGenerator generator_;
-        private readonly TemplateCompiler compiler_;
+        private readonly ITemplateCompiler compiler_;
         private readonly TemplateCodeGeneratorOptions generatorOptions_;
 
         public RazorTemplates(
-            TemplateCodeGeneratorOptions generatorOptions,
-            Action<TemplateContext> options = null)
+            ITemplateCompiler compiler,
+            TemplateCodeGeneratorOptions generatorOptions)
         {
-            var context = new TemplateContext();
-            if (options != null)
-            {
-                options(context);
-            }
+            this.compiler_ = compiler;
             this.generator_ = new RazorTemplateCodeGenerator(generatorOptions);
-            this.compiler_ = new TemplateCompiler(generatorOptions.TempPath, context.CompilerOptions);
             this.generatorOptions_ = generatorOptions;
         }
 
-        public T Load<T>(string templateFile)
+        public T Load<T>(string templateFile, string dllPath, CompilerOptions options)
         {
-            var asm = this.compiler_.LoadTemplate(this.generator_, templateFile);
+            var asm = this.compiler_.LoadTemplate(this.generator_, templateFile, dllPath, options);
             return (T)Activator.CreateInstance(asm.GetType(
                 "Razor." + (string.IsNullOrWhiteSpace(this.generatorOptions_.TemplateTypeName) ? "Template" : this.generatorOptions_.TemplateTypeName)));
         }
-        public Assembly Compile(string code, string dllPath)
+        public Assembly Compile(string code, string dllPath, CompilerOptions options)
         {
-            this.compiler_.Compile(code, dllPath);
+            this.compiler_.Compile(code, dllPath, options);
             return System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(dllPath);
         }
     }

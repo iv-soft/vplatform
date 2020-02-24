@@ -11,13 +11,21 @@ namespace IVySoft.VPlatform.TemplateEngine.Tests
         [Fact]
         public void Test1()
         {
+            var compiler = new TemplateCompiler();
             var templates = new RazorTemplates(
+                compiler,
                 new TemplateCodeGeneratorOptions
                 {
                     RootPath = Path.Combine(Path.GetDirectoryName(typeof(EngineTests).Assembly.Location))
-                },
-                context => context.CompilerOptions.References.Add(MetadataReference.CreateFromFile(typeof(TestTemplate).Assembly.Location)));
-            var template = templates.Load<TestTemplate>("SampleTemplate.txt");
+                });
+            var options = new CompilerOptions
+            {
+                References = new System.Collections.Generic.List<MetadataReference>(
+                    new MetadataReference[] {
+                        MetadataReference.CreateFromFile(typeof(TestTemplate).Assembly.Location)
+                    })
+            };
+            var template = templates.Load<TestTemplate>("SampleTemplate.txt", "SampleTemplate.dll", options);
             template.Name = "world";
 
             Assert.Equal("Hello world!", template.Execute().Result);

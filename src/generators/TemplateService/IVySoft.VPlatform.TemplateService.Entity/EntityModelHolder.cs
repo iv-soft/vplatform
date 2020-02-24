@@ -10,6 +10,13 @@ namespace IVySoft.VPlatform.TemplateService.Entity
     internal class EntityModelHolder : IEntityModelHolder
     {
         private Dictionary<string, EntityType> entityTypes = new Dictionary<string, EntityType>();
+        private readonly ITemplateCompiler compiler_;
+
+        public EntityModelHolder(ITemplateCompiler compiler)
+        {
+            this.compiler_ = compiler;
+        }
+
         public Dictionary<string, EntityType> EntityTypes
         {
             get
@@ -37,24 +44,40 @@ namespace IVySoft.VPlatform.TemplateService.Entity
             }
 
             var templates = new RazorTemplates(
+                this.compiler_,
                 new TemplateCodeGeneratorOptions
                 {
                     RootPath = System.IO.Path.Combine(context.GlobalContext.ModulesFolder, "core", "entity"),
                     TempPath = context.GlobalContext.BuildFolder,
                     BaseType = typeof(TextTemplateWithModel<EntityType>).UserFriendlyName()
-                },
-                options =>
-                {
-                    options.CompilerOptions.References.Add(
-                        MetadataReference.CreateFromFile(typeof(EntityType).Assembly.Location));
-                    options.CompilerOptions.References.Add(
-                        MetadataReference.CreateFromFile(typeof(List<object>).GetGenericTypeDefinition().Assembly.Location));
                 });
+            var options = new CompilerOptions
+            {
+                References = new List<MetadataReference>(
+                        new MetadataReference[]
+                        {
+                            MetadataReference.CreateFromFile(
+                                typeof(EntityType).Assembly.Location),
+                            MetadataReference.CreateFromFile(
+                                typeof(List<object>).GetGenericTypeDefinition().Assembly.Location)
+                        }
+                    )
+            };
 
-            var template = templates.Load<TextTemplateWithModel<EntityType>>(input_file);
+            var dllPath = System.IO.Path.Combine(
+                context.GlobalContext.BuildFolder,
+                "core",
+                "entity",
+                "entity.vcs.dll");
+            var template = templates.Load<TextTemplateWithModel<EntityType>>(
+                input_file,
+                dllPath,
+                options);
             template.Model = itemType;
             var asm = templates.Compile(template.Execute().Result,
-                System.IO.Path.Combine(context.GlobalContext.BuildFolder, "entity." + itemType.Namespace + "." + itemType.Name + ".dll"));
+                System.IO.Path.Combine(context.GlobalContext.BuildFolder,
+                "entity." + itemType.Namespace + "." + itemType.Name + ".dll"),
+                options);
             context.GlobalContext.References.Add(MetadataReference.CreateFromFile(asm.Location));
             itemType.CLSType = asm.GetType(itemType.Namespace + "." + itemType.Name);
             return itemType.CLSType;

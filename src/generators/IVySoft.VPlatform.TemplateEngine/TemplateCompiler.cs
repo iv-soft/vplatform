@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Razor.Hosting;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
@@ -11,64 +12,62 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace IVySoft.VPlatform.TemplateEngine
 {
-    public class TemplateCompiler
+    public class TemplateCompiler : ITemplateCompiler
     {
-        private readonly string tmpPath_;
-        private readonly CompilerOptions options_;
         private readonly Dictionary<string, Assembly> loaded_assemblies_ = new Dictionary<string, Assembly>();
 
-        public TemplateCompiler(string tmpPath, CompilerOptions options)
+        public TemplateCompiler()
         {
-            this.tmpPath_ = tmpPath;
-            this.options_ = options;
         }
 
-        public Assembly LoadTemplate(ITemplateCodeGenerator generator, string templateFile)
+        public Assembly LoadTemplate(ITemplateCodeGenerator generator, string templateFile, string dllPath, CompilerOptions options)
         {
             Assembly result;
-            if(!this.loaded_assemblies_.TryGetValue(templateFile, out result))
+            if (!this.loaded_assemblies_.TryGetValue(templateFile, out result))
             {
-                var dllPath = this.CompileTemplate(generator, templateFile);
+                this.CompileTemplate(generator, templateFile, dllPath, options);
                 result = Assembly.LoadFile(dllPath);
             }
 
             return result;
         }
 
-        public string CompileTemplate(ITemplateCodeGenerator generator, string templateFile)
+        public void CompileTemplate(
+            ITemplateCodeGenerator generator,
+            string templateFile,
+            string dllPath,
+            CompilerOptions options)
         {
-            var dllPath = Path.Combine(this.tmpPath_, Path.GetFileName(templateFile) + ".dll");
-            if(!File.Exists(dllPath)
+            if (!File.Exists(dllPath)
                 || new FileInfo(dllPath).LastWriteTime < new FileInfo(
                     generator.GetFilePath(templateFile)).LastWriteTime)
             {
                 this.loaded_assemblies_.Remove(templateFile);
-                Compile(generator.GenerateCode(templateFile), dllPath);
+                Compile(generator.GenerateCode(templateFile), dllPath, options);
             }
-            return dllPath;
         }
 
-        public void Compile(string code, string dllPath)
+        public void Compile(string code, string dllPath, CompilerOptions options)
         {
             var tree = CSharpSyntaxTree.ParseText(code);
 
             var compilation = CSharpCompilation.Create(
-                Path.GetFileNameWithoutExtension(dllPath),
+                Convert.ToBase64String(SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(code))).Replace('/', '.'),
                 new[] { tree },
-                this.options_.References.Concat(
+                options.References.Concat(
                 new[]
                 {
                     MetadataReference.CreateFromFile(typeof(object).Assembly.Location), // include corlib
                     MetadataReference.CreateFromFile(typeof(RazorCompiledItemAttribute).Assembly.Location), // include Microsoft.AspNetCore.Razor.Runtime
                     MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location), // this file (that contains the MyTemplate base class)
-                    MetadataReference.CreateFromFile(typeof(TemplateCompiler).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(ITemplateCompiler).Assembly.Location),
 
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Runtime.dll")),
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "netstandard.dll")),
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Collections.dll"))
                 }),
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
+            Directory.CreateDirectory(Path.GetDirectoryName(dllPath));
             var result = compilation.Emit(dllPath);
             if (!result.Success)
             {

@@ -1,6 +1,7 @@
 ﻿using IVySoft.VPlatform.TemplateEngine;
 using IVySoft.VPlatform.TemplateEngine.Script;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -50,22 +51,27 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
                 throw new Exception($"File {index_file} not found");
             }
 
-            var templates = new ScriptTemplates(new TemplateCodeGeneratorOptions
+            var templates = new ScriptTemplates(
+                this.GlobalContext.ServiceProvider.GetRequiredService<ITemplateCompiler>(),
+                new TemplateCodeGeneratorOptions
             {
                 RootPath = ctx.SourceFolder,
                 TempPath = ctx.BuildFolder,
                 TemplateTypeName = "IndexScript",
                 BaseType = typeof(IndexScript.IndexScriptBase).FullName
-            },
-            options =>
-            {
-                options.CompilerOptions.References.AddRange(this.GlobalContext.References);
             });
 
             System.IO.Directory.CreateDirectory(templates.GeneratorOptions.RootPath);
             System.IO.Directory.CreateDirectory(templates.GeneratorOptions.TempPath);
 
-            var script = templates.Load<IndexScript.IndexScriptBase>(index_file);
+            var options = new CompilerOptions
+            {
+                References = new List<MetadataReference>(this.GlobalContext.References)
+            };
+            var dllPath = System.IO.Path.Combine(
+                ctx.BuildFolder,
+                "index.vgen.dll");
+            var script = templates.Load<IndexScript.IndexScriptBase>(index_file, dllPath, options);
             script.Context = context;
             script.Execute();
         }

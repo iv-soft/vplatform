@@ -40,6 +40,7 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
                 services.UseTemplateServiceRuntime();
                 services.UseTemplateServiceEntity();
                 services.UseTemplateServiceRazor();
+                services.AddSingleton<ITemplateCompiler, TemplateCompiler>();
 
                 var context = new TemplateService.Runtime.IndexScript.ModuleContext
                 {
