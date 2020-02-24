@@ -15,6 +15,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
         private Dictionary<string, ModuleCompile> modules = new Dictionary<string, ModuleCompile>();
         private Dictionary<string, object> variables = new Dictionary<string, object>();
+        private readonly Dictionary<string, Action<IndexScriptActionContext>> actions_ = new Dictionary<string, Action<IndexScriptActionContext>>();
 
         internal ModuleCompile ImportModule(string module_name)
         {
@@ -46,5 +47,21 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
             this.variables[name] = value;
         }
 
+        public void add_action(string name, Action<IndexScriptActionContext> action)
+        {
+            this.actions_.Add(name, action);
+        }
+
+        public IndexScriptActionRunner action(string name)
+        {
+            Action<IndexScriptActionContext> context;
+            if (!this.actions_.TryGetValue(name, out context))
+            {
+                throw new Exception($"Action {name} not found");
+            }
+
+            return new IndexScriptActionRunner(context);
+
+        }
     }
 }

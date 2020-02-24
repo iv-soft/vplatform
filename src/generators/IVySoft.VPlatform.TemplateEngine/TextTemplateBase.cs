@@ -43,6 +43,7 @@ namespace IVySoft.VPlatform.TemplateEngine
             int suffixOffset,
             int attributeValuesCount)
         {
+            this.outStream_.Write(' ');
             this.outStream_.Write(name);
             this.outStream_.Write("=\"");
         }

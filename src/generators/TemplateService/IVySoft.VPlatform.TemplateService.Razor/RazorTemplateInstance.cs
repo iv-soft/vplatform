@@ -7,9 +7,8 @@ using System.Collections.Generic;
 
 namespace IVySoft.VPlatform.TemplateService.Razor
 {
-    public class RazorTemplateInstance
+    public class RazorTemplateInstance : ParametersHolder
     {
-        private readonly Dictionary<string, object> parameters_ = new Dictionary<string, object>();
         private readonly BuildContext context_;
         private readonly string file_path_;
 
@@ -21,9 +20,9 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             this.file_path_ = file_path;
         }
 
-        public RazorTemplateInstance with_parameter(string name, object value)
+        public new RazorTemplateInstance with_parameter(string name, object value)
         {
-            this.parameters_.Add(name, value);
+            base.with_parameter(name, value);
             return this;
         }
 
@@ -59,7 +58,7 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             }
             
             script.Context = this.context_;
-            script.Parameters = this.parameters_;
+            script.Parameters = this.Parameters;
             var body = script.Execute().Result;
             var dest_path = System.IO.Path.Combine(
                 this.context_.GlobalContext.TargetFolder, output_path);

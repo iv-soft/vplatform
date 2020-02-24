@@ -45,5 +45,28 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
             return (T)result;
         }
+
+        public void add_action(string name, Action<IndexScriptActionContext> action)
+        {
+            this.Context.Context.GlobalContext.add_action(name, action);
+        }
+
+        public IndexScriptActionRunner action(string name)
+        {
+            return this.Context.Context.GlobalContext.action(name);
+        }
+
+        public string module_path(string module_name, string rel_path)
+        {
+            return System.IO.Path.Combine(this.Context.Context.GlobalContext.ModulesFolder, module_name, rel_path);
+        }
+        public string local_path(string rel_path)
+        {
+            return System.IO.Path.Combine(this.Context.Context.SourceFolder, rel_path);
+        }
+        public string target_path(string rel_path)
+        {
+            return System.IO.Path.Combine(this.Context.Context.GlobalContext.TargetFolder, rel_path);
+        }
     }
 }
