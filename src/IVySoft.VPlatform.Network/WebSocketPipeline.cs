@@ -150,6 +150,7 @@ namespace IVySoft.VPlatform.Network
         {
             if (null != this.websocket_)
             {
+                this.stop();
                 this.websocket_.Dispose();
             }
         }
