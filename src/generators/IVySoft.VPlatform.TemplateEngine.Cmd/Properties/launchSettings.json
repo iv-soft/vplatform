@@ -2,8 +2,8 @@
   "profiles": {
     "IVySoft.VPlatform.TemplateEngine.Cmd": {
       "commandName": "Project",
-      "commandLineArgs": "build -s C:\\Users\\vadim\\source\\repos\\vds_web\\src\\site_template_en -t C:\\Users\\vadim\\source\\repos\\vds_web\\src\\site_result_en ",
-      "workingDirectory": "C:\\Users\\vadim\\source\\repos\\vds_web\\src\\site_build_en"
+      "commandLineArgs": "build -s C:\\Users\\vadim\\source\\repos\\vds_web\\src\\site_template -t .. -m C:\\Users\\vadim\\source\\repos\\vds_web\\src\\v_modules",
+      "workingDirectory": "C:\\Users\\vadim\\source\\repos\\vds_web\\src\\ivsoftweb\\build"
     }
   }
 }

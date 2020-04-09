@@ -10,6 +10,9 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
 
         [Option('t', "target", Required = false, HelpText = "Target file")]
         public string Target { get; set; }
+        
+        [Option('m', "modules", Required = false, HelpText = "Modules path")]
+        public string Modules { get; set; }
 
     }
 

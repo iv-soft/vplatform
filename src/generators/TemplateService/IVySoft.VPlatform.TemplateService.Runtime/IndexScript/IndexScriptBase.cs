@@ -22,6 +22,21 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
             this.copy(file_name, file_name);
         }
 
+        protected void set(string name, object value)
+        {
+            this.Context.Context.GlobalContext.SetVariable("var:" + name, value);
+        }
+
+        protected object get(string name)
+        {
+            object value;
+            if(!this.Context.Context.GlobalContext.TryGetVariable("var:" + name, out value))
+            {
+                throw new Exception($"Variable {name} not found");
+            }
+            return value;
+        }
+
         protected void copy(string file_name, string target_path)
         {
             this.Context.CopyFileOrFolder(
@@ -36,6 +51,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
             {
                 throw new Exception($"Service {typeof(T).FullName} not found");
             }
+
 
             var activator = result as IBuildContextDependent;
             if(null != activator)

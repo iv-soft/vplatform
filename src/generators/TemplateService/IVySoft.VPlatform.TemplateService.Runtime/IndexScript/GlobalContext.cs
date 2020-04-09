@@ -25,7 +25,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
                 var context = new BuildContext
                 {
                     SourceFolder = System.IO.Path.Combine(this.ModulesFolder, module_name),
-                    BuildFolder = System.IO.Path.Combine(this.BuildFolder, module_name),
+                    BuildFolder = System.IO.Path.Combine(this.BuildFolder, "modules", module_name),
                     GlobalContext = this
                 };
 

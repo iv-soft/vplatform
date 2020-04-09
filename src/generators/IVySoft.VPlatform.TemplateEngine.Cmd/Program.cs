@@ -45,13 +45,13 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
                 var context = new TemplateService.Runtime.IndexScript.ModuleContext
                 {
                     SourceFolder = opts.Source,
-                    BuildFolder = Environment.CurrentDirectory,
+                    BuildFolder = Path.Combine(Environment.CurrentDirectory, "source"),
                     GlobalContext = new TemplateService.Runtime.IndexScript.GlobalContext
                     {
                         SourceFolder = opts.Source,
-                        TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Path.Combine(opts.Source, "build") : opts.Target,
+                        TargetFolder = string.IsNullOrWhiteSpace(opts.Target) ? Path.Combine(opts.Source, "build") : Path.Combine(Environment.CurrentDirectory, opts.Target),
                         BuildFolder = Environment.CurrentDirectory,
-                        ModulesFolder = Path.Combine(opts.Source, "v_modules"),
+                        ModulesFolder = string.IsNullOrWhiteSpace(opts.Modules) ? Path.Combine(opts.Source, "v_modules") : opts.Modules,
                         ServiceProvider = services.BuildServiceProvider(),
                         References = new System.Collections.Generic.List<Microsoft.CodeAnalysis.MetadataReference>
                         (
