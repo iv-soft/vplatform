@@ -11,6 +11,7 @@ namespace IVySoft.VPlatform.TemplateService.Entity
     {
         private readonly IEntityModelHolder holder_;
         private BuildContext context_;
+        private readonly List<EntityType> entityTypes_ = new List<EntityType>();
 
         public EntityManager(IEntityModelHolder holder)
         {
@@ -42,12 +43,22 @@ namespace IVySoft.VPlatform.TemplateService.Entity
 
         public EntityType add_entity_type(string name, string ns)
         {
-            return this.holder_.AddEntityType(this.context_, name, ns);
+            var result = this.holder_.AddEntityType(this.context_, name, ns);
+            this.entityTypes_.Add(result);
+            return result;
         }
 
         public void SetBuildContext(BuildContext context)
         {
             this.context_ = context;
+        }
+
+        public void ContextCompleted()
+        {
+            foreach(var t in this.entityTypes_)
+            {
+                this.GetCLSType(t);
+            }
         }
     }
 }

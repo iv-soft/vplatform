@@ -9,7 +9,8 @@ namespace IVySoft.VPlatform.TemplateService.Razor
     {
         public static void UseTemplateServiceRazor(this IServiceCollection services)
         {
-            services.AddTransient<IRazorManger, RazorManger>();
+            services.AddTransient<IRazorManager, RazorManager>();
+            services.AddSingleton<IRazorRegistrator, RazorRegistrator>();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace IVySoft.VPlatform.TemplateEngine
     public abstract class TextTemplateBase
     {
         private StringWriter outStream_;
+        public object Context { get; set; }
 
         public abstract Task ExecuteAsync();
 
@@ -26,10 +27,14 @@ namespace IVySoft.VPlatform.TemplateEngine
         {
             this.outStream_.Write(literal);
         }
+        protected void Write(ITextTemplateWriter obj)
+        {
+            this.outStream_.Write(obj.Render(this));
+        }
 
         protected void Write(object obj)
         {
-            this.outStream_.Write(obj);
+            this.outStream_.Write(obj.ToString());
         }
         protected void Write()
         {

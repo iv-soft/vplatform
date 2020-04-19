@@ -74,6 +74,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
             var script = templates.Load<IndexScript.IndexScriptBase>(index_file, dllPath, options);
             script.Context = context;
             script.Execute();
+            script.ExecuteDone();
         }
         public void Process()
         {

@@ -5,13 +5,17 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
     public class IndexScriptActionContext
     {
         private readonly Dictionary<string, object> parameters_;
+        private readonly IndexScriptBase context_;
 
-        public IndexScriptActionContext(Dictionary<string, object> parameters)
+        public IndexScriptBase Context { get => this.context_; }
+
+        public IndexScriptActionContext(IndexScriptBase context, Dictionary<string, object> parameters)
         {
+            this.context_ = context;
             this.parameters_ = parameters;
         }
 
-        public object get_parameter(string name)
+        public object get(string name)
         {
             object result;
             if(!this.parameters_.TryGetValue(name, out result))

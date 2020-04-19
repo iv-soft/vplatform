@@ -10,7 +10,7 @@ namespace IVySoft.VPlatform.TemplateEngine
 
         protected Dictionary<string, object> Parameters { get => parameters_; }
 
-        protected void with_parameter(string name, object value)
+        protected void with(string name, object value)
         {
             this.parameters_.Add(name, value);
         }

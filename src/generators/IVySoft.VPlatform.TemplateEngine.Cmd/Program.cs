@@ -59,12 +59,12 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
                             {
                                 MetadataReference.CreateFromFile(typeof(TemplateService.Runtime.IndexScript.BuildContext).Assembly.Location),
                                 MetadataReference.CreateFromFile(typeof(IEntityManager).Assembly.Location),
-                                MetadataReference.CreateFromFile(typeof(IRazorManger).Assembly.Location)
+                                MetadataReference.CreateFromFile(typeof(IRazorManager).Assembly.Location)
                             }
                         )
                     }
                 };
-
+                context.GlobalContext.add_build_path(context.SourceFolder, context.BuildFolder);
                 context.Process();
                 return 0;
             }

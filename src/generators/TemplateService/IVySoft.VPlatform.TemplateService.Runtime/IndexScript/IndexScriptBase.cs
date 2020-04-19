@@ -6,8 +6,8 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 {
     public abstract class IndexScriptBase
     {
+        private List<IBuildContextDependent> buildContextDependents_ = new List<IBuildContextDependent>();
         public IndexScriptContext Context { get; set; }
-
         public abstract void Execute();
         protected void import(string module_name)
         {
@@ -57,9 +57,18 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
             if(null != activator)
             {
                 activator.SetBuildContext(this.Context.Context);
+                this.buildContextDependents_.Add(activator);
             }
 
             return (T)result;
+        }
+
+        public void ExecuteDone()
+        {
+            foreach(var item in this.buildContextDependents_)
+            {
+                item.ContextCompleted();
+            }
         }
 
         public void add_action(string name, Action<IndexScriptActionContext> action)
@@ -69,7 +78,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
         public IndexScriptActionRunner action(string name)
         {
-            return this.Context.Context.GlobalContext.action(name);
+            return this.Context.Context.GlobalContext.action(this, name);
         }
 
         public string module_path(string module_name, string rel_path)
