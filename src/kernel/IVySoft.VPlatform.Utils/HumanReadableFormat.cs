@@ -27,7 +27,7 @@ namespace IVySoft.VPlatform.Utils
             {
                 if(len.EndsWith(sizes[order - 1]))
                 {
-                    return (long)(double.Parse(len, CultureInfo.InvariantCulture) * Math.Pow(1024, order - 1));
+                    return (long)(double.Parse(len.Substring(0, len.Length - sizes[order - 1].Length), CultureInfo.InvariantCulture) * Math.Pow(1024, order - 1));
 
                 }
             }
