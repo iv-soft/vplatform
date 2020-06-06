@@ -10,11 +10,10 @@ namespace IVySoft.VPlatform.Network
     public class WebSocketPipeline : IDisposable
     {
         private WebSocket websocket_;
+        private CancellationToken cancel_token_;
         private SingleThreadApartment send_thread_ = new SingleThreadApartment();
         private SingleThreadApartment receive_thread_ = new SingleThreadApartment();
         private Thread work_thread_;
-        private CancellationTokenSource is_shutting_down_ = new CancellationTokenSource();
-        private TimeSpan send_timeout_;
         private Func<string, Task> input_handler_;
         private Func<byte[], Task> binary_handler_;
         private Exception failed_ = null;
@@ -22,13 +21,13 @@ namespace IVySoft.VPlatform.Network
 
         public void start(
             WebSocket websocket,
-            TimeSpan send_timeout,
+            CancellationToken cancel_token,
             Func<string, Task> input_handler,
             Action<Exception> error_handler,
             Func<byte[], Task> binary_handler = null)
         {
             this.websocket_ = websocket;
-            this.send_timeout_ = send_timeout;
+            this.cancel_token_ = cancel_token;
             this.input_handler_ = input_handler;
             this.binary_handler_ = binary_handler;
             this.error_handler_ = error_handler;
@@ -39,8 +38,6 @@ namespace IVySoft.VPlatform.Network
 
         public void stop()
         {
-            this.is_shutting_down_.Cancel();
-
             this.send_thread_.join();
             this.receive_thread_.join();
 
@@ -49,7 +46,7 @@ namespace IVySoft.VPlatform.Network
                 this.work_thread_.Join();
             }
         }
-        public void enqueue(byte[] message)
+        public void enqueue(System.Threading.CancellationToken token, byte[] message)
         {
             if (null != this.failed_)
             {
@@ -58,7 +55,7 @@ namespace IVySoft.VPlatform.Network
 
             try
             {
-                this.send_thread_.invoke(() => send_thread(message));
+                this.send_thread_.invoke(() => send_thread(token, message));
             }
             catch (Exception exception)
             {
@@ -67,12 +64,9 @@ namespace IVySoft.VPlatform.Network
             }
         }
 
-        private async Task send_thread(byte[] message)
+        private async Task send_thread(System.Threading.CancellationToken token, byte[] message)
         {
-            using (var cts = new CancellationTokenSource(send_timeout_))
-            {
-                await this.websocket_.SendAsync(new System.ArraySegment<byte>(message), WebSocketMessageType.Text, true, cts.Token);
-            }
+            await this.websocket_.SendAsync(new System.ArraySegment<byte>(message), WebSocketMessageType.Text, true, token);
         }
 
         private void receive_thread()
@@ -80,14 +74,14 @@ namespace IVySoft.VPlatform.Network
             try
             {
                 var buffer = new System.IO.MemoryStream();
-                while (!this.is_shutting_down_.IsCancellationRequested)
+                for(; ; )
                 {
                     var rcvBytes = new byte[1024];
                     var rcvBuffer = new ArraySegment<byte>(rcvBytes);
 
                     var rcvResult = this.websocket_.ReceiveAsync(
                         rcvBuffer,
-                        this.is_shutting_down_.Token);
+                        this.cancel_token_);
 
                     rcvResult.Wait();
 
@@ -131,11 +125,6 @@ namespace IVySoft.VPlatform.Network
             }
             catch (Exception ex)
             {
-                if (this.is_shutting_down_.IsCancellationRequested)
-                {
-                    return;
-                }
-
                 this.set_error(ex);
             }
         }
