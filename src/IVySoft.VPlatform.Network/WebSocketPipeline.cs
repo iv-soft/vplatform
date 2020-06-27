@@ -13,6 +13,7 @@ namespace IVySoft.VPlatform.Network
         private CancellationToken cancel_token_;
         private SingleThreadApartment send_thread_ = new SingleThreadApartment();
         private SingleThreadApartment receive_thread_ = new SingleThreadApartment();
+        private CancellationTokenSource shutdown_ = new CancellationTokenSource();
         private Thread work_thread_;
         private Func<string, Task> input_handler_;
         private Func<byte[], Task> binary_handler_;
@@ -28,6 +29,7 @@ namespace IVySoft.VPlatform.Network
         {
             this.websocket_ = websocket;
             this.cancel_token_ = cancel_token;
+            this.cancel_token_.Register(() => this.shutdown_.Cancel());
             this.input_handler_ = input_handler;
             this.binary_handler_ = binary_handler;
             this.error_handler_ = error_handler;
@@ -38,6 +40,7 @@ namespace IVySoft.VPlatform.Network
 
         public void stop()
         {
+            this.shutdown_.Cancel();
             this.send_thread_.join();
             this.receive_thread_.join();
 
@@ -81,7 +84,7 @@ namespace IVySoft.VPlatform.Network
 
                     var rcvResult = this.websocket_.ReceiveAsync(
                         rcvBuffer,
-                        this.cancel_token_);
+                        this.shutdown_.Token);
 
                     rcvResult.Wait();
 
@@ -123,6 +126,14 @@ namespace IVySoft.VPlatform.Network
                 }
                 return;
             }
+            catch(AggregateException ex)
+            {
+                if(ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException)
+                {
+                    return;
+                }
+                this.set_error(ex);
+            }
             catch (Exception ex)
             {
                 this.set_error(ex);
@@ -139,6 +150,10 @@ namespace IVySoft.VPlatform.Network
         {
             if (null != this.websocket_)
             {
+                using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30)))
+                {
+                    this.websocket_.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, string.Empty, timeout.Token).Wait();
+                }
                 this.stop();
                 this.websocket_.Dispose();
             }
