@@ -1,0 +1,45 @@
+add_action(
+	"generate_odata_webapi",
+	context => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+		var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+		var modules = entity_manager.get_collection<type_model.module>("modules");
+
+		razor.load(module_path("odata_webapi", "project.csproj"))
+		.with("Modules", modules)
+		.process(get("namespace") + ".WebApi/" + get("namespace") + ".WebApi.csproj");
+
+		razor.load(module_path("odata_webapi", "Program.cs"))
+		.with("Namespace", get("namespace") + ".WebApi")
+		.process(get("namespace") + ".WebApi/Program.cs");
+
+		razor.load(module_path("odata_webapi", "Startup.cs"))
+		.with("Namespace", get("namespace") + ".WebApi")
+		.process(get("namespace") + ".WebApi/Startup.cs");
+
+		copy(module_path("odata_webapi", "appsettings.json"), get("namespace") + ".WebApi/appsettings.json");
+		copy(module_path("odata_webapi", "appsettings.Development.json"), get("namespace") + ".WebApi/appsettings.Development.json");
+
+		razor.load(module_path("odata_webapi", "Properties/launchSettings.json"))
+		.with("Namespace", get("namespace") + ".WebApi")
+		.process(get("namespace") + ".WebApi/Properties/launchSettings.json");
+
+
+		var entity_tables = entity_manager.get_collection<type_model.entity_table>("entity_tables");
+		foreach(var entity_table in entity_tables)
+		{
+			razor.load(module_path("odata_webapi", "Controllers/Controller.cs"))
+				.with("Namespace", get("namespace") + ".WebApi")
+				.with("Name", entity_table.Name)
+				.with("Type", modules.Single(x => x.Name == entity_table.Module).Namespace + "." + entity_table.Type)
+				.process(get("namespace") + ".WebApi/Controllers/" + entity_table.Name + ".cs");
+		}
+
+		razor.load(module_path("odata_webapi", "Models/DbModel.cs"))
+		.with("Namespace", get("namespace") + ".WebApi")
+		.process(get("namespace") + ".WebApi/Models/DbModel.cs");
+
+		razor.load(module_path("odata_webapi", "Models/ODataModel.cs"))
+		.with("Namespace", get("namespace") + ".WebApi")
+		.process(get("namespace") + ".WebApi/Models/ODataModel.cs");
+	});

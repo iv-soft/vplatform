@@ -16,7 +16,8 @@ namespace IVySoft.VPlatform.TemplateEngine.Script
 
         public string GenerateCode(string templateFile)
         {
-            return "public class " + this.options_.TemplateTypeName
+            return "using System.Linq;\nusing System.Collections.Generic;\nusing Microsoft.Extensions.DependencyInjection;\n"
+                + "public class " + this.options_.TemplateTypeName
                 + (string.IsNullOrEmpty(this.options_.BaseType) ? string.Empty : (":" + this.options_.BaseType))
                 + " { public override void Execute() { \n"
                 + "#line 1 \"" + templateFile + "\"\n"

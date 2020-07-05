@@ -9,7 +9,7 @@ namespace IVySoft.VPlatform.TemplateEngine
     public abstract class TextTemplateBase
     {
         private StringWriter outStream_;
-        public object Context { get; set; }
+        //public object Context { get; set; }
 
         public abstract Task ExecuteAsync();
 

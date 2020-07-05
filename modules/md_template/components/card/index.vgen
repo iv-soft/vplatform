@@ -1,0 +1,8 @@
+var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+
+var t = entity_manager.add_entity_type("action_item", "md_template")
+.with_string_property("title")
+.with_string_property("target");
+
+var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+razor.add_component("card", module_path("md_template", "components/card/index.cshtml"));

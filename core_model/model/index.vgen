@@ -1,0 +1,2 @@
+var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+entity_manager.import_module(local_path("module.xml"));

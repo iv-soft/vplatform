@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -61,7 +62,11 @@ namespace IVySoft.VPlatform.TemplateEngine
                     MetadataReference.CreateFromFile(typeof(RazorCompiledItemAttribute).Assembly.Location), // include Microsoft.AspNetCore.Razor.Runtime
                     MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location), // this file (that contains the MyTemplate base class)
                     MetadataReference.CreateFromFile(typeof(ITemplateCompiler).Assembly.Location),
-
+                    MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),//Linq
+                    MetadataReference.CreateFromFile(typeof(System.Linq.Expressions.BinaryExpression).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(System.ComponentModel.IListSource).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(KeyAttribute).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(Dictionary<object, object>).Assembly.Location),
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Runtime.dll")),
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "netstandard.dll")),
                     MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Collections.dll"))
@@ -71,6 +76,7 @@ namespace IVySoft.VPlatform.TemplateEngine
             var result = compilation.Emit(dllPath);
             if (!result.Success)
             {
+                var r = new List<object>();
                 File.Delete(dllPath);
                 throw new Exception(string.Join(Environment.NewLine, result.Diagnostics));
             }

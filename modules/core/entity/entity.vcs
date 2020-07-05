@@ -1,0 +1,10 @@
+namespace @Model.Namespace
+{
+	public class @Model.Name
+	{
+		@foreach(var property in Model.Properties)
+		{
+		@:public @(property.Type.Namespace).@(property.Type.Name) @property.Name { get; set; }
+		}
+	}
+}

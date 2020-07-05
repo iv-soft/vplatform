@@ -1,0 +1,51 @@
+@{
+var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+
+var drawer_menu = entity_manager.get_collection<md_template.drawer_menu_item>("drawer_menu");
+}
+<!DOCTYPE html>
+<html lang="@Parameters["lang"]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="@Parameters["Url"]index.css">
+  </head>
+  <body>
+<aside class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__content">
+    @foreach(var item in drawer_menu){
+        <div class="mdc-list">
+            <a class="mdc-list-item @(item.href == Parameters["Url"] ? " mdc-list-item--activated" : string.Empty)" href="@item.href" aria-current="page">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">@item.icon</i>
+            <span class="mdc-list-item__text">@item.title</span>
+            </a>
+        </div>
+    }
+    </div>
+</aside>
+<div class="mdc-drawer-app-content">
+<header class="mdc-top-app-bar transparent-top-app-bar">
+    <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <a href="#" class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</a>
+        <span class="mdc-top-app-bar__title">@Parameters["Title"]</span>
+    </section>
+    </div>
+</header>
+<video id="video" class="back-video" src="@Parameters["BackgroundVideo"]" loop="" muted="" autoplay=""
+playsinline="true" webkit-playsinline="true" x-webkit-airplay="allow"
+x5-video-player-type="h5" x5-video-player-fullscreen="true"
+x5-video-orientation="portraint">
+<source src="@Parameters["BackgroundVideo"]" type="video/mp4">
+</video>
+<div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
+    <main class="body-content mdc-typography" id="body-content">
+        @Content
+    </main>
+</div>
+    <script src="@Parameters["Url"]bundle.js" async></script>
+  </body>
+</html>

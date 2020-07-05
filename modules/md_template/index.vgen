@@ -1,0 +1,55 @@
+add_directory("components");
+
+var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+
+var t = entity_manager.add_entity_type("drawer_menu_item", "md_template")
+.with_string_property("href")
+.with_string_property("icon")
+.with_string_property("title");
+
+entity_manager.create_collection("drawer_menu", t);
+
+add_action(
+	"razor:landing_with_bg_video",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+		var menu_items = new System.Collections.Generic.List<string>();
+
+		razor.load(module_path("md_template", "components/landing_with_bg_video/index.cshtml"))
+			.with("Url", x.get("Url"))
+			.with("Title", x.get("Title"))
+			.with("lang", get("lang"))
+			.with("BackgroundVideo", x.get("BackgroundVideo"))
+			.process(
+				razor
+				  .load((string)x.get("content_path"))
+				  .with("MenuItems", menu_items),
+				(string)x.get("target_path") + "/index.html");
+
+		razor.load(module_path("md_template", "components/landing_with_bg_video/index.csjs"))
+			.with("MenuItems", menu_items)
+			.process((string)x.get("target_path") + "/index.js");
+
+		copy(
+    			module_path("md_template", "components/landing_with_bg_video/index.scss"),
+    			(string)x.get("target_path") + "/index.scss");
+	});
+
+add_action(
+	"razor:simple_page",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+		razor.load(module_path("md_template", "components/simple_page/index.cshtml"))
+			.with("Url", x.get("Url"))
+			.with("lang", get("lang"))
+			.with("Title", x.get("Title"))
+			.process((string)x.get("content_path"), (string)x.get("target_path") + "/index.html");
+
+		copy(
+    			module_path("md_template", "components/simple_page/index.js"),
+			(string)x.get("target_path") + "/index.js");
+
+		copy(
+    			module_path("md_template", "components/simple_page/index.scss"),
+    			(string)x.get("target_path") + "/index.scss");
+	});

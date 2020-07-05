@@ -59,7 +59,10 @@ namespace IVySoft.VPlatform.TemplateEngine.Cmd
                             {
                                 MetadataReference.CreateFromFile(typeof(TemplateService.Runtime.IndexScript.BuildContext).Assembly.Location),
                                 MetadataReference.CreateFromFile(typeof(IEntityManager).Assembly.Location),
-                                MetadataReference.CreateFromFile(typeof(IRazorManager).Assembly.Location)
+                                MetadataReference.CreateFromFile(typeof(IRazorManager).Assembly.Location),
+                                MetadataReference.CreateFromFile(typeof(IServiceProvider).Assembly.Location),
+                                MetadataReference.CreateFromFile(typeof(ServiceProviderServiceExtensions).Assembly.Location),
+                                MetadataReference.CreateFromFile(typeof(Microsoft.EntityFrameworkCore.DbContext).Assembly.Location),
                             }
                         )
                     }

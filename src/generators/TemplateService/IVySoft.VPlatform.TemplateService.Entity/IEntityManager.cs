@@ -10,6 +10,7 @@ namespace IVySoft.VPlatform.TemplateService.Entity
         void create_collection(string name, EntityType itemType);
         List<T> get_collection<T>(string name);
 
-
+        void import_module(string file_path);
+        IServiceProvider get_db_model<T>();
     }
 }

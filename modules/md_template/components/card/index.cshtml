@@ -1,0 +1,50 @@
+@{
+	var menu_id = generate_id("menu-button");
+	((System.Collections.Generic.ICollection<string>)Parameters["MenuItems"]).Add(menu_id);
+	var actions = (md_template.action_item[])Parameters["Actions"];
+	md_template.action_item[] more_actions = null;
+	if(Parameters.ContainsKey("MoreActions"))
+	{
+		more_actions = (md_template.action_item[])Parameters["MoreActions"];
+	}	
+}
+    <div class="mdc-card card-content">
+      <div class="mdc-card__primary-action demo-card__primary-action" tabindex="0">
+        <div class="mdc-card__media mdc-card__media--16-9 demo-card__media" style="background-image: url('@Parameters["Image"]');"></div>
+        <div class="demo-card__primary">
+          <h2 class="demo-card__title mdc-typography mdc-typography--headline6">@Parameters["Title"]</h2>
+        </div>
+        <div class="demo-card__secondary mdc-typography mdc-typography--body2">@Parameters["Body"]</div>
+        <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">@Parameters["SubTitle"]</h3>
+      </div>
+        <div class="mdc-card__actions">
+          <div class="mdc-card__action-buttons">
+	    @foreach(var item in actions)
+	    {
+	    <a href="@item.target">
+             <button class="mdc-button mdc-card__action mdc-card__action--button">
+              <div class="mdc-button__ripple"></div>
+              <span class="mdc-button__label">@item.title</span>
+             </button>
+            </a>
+	    }
+	    @if(null != more_actions)
+	    {
+            <div class="mdc-menu-surface--anchor">
+              <button id="@menu_id" class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
+              <div class="mdc-menu mdc-menu-surface">
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+	    	
+		@foreach(var item in more_actions)
+		{
+                  <li class="mdc-list-item" role="menuitem">
+                    <span class="mdc-list-item__text">@item.title</span>
+                  </li>
+		}
+                </ul>
+              </div>
+            </div>
+		}
+          </div>
+        </div>
+      </div>

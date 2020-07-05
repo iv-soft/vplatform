@@ -1,0 +1,72 @@
+@import "@material/button/mdc-button";
+@import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/icon-button/mdc-icon-button";
+@import "@material/card/mdc-card";
+@import "@material/layout-grid/mdc-layout-grid";
+@import "@material/typography/mdc-typography";
+@import "@material/card/mdc-card";
+@import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
+
+
+.foo-button {
+  @include mdc-button-ink-color(teal);
+  @include mdc-states(teal);
+}
+
+.transparent-top-app-bar { @include mdc-top-app-bar-fill-color(#05444444); }
+
+.back-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  transform: translate(-50%, -50%);
+}
+
+.body-header {
+  margin-top:20vh;
+  height:60vh;
+}
+
+.body-content {
+  padding-top: 30pt;
+  padding-bottom: 30pt;
+  color: white;
+}
+
+.card-content {
+  color: black;
+}
+
+body {
+  color: blue;
+}
+
+a:link {
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+
+a:hover {
+  color: hotpink;
+}
+
+a:active {
+  color: white;
+}
+
+h1 {@include mdc-typography(headline1);}
+h2 {@include mdc-typography(headline2);}
+h3 {@include mdc-typography(headline3);}
+
+
+@use "@material/typography/mdc-typography";
+@use "@material/card/mdc-card";

@@ -1,0 +1,32 @@
+@{
+  var menu_items = (System.Collections.Generic.ICollection<string>)Parameters["MenuItems"];
+}
+import {MDCTopAppBar} from '@@material/top-app-bar';
+import {MDCList} from "@@material/list";
+import {MDCDrawer} from "@@material/drawer";
+@if(0 != menu_items.Count){
+@:import {MDCMenu} from '@@material/menu';
+@:import {MDCMenuSurface} from '@@material/menu-surface';
+}
+
+// Instantiation
+const topAppBarElement = document.querySelector('.mdc-top-app-bar');
+const topAppBar = new MDCTopAppBar(topAppBarElement);
+
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
+
+const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+
+topAppBar.setScrollTarget(document.getElementById('body-content'));
+topAppBar.listen('MDCTopAppBar:nav', () => {
+  drawer.open = !drawer.open;
+});
+
+@if(0 != menu_items.Count){
+  foreach(var item in menu_items)
+  {	
+@:const menu = new MDCMenu(document.querySelector('#menu-@item'));
+@:document.querySelector('#@item').addEventListener('click', () => { menu.open = !menu.open;  });
+  }
+}

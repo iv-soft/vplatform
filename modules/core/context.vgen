@@ -1,0 +1,10 @@
+namespace @Entity.Namespace
+{
+	public class @Entity.Name
+	{
+		@foreach(var collection in @Entity.Collections)
+		{
+		public DBSet<@collection.Entity.Namespace> @collection.Name { get; set; }
+		}
+	}
+}

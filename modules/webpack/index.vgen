@@ -1,0 +1,7 @@
+var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+
+var t = entity_manager.add_entity_type("page", "webpack")
+.with_string_property("path");
+
+entity_manager.create_collection("pages", t);
+

@@ -1,0 +1,28 @@
+add_action(
+	"generate_modules",
+	context => {
+		var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+		var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+		using(var scope = sp.CreateScope())
+		{
+		  using(var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>())
+		  {
+		    foreach(var module in db.Modules)
+		    {
+			copy(
+				module_path("type_model", "EntityProject.csproj"),
+    				module.Namespace
+				+ "/" + module.Namespace + ".csproj");
+			foreach(IVySoft.TypeModel.EntityType entity_type in module.Types.Where(x => x is IVySoft.TypeModel.EntityType))
+			{
+				razor.load(module_path("type_model", "EntityType.cs"))
+				.with("Namespace", module.Namespace)
+				.with("Name", entity_type.Name)
+				.process(module.Namespace
+				+ "/" + entity_type.Name + ".cs");
+			}
+		    }
+		  }
+		}
+	});

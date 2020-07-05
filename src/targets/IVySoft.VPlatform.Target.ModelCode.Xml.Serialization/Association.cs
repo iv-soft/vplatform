@@ -27,7 +27,6 @@ namespace IVySoft.VPlatform.Target.ModelCode.Xml.Serialization
 
 		protected void InitModel(IVySoft.VPlatform.Target.ModelCode.Association result)
 		{
-
 				result.Name = this.Name;
 				result.Left = (IVySoft.VPlatform.Target.ModelCode.AssociationEnd)this.Left?.ToModel();
 				result.Right = (IVySoft.VPlatform.Target.ModelCode.AssociationEnd)this.Right?.ToModel();
