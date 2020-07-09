@@ -3,7 +3,13 @@ add_action(
 	context => {
 		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 		var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
-		var modules = entity_manager.get_collection<type_model.module>("modules");
+
+		var sp = entity_manager.get_db_model<IVySoft.VPlatform.ModelCode.DbModel>();
+		using(var scope = sp.CreateScope())
+		{
+		  using(var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.ModelCode.DbModel>())
+		  {
+		var modules = db.Modules;
 
 		razor.load(module_path("odata_webapi", "project.csproj"))
 		.with("Modules", modules)

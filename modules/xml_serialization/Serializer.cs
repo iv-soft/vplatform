@@ -1,15 +1,16 @@
 ﻿@using System.Linq;
 @using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
 @{
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 	var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-	var modules = entity_manager.get_collection<type_model.module>("modules");
-	var entity_types = entity_manager.get_collection<type_model.entity_type>("entity_types");
-	var entity_fields = entity_manager.get_collection<type_model.entity_field>("entity_fields");
-	var entity_associations = entity_manager.get_collection<type_model.entity_association>("entity_associations");
+	var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+	var scope = sp.CreateScope();
+	var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>();
+	var module = db.Modules.Single(x => x.Namespace == Parameters["Namespace"]);
+	var entity_type = (IVySoft.TypeModel.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
+	var entity_associations = module.Associations;
 
-	var module = modules.Single(x => x.Namespace == Parameters["Namespace"]);
-	var entity_type = entity_types.Single(x => x.Name == Parameters["Name"] && x.Module == module.Name);
 }
 
 using System.Collections.Generic;
@@ -20,9 +21,10 @@ using System.Linq;
 
 namespace @(Parameters["Namespace"]).Xml.Serialization
 {
+    [XmlRoot(Namespace("@Parameters["Namespace"]"))]
     public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (" : " + entity_type.BaseType))
     {
-	@foreach(var field in entity_fields.Where(x => x.Module == module.Name && x.Entity == entity_type.Name))
+	@foreach(var field in entity_type.Properties)
 	{
 		if(string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
 		@:[XmlElement()]
@@ -33,14 +35,14 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 		}
 	}
 
-	@foreach(var association in entity_associations.Where(x => x.LeftEntity == module.Namespace + "." + entity_type.Name))
+	@foreach(var association in entity_associations.Where(x => x.Left.Type == entity_type.Name))
 	{
-		@if(association.RightMultiplicity == "0..*" || association.RightMultiplicity == "1..*")
+		@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 		{
 			var derived_types = new Dictionary<string, string>();
 			var unprocessed = new SortedSet<string>();
 			var processed = new SortedSet<string>();
-			unprocessed.Add(association.RightEntity);
+			unprocessed.Add(association.Right.Type);
 			while(unprocessed.Count > 0)
             		{
 				foreach(var base_type in unprocessed)
@@ -49,14 +51,17 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
                     			if (!processed.Contains(base_type))
                     			{
 						processed.Add(base_type);
-						foreach(var derived in entity_types.Where(x => x.BaseType == base_type))
+						foreach(IVySoft.TypeModel.EntityType derived in module.Types.Where(x => x is IVySoft.TypeModel.EntityType))
 						{
-							var full_name = modules.Single(m => m.Name == derived.Module).Namespace + "." + derived.Name;
+						   if(derived.BaseType == base_type)
+						   {
+							var full_name = module.Namespace + "." + derived.Name;
                     					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
 							{
-								derived_types.Add(derived.Name, modules.Single(m => m.Name == derived.Module).Namespace + ".Xml.Serialization." + derived.Name);
+								derived_types.Add(derived.Name, module.Namespace + ".Xml.Serialization." + derived.Name);
 								unprocessed.Add(full_name);
 							}
+						   }
 						}
                     			}
 
@@ -68,17 +73,17 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 			{
         @:[XmlArrayItem(ElementName = "@derived.Key", Type = typeof(@(derived.Value)))]
 			}
-	@:public @(association.RightEntity.Substring(0, association.RightEntity.LastIndexOf('.')) + ".Xml.Serialization" + association.RightEntity.Substring(association.RightEntity.LastIndexOf('.')))[] @association.RightName { get; set; }
+	@:public @(association.Right.Type.Substring(0, association.Right.Type.LastIndexOf('.')) + ".Xml.Serialization" + association.Right.Type.Substring(association.Right.Type.LastIndexOf('.')))[] @association.Right.Property { get; set; }
 		}
 	}
-	@foreach(var association in entity_associations.Where(x => x.RightEntity == module.Namespace + "." + entity_type.Name))
+	@foreach(var association in entity_associations.Where(x => x.Right.Type == module.Namespace + "." + entity_type.Name))
 	{
-		@if(association.LeftMultiplicity == "0..*" || association.LeftMultiplicity == "1..*")
+		@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 		{
 			var derived_types = new Dictionary<string, string>();
 			var unprocessed = new SortedSet<string>();
 			var processed = new SortedSet<string>();
-			unprocessed.Add(association.LeftEntity);
+			unprocessed.Add(association.Left.Type);
 			while(unprocessed.Count > 0)
             		{
 				foreach(var base_type in unprocessed)
@@ -87,14 +92,17 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
                     			if (!processed.Contains(base_type))
                     			{
 						processed.Add(base_type);
-						foreach(var derived in entity_types.Where(x => x.BaseType == base_type))
+						foreach(IVySoft.TypeModel.EntityType derived in module.Types.Where(x => x is IVySoft.TypeModel.EntityType))
 						{
-							var full_name = modules.Single(m => m.Name == derived.Module).Namespace + "." + derived.Name;
+						   if(derived.BaseType == base_type)
+						   {
+							var full_name = module.Namespace + "." + derived.Name;
                     					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
 							{
-								derived_types.Add(derived.Name, modules.Single(m => m.Name == derived.Module).Namespace + ".Xml.Serialization." + derived.Name);
+								derived_types.Add(derived.Name, module.Namespace + ".Xml.Serialization." + derived.Name);
 								unprocessed.Add(full_name);
 							}
+						   }
 						}
                     			}
 
@@ -106,7 +114,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 			{
         @:[XmlArrayItem(ElementName = "@derived.Key", Type = typeof(@(derived.Value)))]
 			}
-	@:public @(association.LeftEntity.Substring(0, association.LeftEntity.LastIndexOf('.')) + ".Xml.Serialization" + association.LeftEntity.Substring(association.LeftEntity.LastIndexOf('.')))[] @association.LeftName { get; set; }
+	@:public @(association.Left.Type.Substring(0, association.Left.Type.LastIndexOf('.')) + ".Xml.Serialization" + association.Left.Type.Substring(association.Left.Type.LastIndexOf('.')))[] @association.Left.Property { get; set; }
 		}
 	}
 	
@@ -124,9 +132,9 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 		@:base.InitModel(result);
 		}
 
-		@foreach(var field in entity_fields.Where(x => x.Module == module.Name && x.Entity == entity_type.Name))
+		@foreach(var field in entity_type.Properties)
 		{
-			var field_entity_type = entity_types.SingleOrDefault(x => field.Type == modules.Single(y => y.Name == x.Module).Namespace + "." + x.Name);
+			var field_entity_type = module.Types.SingleOrDefault(x => field.Type == module.Namespace + "." + x.Name);
 			if(null == field_entity_type)
 			{
 		@:result.@field.Name = this.@field.Name;
@@ -136,19 +144,20 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 		@:result.@field.Name = (@field.Type)this.@field.Name@?.ToModel();
 			}
 		}
-		@foreach(var association in entity_associations.Where(x => x.RightEntity == module.Namespace + "." + entity_type.Name))
+		@foreach(var association in entity_associations.Where(x => x.Right.Type == module.Namespace + "." + entity_type.Name))
 		{
-			@if(association.LeftMultiplicity == "0..*" || association.LeftMultiplicity == "1..*")
+			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 			{
-		@:result.@association.LeftName = new List<@association.LeftEntity>((this.@association.LeftName == null) ? new @association.LeftEntity@[0] : this.@association.LeftName@.Select(x => (@association.LeftEntity@)x.ToModel()));
+		@:result.@association.Left.Property = new List<@association.Left.Type>((this.@association.Left.Property == null) ? new @association.Left.Type@[0] : this.@association.Left.Property@.Select(x => (@association.Left.Type@)x.ToModel()));
 			}
 		}
-		@foreach(var association in entity_associations.Where(x => x.LeftEntity == module.Namespace + "." + entity_type.Name))
+		@foreach(var association in entity_associations.Where(x => x.Left.Type == module.Namespace + "." + entity_type.Name))
 		{
-			@if(association.RightMultiplicity == "0..*" || association.RightMultiplicity == "1..*")
+			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
-		@:result.@association.RightName = new List<@association.RightEntity>((this.@association.RightName == null) ? new @association.RightEntity@[0] : this.@association.RightName@.Select(x => (@association.RightEntity@)x.ToModel()));
+		@:result.@association.Right.Property = new List<@association.Right.Type>((this.@association.Right.Property == null) ? new @association.Right.Type@[0] : this.@association.Right.Property@.Select(x => (@association.Right.Type@)x.ToModel()));
 			}
 		}
 	}
+    }
 }

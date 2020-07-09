@@ -114,5 +114,21 @@ namespace IVySoft.VPlatform.TemplateService.Entity
             return this.holder_.GetDbModel<T>();
         }
 
+        public TModel load_model<TModel>(string file_path)
+        {
+            try
+            {
+                var serializer = new XmlSerializer(typeof(TModel));
+                using (var stream = new StreamReader(file_path, true))
+                {
+                    return (TModel)serializer.Deserialize(stream);
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.Message} at load model from '{file_path}'", ex);
+            }
+        }
+
     }
 }

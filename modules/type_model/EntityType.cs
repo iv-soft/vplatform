@@ -1,14 +1,15 @@
 ﻿@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
 @{
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 	var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-	var modules = entity_manager.get_model<type_model.module>();
-	var entity_types = entity_manager.get_collection<type_model.entity_type>("entity_types");
-	var entity_fields = entity_manager.get_collection<type_model.entity_field>("entity_fields");
-	var entity_associations = entity_manager.get_collection<type_model.entity_association>("entity_associations");
-
-	var module = modules.Single(x => x.Namespace == Parameters["Namespace"]);
-	var entity_type = entity_types.Single(x => x.Name == Parameters["Name"] && x.Module == module.Name);
+	var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+	var scope = sp.CreateScope();
+	var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>();
+	var module = db.Modules.Single(x => x.Namespace == Parameters["Namespace"]);
+	var entity_type = (IVySoft.TypeModel.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
+	var entity_associations = module.Associations;
 }
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -21,9 +22,10 @@ namespace @Parameters["Namespace"]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-	@foreach(var field in entity_fields.Where(x => x.Module == module.Name && x.Entity == entity_type.Name))
+	@foreach(var field in entity_type.Properties)
 	{
-		var field_entity_type = entity_types.SingleOrDefault(x => field.Type == modules.Single(y => y.Name == x.Module).Namespace + "." + x.Name);
+		var field_entity_type = module.Types.SingleOrDefault(x => field.Type == module.Namespace + "." + x.Name);
+
 		if(null == field_entity_type) {
 			if(string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
 	        @:public @field.Type @field.Name { get; set; }
@@ -43,32 +45,32 @@ namespace @Parameters["Namespace"]
 		}
 	}
 
-	@foreach(var association in entity_associations.Where(x => x.LeftEntity == module.Namespace + "." + entity_type.Name))
+	@foreach(var association in entity_associations.Where(x => x.Left.Type == module.Namespace + "." + entity_type.Name))
 	{
-		@if(association.RightMultiplicity == "0..*" || association.RightMultiplicity == "1..*")
+		@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 		{
-		@:[InverseProperty(nameof(@association.RightEntity.@association.LeftName))]
-		@:public virtual IList<@association.RightEntity> @association.RightName { get; set; }
+		@:[InverseProperty(nameof(@association.Right.Type.@association.Left.Property))]
+		@:public virtual IList<@association.Right.Type> @association.Right.Property { get; set; }
 		}
 		else
 		{
-		@:[ForeignKey(nameof(@association.RightName))]
-		@:public int @(association.RightName)Id { get; set; }
-		@:public virtual @association.RightEntity @association.RightName { get; set; }
+		@:[ForeignKey(nameof(@association.Right.Property))]
+		@:public int @(association.Right.Property)Id { get; set; }
+		@:public virtual @association.Right.Type @association.Right.Property { get; set; }
 		}
 	}
-	@foreach(var association in entity_associations.Where(x => x.RightEntity == module.Namespace + "." + entity_type.Name))
+	@foreach(var association in entity_associations.Where(x => x.Right.Type == module.Namespace + "." + entity_type.Name))
 	{
-		@if(association.LeftMultiplicity == "0..*" || association.LeftMultiplicity == "1..*")
+		@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 		{
-		@:[InverseProperty(nameof(@association.LeftEntity.@association.RightName))]
-		@:public virtual IList<@association.LeftEntity> @association.LeftName { get; set; }
+		@:[InverseProperty(nameof(@association.Left.Type.@association.Right.Property))]
+		@:public virtual IList<@association.Left.Type> @association.Left.Property { get; set; }
 		}
 		else
 		{
-		@:[ForeignKey(nameof(@association.LeftName))]
-		@:public int @(association.LeftName)Id { get; set; }
-		@:public virtual @association.LeftEntity @association.LeftName { get; set; }
+		@:[ForeignKey(nameof(@association.Left.Property))]
+		@:public int @(association.Left.Property)Id { get; set; }
+		@:public virtual @association.Left.Type @association.Left.Property { get; set; }
 		}
 	}
     }

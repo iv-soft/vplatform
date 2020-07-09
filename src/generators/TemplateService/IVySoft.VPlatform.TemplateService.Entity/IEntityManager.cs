@@ -12,5 +12,6 @@ namespace IVySoft.VPlatform.TemplateService.Entity
 
         void import_module(string file_path);
         IServiceProvider get_db_model<T>();
+        TModel load_model<TModel>(string file_path);
     }
 }

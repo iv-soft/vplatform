@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Module xmlns="IVySoft.VPlatform.ModelCode">
+<Module xmlns="IVySoft.TypeModel">
   <Name>ModelCode</Name>
-  <Namespace>IVySoft.VPlatform.ModelCode</Namespace>
+  <Namespace>IVySoft.VPlatform.ModelCode.Generated</Namespace>
 
   <Types>
     <EntityType>
@@ -60,7 +60,7 @@
 
     <EntityType>
       <Name>EntityType</Name>
-      <BaseType>IVySoft.VPlatform.ModelCode.ModuleType</BaseType>
+      <BaseType>IVySoft.VPlatform.ModelCode.Generated.ModuleType</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -71,7 +71,7 @@
 
     <EntityType>
       <Name>ComplexType</Name>
-      <BaseType>IVySoft.VPlatform.ModelCode.ModuleType</BaseType>
+      <BaseType>IVySoft.VPlatform.ModelCode.Generated.ModuleType</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -82,7 +82,7 @@
 
     <EntityType>
       <Name>PrimitiveType</Name>
-      <BaseType>IVySoft.VPlatform.ModelCode.ModuleType</BaseType>
+      <BaseType>IVySoft.VPlatform.ModelCode.Generated.ModuleType</BaseType>
       <Properties>
       </Properties>
     </EntityType>

@@ -1,4 +1,5 @@
-﻿using IVySoft.VPlatform.TemplateEngine;
+﻿using IVySoft.VPlatform.ModelCode;
+using IVySoft.VPlatform.TemplateEngine;
 using IVySoft.VPlatform.TemplateEngine.Razor;
 using IVySoft.VPlatform.TemplateService.Runtime.IndexScript;
 using Microsoft.CodeAnalysis;
@@ -20,6 +21,8 @@ namespace IVySoft.VPlatform.TemplateService.Entity
         public EntityModelHolder(ITemplateCompiler compiler)
         {
             this.compiler_ = compiler;
+
+            this.AddDbModel(typeof(DbModel).FullName, DbModel.CreateServiceProvider());
         }
 
         public Dictionary<string, EntityType> EntityTypes
