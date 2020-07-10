@@ -16,11 +16,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace @Parameters["Namespace"]
 {
-    public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (" : " + entity_type.BaseType))
+    public @(entity_type.Abstract ? "abstract " : "")class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (" : " + entity_type.BaseType))
     {
-        [Key]
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+	@if(entity_type.BaseType == null)
+	{
+        @:[Key]
+	@:[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        @:public int Id { get; set; }
+        }
 
 	@foreach(var field in entity_type.Properties)
 	{

@@ -59,8 +59,13 @@
     </EntityType>
 
     <EntityType>
-      <Name>EntityType</Name>
+      <Name>TypeWithProperties</Name>
       <BaseType>IVySoft.TypeModel.ModuleType</BaseType>
+    </EntityType>
+
+    <EntityType>
+      <Name>EntityType</Name>
+      <BaseType>IVySoft.TypeModel.TypeWithProperties</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -71,7 +76,7 @@
 
     <EntityType>
       <Name>ComplexType</Name>
-      <BaseType>IVySoft.TypeModel.ModuleType</BaseType>
+      <BaseType>IVySoft.TypeModel.TypeWithProperties</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -216,15 +221,15 @@
     </Association>
     
     <Association>
-      <Name>EntityType_Properties</Name>
+      <Name>Type_Properties</Name>
       <Left>
-        <Type>EntityType</Type>
+        <Type>TypeWithProperties</Type>
         <Property>Properties</Property>
         <Multiplicity>0..*</Multiplicity>
       </Left>
       <Right>
         <Type>Property</Type>
-        <Property>OwnerType</Property>
+        <Property>OwnerEntity</Property>
         <Multiplicity>1</Multiplicity>
       </Right>
     </Association>

@@ -59,8 +59,14 @@
     </EntityType>
 
     <EntityType>
-      <Name>EntityType</Name>
+      <Name>TypeWithProperties</Name>
       <BaseType>IVySoft.VPlatform.ModelCode.Generated.ModuleType</BaseType>
+      <Abstract>true</Abstract>
+    </EntityType>
+
+    <EntityType>
+      <Name>EntityType</Name>
+      <BaseType>IVySoft.VPlatform.ModelCode.Generated.TypeWithProperties</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -71,7 +77,7 @@
 
     <EntityType>
       <Name>ComplexType</Name>
-      <BaseType>IVySoft.VPlatform.ModelCode.Generated.ModuleType</BaseType>
+      <BaseType>IVySoft.VPlatform.ModelCode.Generated.TypeWithProperties</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -127,7 +133,7 @@
       </Properties>
     </EntityType>
 
-    <EntityType>
+    <ComplexType>
       <Name>AssociationEnd</Name>
       <Properties>
         <Property>
@@ -143,7 +149,7 @@
           <Type>string</Type>
         </Property>
       </Properties>
-    </EntityType>
+    </ComplexType>
 
     <EntityType>
       <Name>EntityTable</Name>
@@ -165,74 +171,74 @@
     <Association>
       <Name>Module_Associations</Name>
       <Left>
-        <Type>Module</Type>
-        <Property>Associations</Property>
-        <Multiplicity>0..*</Multiplicity>
-      </Left>
-      <Right>
-        <Type>Association</Type>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.Module</Type>
         <Property>Module</Property>
         <Multiplicity>1</Multiplicity>
+      </Left>
+      <Right>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.Association</Type>
+        <Property>Associations</Property>
+        <Multiplicity>0..*</Multiplicity>
       </Right>
     </Association>
     <Association>
       <Name>Module_Types</Name>
       <Left>
-        <Type>Module</Type>
-        <Property>Types</Property>
-        <Multiplicity>0..*</Multiplicity>
-      </Left>
-      <Right>
-        <Type>ModuleType</Type>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.Module</Type>
         <Property>Module</Property>
         <Multiplicity>1</Multiplicity>
+      </Left>
+      <Right>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.ModuleType</Type>
+        <Property>Types</Property>
+        <Multiplicity>0..*</Multiplicity>
       </Right>
     </Association>
     <Association>
       <Name>Module_Dependencies</Name>
       <Left>
-        <Type>Module</Type>
-        <Property>Dependencies</Property>
-        <Multiplicity>0..*</Multiplicity>
-      </Left>
-      <Right>
-        <Type>ModuleDependency</Type>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.Module</Type>
         <Property>Module</Property>
         <Multiplicity>1</Multiplicity>
+      </Left>
+      <Right>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.ModuleDependency</Type>
+        <Property>Dependencies</Property>
+        <Multiplicity>0..*</Multiplicity>
       </Right>
     </Association>
     <Association>
       <Name>Module_Tables</Name>
       <Left>
-        <Type>Module</Type>
-        <Property>Tables</Property>
-        <Multiplicity>0..*</Multiplicity>
-      </Left>
-      <Right>
-        <Type>EntityTable</Type>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.Module</Type>
         <Property>Module</Property>
         <Multiplicity>1</Multiplicity>
+      </Left>
+      <Right>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.EntityTable</Type>
+        <Property>Tables</Property>
+        <Multiplicity>0..*</Multiplicity>
       </Right>
     </Association>
     
     <Association>
-      <Name>EntityType_Properties</Name>
+      <Name>Type_Properties</Name>
       <Left>
-        <Type>EntityType</Type>
-        <Property>Properties</Property>
-        <Multiplicity>0..*</Multiplicity>
-      </Left>
-      <Right>
-        <Type>Property</Type>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.TypeWithProperties</Type>
         <Property>OwnerType</Property>
         <Multiplicity>1</Multiplicity>
+      </Left>
+      <Right>
+        <Type>IVySoft.VPlatform.ModelCode.Generated.Property</Type>
+        <Property>Properties</Property>
+        <Multiplicity>0..*</Multiplicity>
       </Right>
     </Association>
   </Associations>
   <Tables>
     <EntityTable>
 	<Name>Modules</Name>
-	<EntityType>Module</EntityType>
+	<EntityType>IVySoft.VPlatform.ModelCode.Generated.Module</EntityType>
     </EntityTable>
   </Tables>
 

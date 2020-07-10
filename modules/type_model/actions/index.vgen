@@ -22,6 +22,14 @@ add_action(
 				.process(module.Namespace
 				+ "/" + entity_type.Name + ".cs");
 			}
+			foreach(IVySoft.TypeModel.ComplexType type in module.Types.Where(x => x is IVySoft.TypeModel.ComplexType))
+			{
+				razor.load(module_path("type_model", "ComplexType.cs"))
+				.with("Namespace", module.Namespace)
+				.with("Name", type.Name)
+				.process(module.Namespace
+				+ "/" + type.Name + ".cs");
+			}
 		    }
 		  }
 		}

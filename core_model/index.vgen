@@ -2,7 +2,6 @@ import("type_model");
 import("xml_serialization");
 
 add_directory("model");
-add_directory("data");
 
 action("generate_modules").execute();
 action("generate_xml_serialization").execute();
