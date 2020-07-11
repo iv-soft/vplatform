@@ -4,10 +4,10 @@ add_action(
 		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 		var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 
-		var sp = entity_manager.get_db_model<IVySoft.VPlatform.ModelCode.DbModel>();
+		var sp = entity_manager.get_db_model<IVySoft.VPlatform.ModelCore.DbModel>();
 		using(var scope = sp.CreateScope())
 		{
-		  using(var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.ModelCode.DbModel>())
+		  using(var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.ModelCore.DbModel>())
 		  {
 		var modules = db.Modules;
 

@@ -51,6 +51,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateService.Runtime", "src\generators\TemplateService\IVySoft.VPlatform.TemplateService.Runtime\IVySoft.VPlatform.TemplateService.Runtime.csproj", "{B736CC1A-2182-4147-885D-87FA7D3212B3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateService.ModelCore", "src\generators\TemplateService\IVySoft.VPlatform.TemplateService.ModelCore\IVySoft.VPlatform.TemplateService.ModelCore.csproj", "{096B0774-7105-4594-A617-4A3BCC62CAEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization", "src\generators\TemplateService\IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization\IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.csproj", "{2A83CF40-5DBE-4586-A29D-BE936BC411FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +117,14 @@ Global
 		{B736CC1A-2182-4147-885D-87FA7D3212B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B736CC1A-2182-4147-885D-87FA7D3212B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B736CC1A-2182-4147-885D-87FA7D3212B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096B0774-7105-4594-A617-4A3BCC62CAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096B0774-7105-4594-A617-4A3BCC62CAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096B0774-7105-4594-A617-4A3BCC62CAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096B0774-7105-4594-A617-4A3BCC62CAEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +144,8 @@ Global
 		{677CD0F5-A5CF-4EF4-A40B-90666CCE4E5B} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{54D0F038-59E8-44CA-A457-64FBE23412AA} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{B736CC1A-2182-4147-885D-87FA7D3212B3} = {B5365A39-C6F9-4763-A604-861D4EA22551}
+		{096B0774-7105-4594-A617-4A3BCC62CAEB} = {B5365A39-C6F9-4763-A604-861D4EA22551}
+		{2A83CF40-5DBE-4586-A29D-BE936BC411FC} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D126804-D711-49E5-997D-B0FA8E1F9D44}

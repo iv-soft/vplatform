@@ -1,11 +1,11 @@
 var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
-var model = entity_manager.load_model<IVySoft.TypeModel.Xml.Serialization.Module>(local_path("module.xml"));
-var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+var model = entity_manager.load_model<IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.Module>(local_path("module.xml"));
+var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 using(var scope = sp.CreateScope())
 {
-	using(var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>())
+	using(var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>())
 	{
-        	db.Modules.Add((IVySoft.TypeModel.Module)model.ToModel());
+        	db.Modules.Add((IVySoft.VPlatform.TemplateService.ModelCore.Module)model.ToModel());
                 db.SaveChanges();
         }
 }

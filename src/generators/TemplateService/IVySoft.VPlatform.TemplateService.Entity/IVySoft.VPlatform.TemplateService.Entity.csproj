@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization\IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.csproj" />
+    <ProjectReference Include="..\IVySoft.VPlatform.TemplateService.ModelCore\IVySoft.VPlatform.TemplateService.ModelCore.csproj" />
+    <ProjectReference Include="..\IVySoft.VPlatform.TemplateService.Razor\IVySoft.VPlatform.TemplateService.Razor.csproj" />
     <ProjectReference Include="..\IVySoft.VPlatform.TemplateService.Runtime\IVySoft.VPlatform.TemplateService.Runtime.csproj" />
   </ItemGroup>
 

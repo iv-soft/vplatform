@@ -8,33 +8,33 @@ action("generate_xml_serialization").execute();
 
 var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 razor.load(module_path("type_model", "DbModel.cs"))
-.with("Namespace", "IVySoft.VPlatform.ModelCode.Generated")
-.process(target_path("IVySoft.VPlatform.ModelCode.Generated/DbModel.cs"));
+.with("Namespace", "IVySoft.VPlatform.TemplateService.ModelCore.Generated")
+.process(target_path("IVySoft.VPlatform.TemplateService.ModelCore.Generated/DbModel.cs"));
 
 
 var fs = get_service<IVySoft.VPlatform.TemplateService.IFileSystem>();
 fs.move(
-	target_path("IVySoft.VPlatform.ModelCode.Generated"),
-	target_path("IVySoft.VPlatform.ModelCode"));
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore.Generated"),
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore"));
 fs.move(
-	target_path("IVySoft.VPlatform.ModelCode/IVySoft.VPlatform.ModelCode.Generated.csproj"),
-	target_path("IVySoft.VPlatform.ModelCode/IVySoft.VPlatform.ModelCode.csproj"));
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore/IVySoft.VPlatform.TemplateService.ModelCore.Generated.csproj"),
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore/IVySoft.VPlatform.TemplateService.ModelCore.csproj"));
 
 fs.move(
-	target_path("IVySoft.VPlatform.ModelCode.Generated.Xml.Serialization"),
-	target_path("IVySoft.VPlatform.ModelCode.Xml.Serialization"));
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore.Generated.Xml.Serialization"),
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization"));
 fs.move(
-	target_path("IVySoft.VPlatform.ModelCode.Xml.Serialization/IVySoft.VPlatform.ModelCode.Generated.Xml.Serialization.csproj"),
-	target_path("IVySoft.VPlatform.ModelCode.Xml.Serialization/IVySoft.VPlatform.ModelCode.Xml.Serialization.csproj"));
-
-fs.replace_in_folder(
-	target_path("IVySoft.VPlatform.ModelCode"),
-	"*.*",
-	"IVySoft.VPlatform.ModelCode.Generated",
-	"IVySoft.VPlatform.ModelCode");
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization/IVySoft.VPlatform.TemplateService.ModelCore.Generated.Xml.Serialization.csproj"),
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization/IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.csproj"));
 
 fs.replace_in_folder(
-	target_path("IVySoft.VPlatform.ModelCode.Xml.Serialization"),
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore"),
 	"*.*",
-	"IVySoft.VPlatform.ModelCode.Generated",
-	"IVySoft.VPlatform.ModelCode");
+	"IVySoft.VPlatform.TemplateService.ModelCore.Generated",
+	"IVySoft.VPlatform.TemplateService.ModelCore");
+
+fs.replace_in_folder(
+	target_path("IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization"),
+	"*.*",
+	"IVySoft.VPlatform.TemplateService.ModelCore.Generated",
+	"IVySoft.VPlatform.TemplateService.ModelCore");

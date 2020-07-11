@@ -1,7 +1,7 @@
-rmdir /S /Q IVySoft.VPlatform.ModelCode
-rmdir /S /Q IVySoft.VPlatform.ModelCode.Xml.Serialization
-rmdir /S /Q IVySoft.VPlatform.ModelCode.Generated
-rmdir /S /Q IVySoft.VPlatform.ModelCode.Generated.Xml.Serialization
+rmdir /S /Q IVySoft.VPlatform.TemplateService.ModelCore
+rmdir /S /Q IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
+rmdir /S /Q IVySoft.VPlatform.TemplateService.ModelCore.Generated
+rmdir /S /Q IVySoft.VPlatform.TemplateService.ModelCore.Generated.Xml.Serialization
 
 mkdir build
 cd build

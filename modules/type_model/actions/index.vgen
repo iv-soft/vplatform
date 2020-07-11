@@ -3,10 +3,10 @@ add_action(
 	context => {
 		var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-		var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+		var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 		using(var scope = sp.CreateScope())
 		{
-		  using(var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>())
+		  using(var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>())
 		  {
 		    foreach(var module in db.Modules)
 		    {
@@ -14,7 +14,7 @@ add_action(
 				module_path("type_model", "EntityProject.csproj"),
     				module.Namespace
 				+ "/" + module.Namespace + ".csproj");
-			foreach(IVySoft.TypeModel.EntityType entity_type in module.Types.Where(x => x is IVySoft.TypeModel.EntityType))
+			foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
 			{
 				razor.load(module_path("type_model", "EntityType.cs"))
 				.with("Namespace", module.Namespace)
@@ -22,7 +22,7 @@ add_action(
 				.process(module.Namespace
 				+ "/" + entity_type.Name + ".cs");
 			}
-			foreach(IVySoft.TypeModel.ComplexType type in module.Types.Where(x => x is IVySoft.TypeModel.ComplexType))
+			foreach(IVySoft.VPlatform.TemplateService.ModelCore.ComplexType type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.ComplexType))
 			{
 				razor.load(module_path("type_model", "ComplexType.cs"))
 				.with("Namespace", module.Namespace)

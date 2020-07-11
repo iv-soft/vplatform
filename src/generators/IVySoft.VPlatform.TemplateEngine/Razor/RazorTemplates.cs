@@ -32,5 +32,10 @@ namespace IVySoft.VPlatform.TemplateEngine.Razor
             this.compiler_.Compile(code, dllPath, options);
             return System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(dllPath);
         }
+        public Assembly Compile(IEnumerable<string> input_files, string dllPath, CompilerOptions options)
+        {
+            this.compiler_.Compile(input_files, dllPath, options);
+            return System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(dllPath);
+        }
     }
 }

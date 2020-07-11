@@ -4,15 +4,17 @@
 @{
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 	var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-	var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+	var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var scope = sp.CreateScope();
-	var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>();
+	var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var module = db.Modules.Single(x => x.Namespace == Parameters["Namespace"]);
-	var entity_type = (IVySoft.TypeModel.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
+	var entity_type = (IVySoft.VPlatform.TemplateService.ModelCore.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
 	var entity_associations = module.Associations;
 }
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace @Parameters["Namespace"]
 {
@@ -29,9 +31,9 @@ namespace @Parameters["Namespace"]
 	{
 		var field_entity_type = module.Types.SingleOrDefault(x => field.Type == module.Namespace + "." + x.Name);
 
-		if(null == field_entity_type) {
-			if(string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
-	        @:public @field.Type @field.Name { get; set; }
+		if(null == field_entity_type || !(field_entity_type is IVySoft.VPlatform.TemplateService.ModelCore.EntityType)) {
+			if(field_entity_type != null || string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
+	        @:public @((field_entity_type != null) ? "virtual " : "")@field.Type @field.Name { get; set; }
 			} else if(field.Multiplicity == "0..1") {
 	        @:public @field.Type? @field.Name { get; set; }
 			}

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\@(Parameters["Namespace"])\@(Parameters["Namespace"]).csproj" />
+    <ProjectReference Include="..\IVySoft.VPlatform.TemplateService.ModelCore\IVySoft.VPlatform.TemplateService.ModelCore.csproj" />
   </ItemGroup>
 
 </Project>

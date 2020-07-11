@@ -4,11 +4,11 @@
 @{
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 	var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-	var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+	var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var scope = sp.CreateScope();
-	var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>();
+	var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var module = db.Modules.Single(x => x.Namespace == Parameters["Namespace"]);
-	var entity_type = (IVySoft.TypeModel.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
+	var entity_type = (IVySoft.VPlatform.TemplateService.ModelCore.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
 	var entity_associations = module.Associations;
 
 }
@@ -21,12 +21,23 @@ using System.Linq;
 
 namespace @(Parameters["Namespace"]).Xml.Serialization
 {
-    [XmlRoot(Namespace("@Parameters["Namespace"]"))]
-    public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (" : " + entity_type.BaseType))
+    [XmlRoot(Namespace = "@Parameters["Namespace"]")]
+    public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (
+	" : "
+	+ entity_type.BaseType.Substring(0, entity_type.BaseType.LastIndexOf('.'))
+	+ ".Xml.Serialization"
+	+ entity_type.BaseType.Substring(entity_type.BaseType.LastIndexOf('.'))
+	))
     {
 	@foreach(var field in entity_type.Properties)
 	{
-		if(string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
+		var field_type = db.Modules
+			.SelectMany(m => m.Types.Where(x => field.Type == m.Namespace + "." + x.Name))
+			.SingleOrDefault();
+		if(field_type != null) {
+		@:[XmlElement()]
+	        @:public @(field_type.Module.Namespace).Xml.Serialization.@field_type.Name @field.Name { get; set; }
+		} else if(string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
 		@:[XmlElement()]
 	        @:public @field.Type @field.Name { get; set; }
 		} else if(field.Multiplicity == "0..1") {
@@ -35,7 +46,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 		}
 	}
 
-	@foreach(var association in entity_associations.Where(x => x.Left.Type == entity_type.Name))
+	@foreach(var association in entity_associations.Where(x => x.Left.Type == entity_type.Module.Namespace + "." + entity_type.Name))
 	{
 		@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 		{
@@ -51,7 +62,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
                     			if (!processed.Contains(base_type))
                     			{
 						processed.Add(base_type);
-						foreach(IVySoft.TypeModel.EntityType derived in module.Types.Where(x => x is IVySoft.TypeModel.EntityType))
+						foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType derived in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
 						{
 						   if(derived.BaseType == base_type)
 						   {
@@ -78,7 +89,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 	}
 	@foreach(var association in entity_associations.Where(x => x.Right.Type == module.Namespace + "." + entity_type.Name))
 	{
-		@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
+		if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 		{
 			var derived_types = new Dictionary<string, string>();
 			var unprocessed = new SortedSet<string>();
@@ -92,7 +103,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
                     			if (!processed.Contains(base_type))
                     			{
 						processed.Add(base_type);
-						foreach(IVySoft.TypeModel.EntityType derived in module.Types.Where(x => x is IVySoft.TypeModel.EntityType))
+						foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType derived in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
 						{
 						   if(derived.BaseType == base_type)
 						   {
@@ -117,12 +128,15 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 	@:public @(association.Left.Type.Substring(0, association.Left.Type.LastIndexOf('.')) + ".Xml.Serialization" + association.Left.Type.Substring(association.Left.Type.LastIndexOf('.')))[] @association.Left.Property { get; set; }
 		}
 	}
-	
-	public @((entity_type.BaseType == null) ? "virtual" : "override") object ToModel()
-	{
-		var result = new @Parameters["Namespace"].@(entity_type.Name)();
-		this.InitModel(result);
-		return result;
+
+	@if(!entity_type.Abstract)
+	{	
+	@:public @((entity_type.BaseType == null) ? "virtual" : "override") object ToModel()
+	@:{
+		@:var result = new @Parameters["Namespace"].@(entity_type.Name)();
+		@:this.InitModel(result);
+		@:return result;
+	@:}
 	}
 
 	protected void InitModel(@Parameters["Namespace"].@(entity_type.Name) result)

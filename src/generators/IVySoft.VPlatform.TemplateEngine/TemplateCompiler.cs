@@ -81,5 +81,37 @@ namespace IVySoft.VPlatform.TemplateEngine
                 throw new Exception(string.Join(Environment.NewLine, result.Diagnostics));
             }
         }
+        public void Compile(IEnumerable<string> source_files, string dllPath, CompilerOptions options)
+        {
+            var compilation = CSharpCompilation.Create(
+                Convert.ToBase64String(SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(
+                    string.Join(string.Empty, source_files.Select(x => File.ReadAllText(x)))))).Replace('/', '.'),
+                source_files.Select(x => CSharpSyntaxTree.ParseText(File.ReadAllText(x))).ToArray(),
+                options.References.Concat(
+                new[]
+                {
+                    MetadataReference.CreateFromFile(typeof(object).Assembly.Location), // include corlib
+                    MetadataReference.CreateFromFile(typeof(RazorCompiledItemAttribute).Assembly.Location), // include Microsoft.AspNetCore.Razor.Runtime
+                    MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location), // this file (that contains the MyTemplate base class)
+                    MetadataReference.CreateFromFile(typeof(ITemplateCompiler).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),//Linq
+                    MetadataReference.CreateFromFile(typeof(System.Linq.Expressions.BinaryExpression).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(System.ComponentModel.IListSource).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(KeyAttribute).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(Dictionary<object, object>).Assembly.Location),
+                    MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Runtime.dll")),
+                    MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "netstandard.dll")),
+                    MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Collections.dll"))
+                }),
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            Directory.CreateDirectory(Path.GetDirectoryName(dllPath));
+            var result = compilation.Emit(dllPath);
+            if (!result.Success)
+            {
+                var r = new List<object>();
+                File.Delete(dllPath);
+                throw new Exception(string.Join(Environment.NewLine, result.Diagnostics));
+            }
+        }
     }
 }

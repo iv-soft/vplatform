@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 {
 @:namespace @module.Namespace
 @:{
-  @foreach(IVySoft.VPlatform.ModelCode.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.ModelCode.EntityType)){
+  @foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType)){
 	@:public class @entity_type.Name@(string.IsNullOrWhiteSpace(entity_type.BaseType) ? "" : (" : " + entity_type.BaseType))
 	@:{
 		@if(entity_type.BaseType == null)
@@ -98,7 +98,7 @@ using Microsoft.Extensions.DependencyInjection;
         @:{
             @:base.OnModelCreating(modelBuilder);
 
-	    @foreach(IVySoft.VPlatform.ModelCode.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.ModelCode.EntityType))
+	    @foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
 	    {
 		foreach(var association in module.Associations.Where(x => x.Left.Type == entity_type.Name))
 		{
@@ -208,7 +208,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 @:namespace @module.Namespace@.Xml.Serialization
 @:{
-  @foreach(IVySoft.VPlatform.ModelCode.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.ModelCode.EntityType)){
+  @foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType)){
     @:[XmlRoot(Namespace = "@module.Namespace")]
     @:public class @entity_type.Name@(string.IsNullOrWhiteSpace(entity_type.BaseType) ? "" : (" : " + entity_type.BaseType.Substring(0, entity_type.BaseType.LastIndexOf('.')) + ".Xml.Serialization" + entity_type.BaseType.Substring(entity_type.BaseType.LastIndexOf('.'))))
     @:{

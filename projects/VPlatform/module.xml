@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Module xmlns="http://schemas.iv-soft.ru/schemas/vplatform_module.xsd">
-  <Name>ModelCode</Name>
-  <Namespace>IVySoft.VPlatform.Target.ModelCode</Namespace>
+  <Name>ModelCore</Name>
+  <Namespace>IVySoft.VPlatform.Target.ModelCore</Namespace>
 
   <Dependencies>
     <ModuleDependency>

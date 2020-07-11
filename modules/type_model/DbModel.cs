@@ -3,9 +3,9 @@
 @using Microsoft.Extensions.DependencyInjection;
 @{
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
-	var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+	var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var scope = sp.CreateScope();
-	var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>();
+	var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 }
 using System.Linq;
 using System.Collections.Generic;
@@ -44,7 +44,19 @@ namespace @Parameters["Namespace"]
 			var derived_types = new Dictionary<string, string>();
 			var unprocessed = new SortedSet<string>();
 			var processed = new SortedSet<string>();
-			unprocessed.Add(association.Right.Type);
+			var type_name = association.Right.Type;
+			for(;;)
+			{
+				var type = db.Modules.SelectMany(m => m.Types.Where(x => m.Namespace + "." + x.Name == type_name)).Single();
+				if(type.BaseType == null)
+				{
+					break;
+				}
+
+				type_name = type.BaseType;
+			}
+			unprocessed.Add(type_name);
+
 			while(unprocessed.Count > 0)
             		{
 				foreach(var base_type in unprocessed)
@@ -58,7 +70,10 @@ namespace @Parameters["Namespace"]
 							var full_name = derived.Module.Namespace + "." + derived.Name;
                     					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
 							{
-								derived_types.Add(derived.Name, full_name);
+								if((derived is IVySoft.VPlatform.TemplateService.ModelCore.EntityType) && !((IVySoft.VPlatform.TemplateService.ModelCore.EntityType)derived).Abstract)
+								{
+									derived_types.Add(derived.Name, full_name);
+								}
 								unprocessed.Add(full_name);
 							}
 						}
@@ -68,7 +83,7 @@ namespace @Parameters["Namespace"]
 				}
 			}
 			if(derived_types.Count > 0){
-            @:modelBuilder.Entity<@association.Right.Type>()
+            @:modelBuilder.Entity<@type_name>()
             @:    .HasDiscriminator<string>("class")
 		@foreach(var derived in derived_types)
 		{
@@ -83,7 +98,18 @@ namespace @Parameters["Namespace"]
 			var derived_types = new Dictionary<string, string>();
 			var unprocessed = new SortedSet<string>();
 			var processed = new SortedSet<string>();
-			unprocessed.Add(association.Left.Type);
+			var type_name = association.Left.Type;
+			for(;;)
+			{
+				var type = db.Modules.SelectMany(m => m.Types.Where(x => m.Namespace + "." + x.Name == type_name)).Single();
+				if(type.BaseType == null)
+				{
+					break;
+				}
+
+				type_name = type.BaseType;
+			}
+			unprocessed.Add(type_name);
 			while(unprocessed.Count > 0)
             		{
 				foreach(var base_type in unprocessed)
@@ -97,7 +123,10 @@ namespace @Parameters["Namespace"]
 							var full_name = derived.Module.Namespace + "." + derived.Name;
                     					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
 							{
-								derived_types.Add(derived.Name, full_name);
+								if((derived is IVySoft.VPlatform.TemplateService.ModelCore.EntityType) && !((IVySoft.VPlatform.TemplateService.ModelCore.EntityType)derived).Abstract)
+								{
+									derived_types.Add(derived.Name, full_name);
+								}
 								unprocessed.Add(full_name);
 							}
 						}
@@ -107,7 +136,7 @@ namespace @Parameters["Namespace"]
 				}
 			}
 			if(derived_types.Count > 0){
-            @:modelBuilder.Entity<@association.Left.Type>()
+            @:modelBuilder.Entity<@type_name>()
             @:    .HasDiscriminator<string>("class")
 		@foreach(var derived in derived_types)
 		{

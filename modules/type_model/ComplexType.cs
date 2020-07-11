@@ -4,19 +4,21 @@
 @{
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
 	var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-	var sp = entity_manager.get_db_model<IVySoft.TypeModel.DbModel>();
+	var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var scope = sp.CreateScope();
-	var db = scope.ServiceProvider.GetService<IVySoft.TypeModel.DbModel>();
+	var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var module = db.Modules.Single(x => x.Namespace == Parameters["Namespace"]);
-	var entity_type = (IVySoft.TypeModel.ComplexType)module.Types.Single(x => x.Name == Parameters["Name"]);
+	var entity_type = (IVySoft.VPlatform.TemplateService.ModelCore.ComplexType)module.Types.Single(x => x.Name == Parameters["Name"]);
 	var entity_associations = module.Associations;
 }
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace @Parameters["Namespace"]
 {
-    [ComplexType]
+    [Owned]
     public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (" : " + entity_type.BaseType))
     {
 	@foreach(var field in entity_type.Properties)
