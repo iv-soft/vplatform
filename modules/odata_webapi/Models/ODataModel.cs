@@ -1,9 +1,11 @@
 ﻿@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
 @{
-	var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 	var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
-	var modules = entity_manager.get_collection<type_model.module>("modules");
-	var entity_tables = entity_manager.get_collection<type_model.entity_table>("entity_tables");
+	var sp = entity_manager.get_db_model<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
+	var scope = sp.CreateScope();
+	var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 }
 
 using IVySoft.SiteBuilder.FieldType;
@@ -21,9 +23,12 @@ namespace @Parameters["Namespace"]
         public static IEdmModel GetEdmModel()
         {
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-@foreach(var entity_table in entity_tables)
+@foreach(var module in db.Modules)
 {
-        @:builder.EntitySet<@(modules.Single(x => x.Name == entity_table.Module).Namespace + "." + entity_table.Type)>("@entity_table.Name");
+  foreach(var entity_table in module.Tables)
+  {
+        @:builder.EntitySet<@entity_table.EntityType>("@entity_table.Name");
+  }
 }
             return builder.GetEdmModel();
         }

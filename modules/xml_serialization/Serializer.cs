@@ -69,7 +69,10 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 							var full_name = module.Namespace + "." + derived.Name;
                     					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
 							{
-								derived_types.Add(derived.Name, module.Namespace + ".Xml.Serialization." + derived.Name);
+								if(!derived.Abstract)
+								{
+									derived_types.Add(derived.Name, module.Namespace + ".Xml.Serialization." + derived.Name);
+								}
 								unprocessed.Add(full_name);
 							}
 						   }
@@ -110,7 +113,10 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 							var full_name = module.Namespace + "." + derived.Name;
                     					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
 							{
-								derived_types.Add(derived.Name, module.Namespace + ".Xml.Serialization." + derived.Name);
+								if(!derived.Abstract)
+								{
+									derived_types.Add(derived.Name, module.Namespace + ".Xml.Serialization." + derived.Name);
+								}
 								unprocessed.Add(full_name);
 							}
 						   }

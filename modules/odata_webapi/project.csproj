@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-@foreach(var module in (System.Collections.Generic.IEnumerable<type_model.module>)@Parameters["Modules"]) {
+@foreach(var module in (System.Collections.Generic.IEnumerable<IVySoft.VPlatform.TemplateService.ModelCore.Module>)@Parameters["Modules"]) {
     <ProjectReference Include="..\@(module.Namespace)\@(module.Namespace).csproj" />
 }
   </ItemGroup>

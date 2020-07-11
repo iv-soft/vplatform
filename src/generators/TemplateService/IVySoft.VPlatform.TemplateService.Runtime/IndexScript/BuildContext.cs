@@ -71,10 +71,17 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
             var dllPath = System.IO.Path.Combine(
                 ctx.BuildFolder,
                 "index.vgen.dll");
-            var script = templates.Load<IndexScript.IndexScriptBase>(index_file, dllPath, options);
-            script.Context = context;
-            script.Execute();
-            script.ExecuteDone();
+            try
+            {
+                var script = templates.Load<IndexScript.IndexScriptBase>(index_file, dllPath, options);
+                script.Context = context;
+                script.Execute();
+                script.ExecuteDone();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.Message} at execute file {index_file}", ex);
+            }
         }
         public void Process()
         {
