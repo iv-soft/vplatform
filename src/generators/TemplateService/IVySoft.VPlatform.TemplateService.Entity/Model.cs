@@ -119,13 +119,15 @@ namespace IVySoft.VPlatform.ModelCode
 		public DbSet<IVySoft.VPlatform.ModelCode.Module> Modules { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
+			modelBuilder.ComplexType<AssociationEnd>();
+
 			modelBuilder.Entity<ModuleType>()
 				.HasDiscriminator<string>("class")
 				.HasValue<IVySoft.VPlatform.ModelCode.EntityType>("EntityType")
 				.HasValue<IVySoft.VPlatform.ModelCode.ComplexType>("ComplexType")
 				.HasValue<IVySoft.VPlatform.ModelCode.PrimitiveType>("PrimitiveType")
 			;
+			base.OnModelCreating(modelBuilder);
 		}
 
 		public static IServiceProvider CreateServiceProvider()

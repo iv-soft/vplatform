@@ -16,6 +16,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace @Parameters["Namespace"]
 {
+    [ComplexType]
     public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (" : " + entity_type.BaseType))
     {
 	@foreach(var field in entity_type.Properties)

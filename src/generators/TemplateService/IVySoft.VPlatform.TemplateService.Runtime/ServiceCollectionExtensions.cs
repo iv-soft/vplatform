@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using IVySoft.VPlatform.TemplateService.Runtime.IndexScript;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime
     {
         public static void UseTemplateServiceRuntime(this IServiceCollection services)
         {
-
+            services.AddTransient<IFileSystem, FileSystem>();
         }
     }
 }
