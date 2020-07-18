@@ -166,6 +166,8 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 
 	protected void InitModel(@Parameters["Namespace"].@(entity_type.Name) result)
 	{
+		int order;
+
 		@if(entity_type.BaseType != null)
 		{
 		@:base.InitModel(result);
@@ -188,8 +190,16 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 			{
 		@:result.@association.Left.Property = new List<@association.Left.Type>((this.@association.Left.Property == null) ? new @association.Left.Type@[0] : this.@association.Left.Property@.Select(x => (@association.Left.Type@)x.ToModel()));
+		if(association.Left.Order != null)
+		{
+		@:order = 0;
+		}
 		@:foreach(var item in result.@association.Left.Property)
             	@:{
+		  if(association.Left.Order != null)
+		  {
+			@:item.@association.Left.Order = order++;
+		  }
 			@:item.@association.Right.Property = result;
             	@:}
 			}
@@ -199,8 +209,16 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
 		@:result.@association.Right.Property = new List<@association.Right.Type>((this.@association.Right.Property == null) ? new @association.Right.Type@[0] : this.@association.Right.Property@.Select(x => (@association.Right.Type@)x.ToModel()));
+		if(association.Right.Order != null)
+		{
+		@:order = 0;
+		}
 		@:foreach(var item in result.@association.Right.Property)
             	@:{
+		  if(association.Right.Order != null)
+		  {
+			@:item.@association.Right.Order = order++;
+		  }
 			@:item.@association.Left.Property = result;
             	@:}
 			}

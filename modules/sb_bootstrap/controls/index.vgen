@@ -1,0 +1,4 @@
+var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+razor.add_component("Masthead", local_path("Masthead.cshtml"));
+razor.add_component("Button", local_path("Button.cshtml"));
+razor.add_component("EmailInput", local_path("EmailInput.cshtml"));

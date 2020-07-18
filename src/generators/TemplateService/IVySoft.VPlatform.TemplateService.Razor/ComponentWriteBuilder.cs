@@ -31,10 +31,10 @@ namespace IVySoft.VPlatform.TemplateService.Razor
         public string Render(TextTemplateBase context)
         {
             var runtime = context as RazorRuntimeBase;
-            foreach(var item in runtime.Parameters)
-            {
-                this.with(item.Key, item.Value);
-            }
+            //foreach(var item in runtime.Parameters)
+            //{
+            //    this.with(item.Key, item.Value);
+            //}
 
             return base.process(null);
         }

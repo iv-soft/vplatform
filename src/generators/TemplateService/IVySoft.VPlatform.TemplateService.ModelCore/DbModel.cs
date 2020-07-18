@@ -69,7 +69,7 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore
                 .HasValue<IVySoft.VPlatform.TemplateService.ModelCore.PrimitiveType>("PrimitiveType")
                 .HasValue<IVySoft.VPlatform.TemplateService.ModelCore.EntityType>("EntityType")
                 .HasValue<IVySoft.VPlatform.TemplateService.ModelCore.ComplexType>("ComplexType")
-	    ;
+	        ;
         }
     }
 }

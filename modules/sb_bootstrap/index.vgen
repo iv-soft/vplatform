@@ -1,5 +1,5 @@
 import("bootstrap");
-
+add_directory("controls");
 add_action(
 	"sb:generate_SimpleForm",
 	x => {
@@ -9,7 +9,7 @@ add_action(
 		.with("Layout", x.get("Layout"))
 		.with("Title", x.get("Title"))
 		.with("lang", get("lang"))
-		.with("content", razor.load(local_path(x.get("content_path") + ".cshtml"))
+		.with("content", razor.load(local_path("forms/" + x.get("content_path") + ".cshtml"))
 			.with("FormId", x.get("FormId"))
 			.with("brand", get("brand"))
 		)

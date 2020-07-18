@@ -14,5 +14,10 @@ namespace IVySoft.VPlatform.TemplateEngine
         {
             this.parameters_.Add(name, value);
         }
+
+        protected bool contains(string name)
+        {
+            return this.parameters_.ContainsKey(name);
+        }
     }
 }

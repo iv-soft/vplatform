@@ -16,6 +16,8 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
 	        public string Property { get; set; }
 		[XmlElement()]
 	        public string Multiplicity { get; set; }
+		[XmlElement()]
+	        public string Order { get; set; }
 
 	
 	public virtual object ToModel()
@@ -31,6 +33,7 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
 		result.Type = this.Type;
 		result.Property = this.Property;
 		result.Multiplicity = this.Multiplicity;
+		result.Order = this.Order;
 					}
     }
 }

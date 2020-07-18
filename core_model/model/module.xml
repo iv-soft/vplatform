@@ -141,6 +141,10 @@
           <Name>Multiplicity</Name>
           <Type>string</Type>
         </Property>
+        <Property>
+          <Name>Order</Name>
+          <Type>string</Type>
+        </Property>
       </Properties>
     </ComplexType>
 
