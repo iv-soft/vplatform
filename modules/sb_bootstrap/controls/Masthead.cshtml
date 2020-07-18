@@ -7,7 +7,7 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.Masthead)db.FormControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.Masthead)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
 
   <header class="masthead text-white text-center">
@@ -18,16 +18,12 @@
           <h1 class="mb-5">@control.Title</h1>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-          <form>
-            <div class="form-row">
-@foreach(var child in control.Form.OrderBy(x => x.Order))
+@foreach(var child in control.Children.OrderBy(x => x.Order))
 {
 	var type = child.GetType().Name;
 	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
 	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id })
 }
-            </div>
-          </form>
         </div>
       </div>
     </div>

@@ -7,8 +7,10 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.EmailInput)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.TextInput)db.FormControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
-<div class="col-12 col-md-9 mb-2 mb-md-0">
-  <input type="email" class="form-control form-control-lg" placeholder="@control.Placeholder">
+<div class="form-group">
+    <label for="@control.ClientId">@control.Label</label>
+    <input type="text" class="form-control" id="@control.ClientId" aria-describedby="@(control.ClientId)Help" placeholder="@control.Placeholder">
+    <small id="@(control.ClientId)Help" class="form-text text-muted">@control.Help</small>
 </div>

@@ -1,0 +1,38 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var control = (IVySoft.SiteBuilder.ImageShowcases)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+}
+  <section class="showcase">
+    <div class="container-fluid p-0">
+@foreach(var item in control.Items.OrderBy(x => x.Order))
+{
+	if(0 == item.Order % 2)
+	{
+      <div class="row no-gutters">
+        <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('@item.Image');"></div>
+        <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+          <h2>@item.Title</h2>
+          <p class="lead mb-0">@item.Description</p>
+        </div>
+      </div>
+	}
+	else
+	{
+      <div class="row no-gutters">
+        <div class="col-lg-6 text-white showcase-img" style="background-image: url('@item.Image');"></div>
+        <div class="col-lg-6 my-auto showcase-text">
+          <h2>@item.Title</h2>
+          <p class="lead mb-0">@item.Description</p>
+        </div>
+      </div>
+	}
+}
+    </div>
+  </section>

@@ -7,7 +7,7 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.Button)db.FormControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.Button)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
 
 <div class="col-12 col-md-3">

@@ -1,0 +1,34 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var page = db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
+  var layout = db.Layouts.Single(x => x.Name == page.Layout);
+}
+  <nav class="navbar navbar-expand-xl navbar-light bg-light">
+    <a href="#" class="navbar-brand">@Parameters["brand"]</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+      <div class="navbar-nav">
+@foreach(var menu_item in layout.Menu)
+{
+        <a href="#" class="nav-item nav-link active">@menu_item.Title</a>
+}
+      </div>
+    </div>
+  </nav>
+
+@foreach(var control in page.Children.OrderBy(x => x.Order))
+{
+	var type = control.GetType().Name;
+	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
+	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = control.Id })
+}

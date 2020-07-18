@@ -7,7 +7,7 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var form = db.Forms.Single(x => x.Id == (int)Parameters["FormId"]);
+  var form = db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
   var layout = db.Layouts.Single(x => x.Name == form.Layout);
 }
   <nav class="navbar navbar-expand-xl navbar-light bg-light">
@@ -25,10 +25,11 @@
       </div>
     </div>
   </nav>
-
+  <form>
 @foreach(var control in form.Children.OrderBy(x => x.Order))
 {
 	var type = control.GetType().Name;
 	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
 	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = control.Id })
 }
+  </form>

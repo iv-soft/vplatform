@@ -1,7 +1,8 @@
 import("bootstrap");
 add_directory("controls");
+add_directory("form_controls");
 add_action(
-	"sb:generate_SimpleForm",
+	"sb:generate_page",
 	x => {
 		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 
@@ -9,8 +10,8 @@ add_action(
 		.with("Layout", x.get("Layout"))
 		.with("Title", x.get("Title"))
 		.with("lang", get("lang"))
-		.with("content", razor.load(local_path("forms/" + x.get("content_path") + ".cshtml"))
-			.with("FormId", x.get("FormId"))
+		.with("content", razor.load(local_path("pages/" + x.get("content_path") + ".cshtml"))
+			.with("PageId", x.get("PageId"))
 			.with("brand", get("brand"))
 		)
 		.with("target_path", x.get("target_path"))

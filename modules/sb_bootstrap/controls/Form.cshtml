@@ -7,8 +7,14 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.EmailInput)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.Form)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
-<div class="col-12 col-md-9 mb-2 mb-md-0">
-  <input type="email" class="form-control form-control-lg" placeholder="@control.Placeholder">
-</div>
+
+<form>
+@foreach(var child in control.Children.OrderBy(x => x.Order))
+{
+	var type = child.GetType().Name;
+	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
+	@component(type + "FormControl", new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id })
+}
+</form>
