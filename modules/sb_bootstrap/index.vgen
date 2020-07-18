@@ -11,6 +11,7 @@ add_action(
 		.with("lang", get("lang"))
 		.with("content", razor.load(local_path(x.get("content_path") + ".cshtml"))
 			.with("FormId", x.get("FormId"))
+			.with("brand", get("brand"))
 		)
 		.with("target_path", x.get("target_path"))
 		.execute();
