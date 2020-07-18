@@ -83,7 +83,7 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
 
         public string module_path(string module_name, string rel_path)
         {
-            return System.IO.Path.Combine(this.Context.Context.GlobalContext.ModulesFolder, module_name, rel_path);
+            return System.IO.Path.Combine(this.Context.Context.GlobalContext.ModulesFolder, module_name, rel_path.Replace('/', System.IO.Path.DirectorySeparatorChar));
         }
         public string local_path(string rel_path)
         {

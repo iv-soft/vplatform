@@ -20,7 +20,6 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
         [XmlArray()]
 	public IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.Association[] Associations { get; set; }
         [XmlArray()]
-        [XmlArrayItem(ElementName = "TypeWithProperties", Type = typeof(IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.TypeWithProperties))]
         [XmlArrayItem(ElementName = "PrimitiveType", Type = typeof(IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.PrimitiveType))]
         [XmlArrayItem(ElementName = "EntityType", Type = typeof(IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.EntityType))]
         [XmlArrayItem(ElementName = "ComplexType", Type = typeof(IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.ComplexType))]
@@ -44,9 +43,25 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
 		result.Namespace = this.Namespace;
 		result.IsExternal = this.IsExternal;
 						result.Associations = new List<IVySoft.VPlatform.TemplateService.ModelCore.Association>((this.Associations == null) ? new IVySoft.VPlatform.TemplateService.ModelCore.Association[0] : this.Associations.Select(x => (IVySoft.VPlatform.TemplateService.ModelCore.Association)x.ToModel()));
+		foreach(var item in result.Associations)
+            	{
+			item.Module = result;
+            	}
 		result.Types = new List<IVySoft.VPlatform.TemplateService.ModelCore.ModuleType>((this.Types == null) ? new IVySoft.VPlatform.TemplateService.ModelCore.ModuleType[0] : this.Types.Select(x => (IVySoft.VPlatform.TemplateService.ModelCore.ModuleType)x.ToModel()));
+		foreach(var item in result.Types)
+            	{
+			item.Module = result;
+            	}
 		result.Dependencies = new List<IVySoft.VPlatform.TemplateService.ModelCore.ModuleDependency>((this.Dependencies == null) ? new IVySoft.VPlatform.TemplateService.ModelCore.ModuleDependency[0] : this.Dependencies.Select(x => (IVySoft.VPlatform.TemplateService.ModelCore.ModuleDependency)x.ToModel()));
+		foreach(var item in result.Dependencies)
+            	{
+			item.Module = result;
+            	}
 		result.Tables = new List<IVySoft.VPlatform.TemplateService.ModelCore.EntityTable>((this.Tables == null) ? new IVySoft.VPlatform.TemplateService.ModelCore.EntityTable[0] : this.Tables.Select(x => (IVySoft.VPlatform.TemplateService.ModelCore.EntityTable)x.ToModel()));
+		foreach(var item in result.Tables)
+            	{
+			item.Module = result;
+            	}
 	}
     }
 }

@@ -8,8 +8,23 @@
 	var scope = sp.CreateScope();
 	var db = scope.ServiceProvider.GetService<IVySoft.VPlatform.TemplateService.ModelCore.DbModel>();
 	var module = db.Modules.Single(x => x.Namespace == Parameters["Namespace"]);
-	var entity_type = (IVySoft.VPlatform.TemplateService.ModelCore.EntityType)module.Types.Single(x => x.Name == Parameters["Name"]);
+	var entity_type = (IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties)module.Types.Single(x => x.Name == Parameters["Name"]);
 	var entity_associations = module.Associations;
+
+	var base_entity = entity_type.BaseType;
+	while(null != base_entity)
+	{
+		var base_type = module.Types.Single(x => x.Module.Namespace + "." + x.Name == base_entity);
+		if(!(base_type is IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties)
+		 || !((IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties)base_type).Abstract)
+		{
+			break;
+		}
+		else
+		{
+			base_entity = base_type.BaseType;
+		}
+	}
 
 }
 
@@ -22,7 +37,7 @@ using System.Linq;
 namespace @(Parameters["Namespace"]).Xml.Serialization
 {
     [XmlRoot(Namespace = "@Parameters["Namespace"]")]
-    public class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (
+    public @(entity_type.Abstract ? "abstract " : "")class @Parameters["Name"]@((entity_type.BaseType == null) ? "" : (
 	" : "
 	+ entity_type.BaseType.Substring(0, entity_type.BaseType.LastIndexOf('.'))
 	+ ".Xml.Serialization"
@@ -62,7 +77,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
                     			if (!processed.Contains(base_type))
                     			{
 						processed.Add(base_type);
-						foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType derived in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
+						foreach(IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties derived in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties))
 						{
 						   if(derived.BaseType == base_type)
 						   {
@@ -106,7 +121,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
                     			if (!processed.Contains(base_type))
                     			{
 						processed.Add(base_type);
-						foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType derived in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
+						foreach(IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties derived in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties))
 						{
 						   if(derived.BaseType == base_type)
 						   {
@@ -144,10 +159,14 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 		@:return result;
 	@:}
 	}
+	else if(entity_type.BaseType == null)
+	{
+	@:public abstract object ToModel();
+	}
 
 	protected void InitModel(@Parameters["Namespace"].@(entity_type.Name) result)
 	{
-		@if(entity_type.BaseType != null)
+		@if(base_entity != null)
 		{
 		@:base.InitModel(result);
 		}
@@ -169,6 +188,10 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 			@if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
 			{
 		@:result.@association.Left.Property = new List<@association.Left.Type>((this.@association.Left.Property == null) ? new @association.Left.Type@[0] : this.@association.Left.Property@.Select(x => (@association.Left.Type@)x.ToModel()));
+		@:foreach(var item in result.@association.Left.Property)
+            	@:{
+			@:item.@association.Right.Property = result;
+            	@:}
 			}
 		}
 		@foreach(var association in entity_associations.Where(x => x.Left.Type == module.Namespace + "." + entity_type.Name))
@@ -176,6 +199,10 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 			@if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
 			{
 		@:result.@association.Right.Property = new List<@association.Right.Type>((this.@association.Right.Property == null) ? new @association.Right.Type@[0] : this.@association.Right.Property@.Select(x => (@association.Right.Type@)x.ToModel()));
+		@:foreach(var item in result.@association.Right.Property)
+            	@:{
+			@:item.@association.Left.Property = result;
+            	@:}
 			}
 		}
 	}

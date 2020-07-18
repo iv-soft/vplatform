@@ -11,12 +11,12 @@ add_action(
 		    foreach(var module in db.Modules)
 		    {
 			copy(
-				module_path("type_model", "EntityProject.csproj"),
+				module_path("type_model", "actions/EntityProject.csproj"),
     				module.Namespace
 				+ "/" + module.Namespace + ".csproj");
 			foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
 			{
-				razor.load(module_path("type_model", "EntityType.cs"))
+				razor.load(module_path("type_model", "actions/EntityType.cs"))
 				.with("Namespace", module.Namespace)
 				.with("Name", entity_type.Name)
 				.process(module.Namespace
@@ -24,7 +24,7 @@ add_action(
 			}
 			foreach(IVySoft.VPlatform.TemplateService.ModelCore.ComplexType type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.ComplexType))
 			{
-				razor.load(module_path("type_model", "ComplexType.cs"))
+				razor.load(module_path("type_model", "actions/ComplexType.cs"))
 				.with("Namespace", module.Namespace)
 				.with("Name", type.Name)
 				.process(module.Namespace
@@ -35,3 +35,11 @@ add_action(
 		}
 	});
 
+add_action(
+	"generate_db_module",
+	context => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+		razor.load(module_path("type_model", "actions/DbModel.cs"))
+		.with("Namespace", context.get("Namespace"))
+		.process((string)context.get("target_path"));
+	});

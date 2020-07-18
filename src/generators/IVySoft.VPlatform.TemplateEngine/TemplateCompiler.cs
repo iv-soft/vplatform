@@ -86,7 +86,7 @@ namespace IVySoft.VPlatform.TemplateEngine
             var compilation = CSharpCompilation.Create(
                 Convert.ToBase64String(SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(
                     string.Join(string.Empty, source_files.Select(x => File.ReadAllText(x)))))).Replace('/', '.'),
-                source_files.Select(x => CSharpSyntaxTree.ParseText(File.ReadAllText(x))).ToArray(),
+                source_files.Select(x => CSharpSyntaxTree.ParseText(File.ReadAllText(x), path: x)).ToArray(),
                 options.References.Concat(
                 new[]
                 {

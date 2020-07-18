@@ -10,8 +10,6 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
     [XmlRoot(Namespace = "IVySoft.VPlatform.TemplateService.ModelCore")]
     public class ComplexType : IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.TypeWithProperties
     {
-		[XmlElement()]
-	        public bool Abstract { get; set; }
 
 	
 	public override object ToModel()
@@ -25,7 +23,6 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization
 	{
 		base.InitModel(result);
 
-		result.Abstract = this.Abstract;
 					}
     }
 }

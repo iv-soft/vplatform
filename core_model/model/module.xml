@@ -61,11 +61,6 @@
       <Name>TypeWithProperties</Name>
       <BaseType>IVySoft.VPlatform.TemplateService.ModelCore.Generated.ModuleType</BaseType>
       <Abstract>true</Abstract>
-    </EntityType>
-
-    <EntityType>
-      <Name>EntityType</Name>
-      <BaseType>IVySoft.VPlatform.TemplateService.ModelCore.Generated.TypeWithProperties</BaseType>
       <Properties>
         <Property>
           <Name>Abstract</Name>
@@ -75,14 +70,13 @@
     </EntityType>
 
     <EntityType>
+      <Name>EntityType</Name>
+      <BaseType>IVySoft.VPlatform.TemplateService.ModelCore.Generated.TypeWithProperties</BaseType>
+    </EntityType>
+
+    <EntityType>
       <Name>ComplexType</Name>
       <BaseType>IVySoft.VPlatform.TemplateService.ModelCore.Generated.TypeWithProperties</BaseType>
-      <Properties>
-        <Property>
-          <Name>Abstract</Name>
-          <Type>bool</Type>
-        </Property>
-      </Properties>
     </EntityType>
 
     <EntityType>

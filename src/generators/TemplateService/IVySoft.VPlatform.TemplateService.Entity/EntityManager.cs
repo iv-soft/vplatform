@@ -95,7 +95,7 @@ namespace IVySoft.VPlatform.TemplateService.Entity
             {
                 cb.SetBuildContext(new BuildContext
                 {
-                    SourceFolder = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model"),
+                    SourceFolder = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder),
                     BuildFolder = target_path,
                     GlobalContext = this.context_.GlobalContext
                 });
@@ -116,7 +116,7 @@ namespace IVySoft.VPlatform.TemplateService.Entity
 
                     foreach (ModelCore.EntityType entity_type in module.Types.Where(x => x is ModelCore.EntityType))
                     {
-                        var target_file = System.IO.Path.Combine(target_path, module.Namespace, entity_type.Name + ".cs");
+                        var target_file = System.IO.Path.Combine(target_path, entity_type.Name + ".cs");
 
                         razor.load(entity_template)
                         .with("Namespace", module.Namespace)
@@ -126,15 +126,24 @@ namespace IVySoft.VPlatform.TemplateService.Entity
                     }
                     foreach (ModelCore.ComplexType type in module.Types.Where(x => x is ModelCore.ComplexType))
                     {
-                        var target_file = System.IO.Path.Combine(target_path, module.Namespace, type.Name + ".cs");
+                        var target_file = System.IO.Path.Combine(target_path, type.Name + ".cs");
                         razor.load(complexType_template)
                         .with("Namespace", module.Namespace)
                         .with("Name", type.Name)
                         .process(target_file);
                         input_files.Add(target_file);
                     }
+                    foreach (var type in module.Types.Where(x => x is ModelCore.TypeWithProperties))
+                    {
+                        var target_file = System.IO.Path.Combine(target_path, type.Name + ".Serializer.cs");
+                        razor.load(serialize_template)
+                        .with("Namespace", module.Namespace)
+                        .with("Name", type.Name)
+                        .process(target_file);
+                        input_files.Add(target_file);
+                    }
 
-                    var db_model_file = System.IO.Path.Combine(target_path, module.Namespace, "DbModel.cs");
+                    var db_model_file = System.IO.Path.Combine(target_path, "DbModel.cs");
                     razor.load(db_model_template)
                     .with("Namespace", module.Namespace)
                     .process(db_model_file);

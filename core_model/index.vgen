@@ -4,12 +4,11 @@ import("xml_serialization");
 add_directory("model");
 
 action("generate_modules").execute();
-action("generate_xml_serialization").execute();
-
-var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-razor.load(module_path("type_model", "DbModel.cs"))
+action("generate_db_module")
 .with("Namespace", "IVySoft.VPlatform.TemplateService.ModelCore.Generated")
-.process(target_path("IVySoft.VPlatform.TemplateService.ModelCore.Generated/DbModel.cs"));
+.with("target_path", target_path("IVySoft.VPlatform.TemplateService.ModelCore.Generated/DbModel.cs"))
+.execute();
+action("generate_xml_serialization").execute();
 
 
 var fs = get_service<IVySoft.VPlatform.TemplateService.IFileSystem>();

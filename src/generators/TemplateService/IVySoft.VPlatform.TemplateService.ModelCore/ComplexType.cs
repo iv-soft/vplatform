@@ -8,7 +8,6 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore
     public class ComplexType : IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties
     {
 
-	        public bool Abstract { get; set; }
 
 	    }
 }

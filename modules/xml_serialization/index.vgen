@@ -17,7 +17,7 @@ add_action(
 				+ module.Namespace
 				+ ".Xml.Serialization.csproj");
 
-			foreach(IVySoft.VPlatform.TemplateService.ModelCore.EntityType entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.EntityType))
+			foreach(IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties entity_type in module.Types.Where(x => x is IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties))
 			{
 				razor.load(module_path("xml_serialization", "Serializer.cs"))
 				.with("Namespace", module.Namespace)

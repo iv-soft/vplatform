@@ -8,7 +8,6 @@ namespace IVySoft.VPlatform.TemplateService.ModelCore
     public class EntityType : IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties
     {
 
-	        public bool Abstract { get; set; }
 
 	    }
 }
