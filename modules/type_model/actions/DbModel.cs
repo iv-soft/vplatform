@@ -81,24 +81,12 @@ namespace @Parameters["Namespace"]
 
 	@foreach(var module in db.Modules)
 	{
-	    foreach(var association in module.Associations)
+	    foreach(IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties type in module.Types.Where(x => x.BaseType == null && x is IVySoft.VPlatform.TemplateService.ModelCore.TypeWithProperties))
 	    {
-		if(association.Left.Multiplicity == "0..*" || association.Left.Multiplicity == "1..*")
-		{
 			var derived_types = new Dictionary<string, string>();
 			var unprocessed = new SortedSet<string>();
 			var processed = new SortedSet<string>();
-			var type_name = association.Right.Type;
-			for(;;)
-			{
-				var type = db.Modules.SelectMany(m => m.Types.Where(x => m.Namespace + "." + x.Name == type_name)).Single();
-				if(type.BaseType == null)
-				{
-					break;
-				}
-
-				type_name = type.BaseType;
-			}
+			var type_name = type.Module.Namespace + "." + type.Name;
 			unprocessed.Add(type_name);
 
 			while(unprocessed.Count > 0)
@@ -134,60 +122,6 @@ namespace @Parameters["Namespace"]
             @:    .HasValue<@(derived.Value)>("@derived.Key")
 		}
 	    @:    ;
-			}
-			}
-
-			if(association.Right.Multiplicity == "0..*" || association.Right.Multiplicity == "1..*")
-			{
-			var derived_types = new Dictionary<string, string>();
-			var unprocessed = new SortedSet<string>();
-			var processed = new SortedSet<string>();
-			var type_name = association.Left.Type;
-			for(;;)
-			{
-				var type = db.Modules.SelectMany(m => m.Types.Where(x => m.Namespace + "." + x.Name == type_name)).Single();
-				if(type.BaseType == null)
-				{
-					break;
-				}
-
-				type_name = type.BaseType;
-			}
-			unprocessed.Add(type_name);
-			while(unprocessed.Count > 0)
-            		{
-				foreach(var base_type in unprocessed)
-                		{
-					unprocessed.Remove(base_type);
-                    			if (!processed.Contains(base_type))
-                    			{
-						processed.Add(base_type);
-						foreach(var derived in db.Modules.SelectMany(m => m.Types.Where(x => x.BaseType == base_type)))
-						{
-							var full_name = derived.Module.Namespace + "." + derived.Name;
-                    					if (!processed.Contains(full_name) && !unprocessed.Contains(full_name))
-							{
-								if((derived is IVySoft.VPlatform.TemplateService.ModelCore.EntityType) && !((IVySoft.VPlatform.TemplateService.ModelCore.EntityType)derived).Abstract)
-								{
-									derived_types.Add(derived.Name, full_name);
-								}
-								unprocessed.Add(full_name);
-							}
-						}
-                    			}
-
-					break;
-				}
-			}
-			if(derived_types.Count > 0){
-            @:modelBuilder.Entity<@type_name>()
-            @:    .HasDiscriminator<string>("class")
-		@foreach(var derived in derived_types)
-		{
-            @:    .HasValue<@(derived.Value)>("@derived.Key")
-		}
-	    @:;
-			}
 			}
 		}
 	    }

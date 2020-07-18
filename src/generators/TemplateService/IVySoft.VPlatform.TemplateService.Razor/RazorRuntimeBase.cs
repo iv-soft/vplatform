@@ -54,5 +54,10 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             }
             throw new Exception($"Unable to generate ID for name {default_name}");
         }
+        protected void message(string msg)
+        {
+            Console.WriteLine(msg);
+        }
+
     }
 }
