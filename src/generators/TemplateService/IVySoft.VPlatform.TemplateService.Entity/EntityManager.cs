@@ -85,16 +85,21 @@ namespace IVySoft.VPlatform.TemplateService.Entity
                 }
             }
 
-            var razor = this.context_.GlobalContext.ServiceProvider.GetService<Razor.IRazorManager>();
-            var cb = razor as IBuildContextDependent;
-            if(cb != null)
-            {
-                cb.SetBuildContext(this.context_);
-            }
-
             var target_path = System.IO.Path.Combine(this.context_.BuildFolder, "Models", model.Namespace);
             Directory.CreateDirectory(target_path);
             this.context_.GlobalContext.add_build_path(target_path, target_path);
+
+            var razor = this.context_.GlobalContext.ServiceProvider.GetService<Razor.IRazorManager>();
+            var cb = razor as IBuildContextDependent;
+            if (cb != null)
+            {
+                cb.SetBuildContext(new BuildContext
+                {
+                    SourceFolder = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model"),
+                    BuildFolder = target_path,
+                    GlobalContext = this.context_.GlobalContext
+                });
+            }
 
             var entity_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "EntityType.cs");
             var complexType_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "ComplexType.cs");

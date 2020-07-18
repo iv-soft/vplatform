@@ -156,6 +156,8 @@ namespace IVySoft.VPlatform.TemplateService.Entity
                             MetadataReference.CreateFromFile(
                                 typeof(IVySoft.VPlatform.TemplateService.ModelCore.ModuleType).Assembly.Location),
                             MetadataReference.CreateFromFile(
+                                typeof(OwnedAttribute).Assembly.Location),                            
+                            MetadataReference.CreateFromFile(
                                 typeof(RelationalEntityTypeBuilderExtensions).Assembly.Location),
                             MetadataReference.CreateFromFile(
                                 typeof(Microsoft.Extensions.Configuration.ConfigurationBuilder).Assembly.Location),

@@ -37,12 +37,18 @@ namespace IVySoft.VPlatform.TemplateEngine.Razor
 
         public string GenerateCode(string templateFile)
         {
-            var item = this.fs_.GetItem(templateFile);
+            try
+            {
+                var item = this.fs_.GetItem(templateFile);
 
-            var codeDocument = this.engine_.Process(item);
-            var cs = codeDocument.GetCSharpDocument();
+                var codeDocument = this.engine_.Process(item);
+                var cs = codeDocument.GetCSharpDocument();
 
-            return cs.GeneratedCode;
+                return cs.GeneratedCode;
+            } catch(Exception ex)
+            {
+                throw new Exception($"{ex.Message} at generate code from {templateFile}", ex);
+            }
         }
 
         public string GetFilePath(string templateFile)

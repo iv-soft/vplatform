@@ -21,7 +21,11 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             RazorManager manager)
         {
             this.context_ = context;
-            this.file_path_ = file_path;
+            this.file_path_ = PathUtils.RelativePath(this.context_.SourceFolder, file_path);
+            if(this.file_path_ == null)
+            {
+                throw new ArgumentException($"{file_path} not in {this.context_.SourceFolder}");
+            }
             this.manager_ = manager;
 
             this.build_file_path_ = this.context_.GlobalContext.get_build_path(file_path) + ".dll";
@@ -43,9 +47,8 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             {
                 References = new List<MetadataReference>(this.context_.GlobalContext.References)
             };
-            var script_file = System.IO.Path.Combine(this.context_.SourceFolder, this.file_path_);
             var script = templates.Load<RazorRuntimeBase>(
-                script_file,
+                this.file_path_,
                 this.build_file_path_,
                 options);
             if (null != initer)
@@ -62,7 +65,7 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             }
             catch(Exception ex)
             {
-                throw new Exception($"{ex.Message} at processing {script_file}", ex);
+                throw new Exception($"{ex.Message} at processing {System.IO.Path.Combine(this.context_.SourceFolder, this.file_path_)}", ex);
             }
         }
     }
