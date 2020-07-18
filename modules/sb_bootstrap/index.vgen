@@ -1,0 +1,17 @@
+import("bootstrap");
+
+add_action(
+	"sb:generate_SimpleForm",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+
+		action("bootstrap_page")
+		.with("Layout", x.get("Layout"))
+		.with("Title", x.get("Title"))
+		.with("lang", get("lang"))
+		.with("content", razor.load(local_path(x.get("content_path") + ".cshtml"))
+			.with("FormId", x.get("FormId"))
+		)
+		.with("target_path", x.get("target_path"))
+		.execute();
+	});

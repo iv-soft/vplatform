@@ -1,0 +1,15 @@
+add_action(
+	"bootstrap_page",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+
+		razor.load(module_path("bootstrap", x.get("Layout") + "/index.cshtml"))
+			.with("Title", x.get("Title"))
+			.with("lang", get("lang"))
+			.process(
+				(IVySoft.VPlatform.TemplateService.Razor.RazorTemplateInstance)x.get("content"),
+				(string)x.get("target_path") + "/index.html");
+
+		razor.load(module_path("bootstrap", x.get("Layout") + "/index.csjs"))
+			.process((string)x.get("target_path") + "/index.js");
+	});
