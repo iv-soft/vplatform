@@ -101,9 +101,9 @@ namespace IVySoft.VPlatform.TemplateService.Entity
                 });
             }
 
-            var entity_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "EntityType.cs");
-            var complexType_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "ComplexType.cs");
-            var db_model_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "DbModel.cs");
+            var entity_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "actions", "EntityType.cs");
+            var complexType_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "actions", "ComplexType.cs");
+            var db_model_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "type_model", "actions", "DbModel.cs");
             var serialize_template = System.IO.Path.Combine(this.context_.GlobalContext.ModulesFolder, "xml_serialization", "Serializer.cs");
 
             var input_files = new List<string>();

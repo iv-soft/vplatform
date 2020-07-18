@@ -93,5 +93,10 @@ namespace IVySoft.VPlatform.TemplateService.Runtime.IndexScript
         {
             return System.IO.Path.Combine(this.Context.Context.GlobalContext.TargetFolder, rel_path);
         }
+
+        public void message(string msg)
+        {
+            Console.WriteLine(msg);
+        }
     }
 }

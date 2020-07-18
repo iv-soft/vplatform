@@ -166,7 +166,7 @@ namespace @(Parameters["Namespace"]).Xml.Serialization
 
 	protected void InitModel(@Parameters["Namespace"].@(entity_type.Name) result)
 	{
-		@if(base_entity != null)
+		@if(entity_type.BaseType != null)
 		{
 		@:base.InitModel(result);
 		}
