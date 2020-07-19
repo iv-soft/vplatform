@@ -3,13 +3,9 @@
 @using Microsoft.Extensions.DependencyInjection;
 @{
   var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
-  var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.Button)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.LinkButton)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
-
-<div class="col-12 col-md-3">
-	<button type="submit" class="btn btn-block btn-lg btn-primary">@control.Title</button>
-</div>
+<button class="btn btn-block btn-lg btn-primary" id="@control.Target">@control.Title</button>

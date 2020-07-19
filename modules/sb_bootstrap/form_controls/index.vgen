@@ -1,4 +1,0 @@
-var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-razor.add_component("TextInputFormControl", local_path("TextInput.cshtml"));
-razor.add_component("PasswordInputFormControl", local_path("PasswordInput.cshtml"));
-

@@ -1,7 +1,21 @@
 var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 razor.add_component("Masthead", local_path("Masthead.cshtml"));
-razor.add_component("Button", local_path("Button.cshtml"));
-razor.add_component("EmailInput", local_path("EmailInput.cshtml"));
+razor.add_component("Masthead.js", local_path("Masthead.csjs"));
 razor.add_component("ImageShowcases", local_path("ImageShowcases.cshtml"));
+razor.add_component("ImageShowcases.js", local_path("ImageShowcases.csjs"));
 razor.add_component("Form", local_path("Form.cshtml"));
-
+razor.add_component("Form.js", local_path("Form.csjs"));
+razor.add_component("TextInput", local_path("TextInput.cshtml"));
+razor.add_component("TextInput.js", local_path("TextInput.csjs"));
+razor.add_component("PasswordInput", local_path("PasswordInput.cshtml"));
+razor.add_component("PasswordInput.js", local_path("PasswordInput.csjs"));
+razor.add_component("SubmitButton", local_path("SubmitButton.cshtml"));
+razor.add_component("SubmitButton.js", local_path("SubmitButton.csjs"));
+razor.add_component("EmailInput", local_path("EmailInput.cshtml"));
+razor.add_component("EmailInput.js", local_path("EmailInput.csjs"));
+razor.add_component("Text", local_path("Text.cshtml"));
+razor.add_component("Text.js", local_path("Text.csjs"));
+razor.add_component("LinkList", local_path("LinkList.cshtml"));
+razor.add_component("LinkList.js", local_path("LinkList.csjs"));
+razor.add_component("LinkButton", local_path("LinkButton.cshtml"));
+razor.add_component("LinkButton.js", local_path("LinkButton.csjs"));

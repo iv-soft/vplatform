@@ -1,0 +1,16 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var form = db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
+}
+@foreach(var control in form.Children.OrderBy(x => x.Order))
+{
+	var type = control.GetType().Name;
+	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
+	@component(type + ".js", new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = control.Id })
+}

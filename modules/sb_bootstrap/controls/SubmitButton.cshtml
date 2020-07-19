@@ -7,10 +7,16 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.TextInput)db.FormControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.SubmitButton)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var mode = (Parameters["Mode"] == null) ? "" : (string)Parameters["Mode"];
 }
-<div class="form-group">
-    <label for="@control.ClientId">@control.Label</label>
-    <input type="text" class="form-control" id="@control.ClientId" aria-describedby="@(control.ClientId)Help" placeholder="@control.Placeholder">
-    <small id="@(control.ClientId)Help" class="form-text text-muted">@control.Help</small>
+@if(mode == "Inline")
+{
+<div class="col-12 col-md-3">
+	<button type="submit" class="btn btn-block btn-lg btn-primary">@control.Title</button>
 </div>
+}
+else
+{
+<button class="btn btn-primary" type="submit">@control.Title</button>
+}

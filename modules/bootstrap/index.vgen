@@ -11,5 +11,9 @@ add_action(
 				(string)x.get("target_path") + "/index.html");
 
 		razor.load(module_path("bootstrap", x.get("Layout") + "/index.csjs"))
-			.process((string)x.get("target_path") + "/index.js");
+			.with("Title", x.get("Title"))
+			.with("lang", get("lang"))
+			.process(
+				(IVySoft.VPlatform.TemplateService.Razor.RazorTemplateInstance)x.get("jscontent"),
+				(string)x.get("target_path") + "/index.js");
 	});

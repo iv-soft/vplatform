@@ -34,7 +34,10 @@ namespace IVySoft.VPlatform.TemplateEngine
 
         protected void Write(object obj)
         {
-            this.outStream_.Write(obj.ToString());
+            if (obj != null)
+            {
+                this.outStream_.Write(obj.ToString());
+            }
         }
         protected void Write()
         {

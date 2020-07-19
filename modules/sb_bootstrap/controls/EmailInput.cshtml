@@ -8,7 +8,19 @@
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.EmailInput)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var mode = (Parameters["Mode"] == null) ? "" : (string)Parameters["Mode"];
 }
+@if(mode == "Inline")
+{
 <div class="col-12 col-md-9 mb-2 mb-md-0">
-  <input type="email" class="form-control form-control-lg" placeholder="@control.Placeholder">
+  <input type="email" class="form-control form-control-lg" id="@control.ClientId" placeholder="@control.Placeholder">
 </div>
+}
+else
+{
+<div class="form-group">
+    <label for="@control.ClientId">@control.Label</label>
+    <input type="email" class="form-control" id="@control.ClientId" aria-describedby="@(control.ClientId)Help" placeholder="@control.Placeholder">
+    <small id="@(control.ClientId)Help" class="form-text text-muted">@control.Help</small>
+</div>
+}

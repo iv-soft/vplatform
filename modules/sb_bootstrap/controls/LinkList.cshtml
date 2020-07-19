@@ -1,0 +1,11 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var control = (IVySoft.SiteBuilder.LinkList)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+}
+<ul id="@control.ClientId"/>
