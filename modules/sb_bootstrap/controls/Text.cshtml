@@ -13,4 +13,4 @@
 	size = "div";
   }
 }
-<@size>@control.Title</@size>
+<@size @((control.ClientId==null) ? "": ("id='" + control.ClientId + "'"))>@control.Title</@size>

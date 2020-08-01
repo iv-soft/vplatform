@@ -1,0 +1,28 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var control = (IVySoft.SiteBuilder.Repeater)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+}
+function bind_@(control.ClientId)(data){
+    data.forEach(element => {
+	@foreach(var child in control.Children)
+	{
+		var type = child.GetType().Name;
+		if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
+		@component(type + ".js", new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id, ["Mode"] = "js_render" })
+	}
+    @component("Bindings", new System.Collections.Generic.Dictionary<string, object> { ["Bindings"] = control.Bindings })
+	@$("#@(control.ClientId)").append($('<div/>')
+	@foreach(var child in control.Children)
+	{
+		@:.append(@child.ClientId)
+	}
+	@);
+    });
+}

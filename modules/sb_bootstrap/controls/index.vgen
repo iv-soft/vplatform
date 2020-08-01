@@ -19,3 +19,6 @@ razor.add_component("LinkList", local_path("LinkList.cshtml"));
 razor.add_component("LinkList.js", local_path("LinkList.csjs"));
 razor.add_component("LinkButton", local_path("LinkButton.cshtml"));
 razor.add_component("LinkButton.js", local_path("LinkButton.csjs"));
+razor.add_component("Repeater", local_path("Repeater.cshtml"));
+razor.add_component("Repeater.js", local_path("Repeater.csjs"));
+

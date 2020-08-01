@@ -59,5 +59,15 @@ namespace IVySoft.VPlatform.TemplateService.Razor
             Console.WriteLine(msg);
         }
 
+        protected object get(string name)
+        {
+            object result;
+            if(!this.Context.TryGetVariable("var:" + name, out result))
+            {
+                throw new Exception($"Variable {name} is not found");
+            }
+            return result;
+        }
+
     }
 }

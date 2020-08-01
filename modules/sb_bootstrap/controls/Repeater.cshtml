@@ -3,19 +3,10 @@
 @using Microsoft.Extensions.DependencyInjection;
 @{
   var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.LinkList)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.Repeater)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
-odatajs.oData.read("@control.Source",
-  function(data){
-    data.value.forEach(element => { 
-	$("#@control.ClientId")
-		.append($("<li/>")
-		    .append($("<a/>")
-			.attr("href", "@control.Target" + element.Id)
-			.text(element.@control.Title)));
-    });
-  }
-);
+<div id="@control.ClientId" />

@@ -8,6 +8,8 @@
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var form = db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
 }
+const urlParams = new URLSearchParams(window.location.search);
+var serviceRoot = '@get("ServiceRoot")';
 @foreach(var control in form.Children.OrderBy(x => x.Order))
 {
 	var type = control.GetType().Name;

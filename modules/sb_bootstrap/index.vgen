@@ -1,4 +1,5 @@
 import("bootstrap");
+add_directory("code");
 add_directory("controls");
 add_action(
 	"sb:generate_page",

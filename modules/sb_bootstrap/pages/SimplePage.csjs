@@ -6,11 +6,16 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var page = db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
+  var page = (IVySoft.SiteBuilder.SimplePage)db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
 }
+
+const urlParams = new URLSearchParams(window.location.search);
+var serviceRoot = '@get("ServiceRoot")';
+
 @foreach(var control in page.Children.OrderBy(x => x.Order))
 {
 	var type = control.GetType().Name;
 	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
 	@component(type + ".js", new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = control.Id })
 }
+@component("Bindings", new System.Collections.Generic.Dictionary<string, object> { ["Bindings"] = page.Bindings })
