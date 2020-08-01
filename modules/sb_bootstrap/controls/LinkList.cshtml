@@ -8,4 +8,4 @@
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.LinkList)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
-<ul id="@control.ClientId"/>
+<ul id="@control.ClientId"></ul>

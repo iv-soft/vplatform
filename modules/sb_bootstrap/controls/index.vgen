@@ -3,6 +3,8 @@ razor.add_component("Masthead", local_path("Masthead.cshtml"));
 razor.add_component("Masthead.js", local_path("Masthead.csjs"));
 razor.add_component("ImageShowcases", local_path("ImageShowcases.cshtml"));
 razor.add_component("ImageShowcases.js", local_path("ImageShowcases.csjs"));
+razor.add_component("InfoText", local_path("InfoText.cshtml"));
+razor.add_component("InfoText.js", local_path("InfoText.csjs"));
 razor.add_component("Form", local_path("Form.cshtml"));
 razor.add_component("Form.js", local_path("Form.csjs"));
 razor.add_component("TextInput", local_path("TextInput.cshtml"));

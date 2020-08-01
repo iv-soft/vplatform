@@ -3,10 +3,14 @@
 @using Microsoft.Extensions.DependencyInjection;
 @{
   var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
-  var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.Repeater)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.InfoText)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var size = control.Size;
+  if(size == null)
+  {
+	size = "div";
+  }
 }
-<div id="@control.ClientId" ></div>
+<@size @((control.ClientId==null) ? "": ("id='" + control.ClientId + "'"))>@control.Label @control.Title</@size>

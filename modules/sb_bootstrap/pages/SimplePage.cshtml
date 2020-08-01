@@ -20,7 +20,7 @@
       <div class="navbar-nav">
 @foreach(var menu_item in layout.Menu)
 {
-        <a href="#" class="nav-item nav-link active">@menu_item.Title</a>
+        <a href="@menu_item.Target" class="nav-item nav-link active">@menu_item.Title</a>
 }
       </div>
     </div>

@@ -8,9 +8,24 @@
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.Repeater)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  string target;
 }
+@if(!Parameters.ContainsKey("Mode"))
+{
+  target = "$('#" + control.ClientId + "')";
+}
+else
+{
+  target = control.ClientId;
+@:var @control.ClientId = $('<div />');
+}
+
 function bind_@(control.ClientId)(data){
     data.forEach(element => {
+	@if(control.Filter != null && control.Filter != "")
+	{
+		@:if(!(@control.Filter)) { return; }
+	}
 	@foreach(var child in control.Children)
 	{
 		var type = child.GetType().Name;
@@ -18,11 +33,11 @@ function bind_@(control.ClientId)(data){
 		@component(type + ".js", new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id, ["Mode"] = "js_render" })
 	}
     @component("Bindings", new System.Collections.Generic.Dictionary<string, object> { ["Bindings"] = control.Bindings })
-	@$("#@(control.ClientId)").append($('<div/>')
-	@foreach(var child in control.Children)
+	@target
+	@foreach(var child in control.Children.OrderBy(x => x.Order))
 	{
 		@:.append(@child.ClientId)
 	}
-	@);
+	@;
     });
 }

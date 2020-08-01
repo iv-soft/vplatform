@@ -1,0 +1,38 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var control = (IVySoft.SiteBuilder.InfoText)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var size = control.Size;
+  if(size == null)
+  {
+	size = "div";
+  }
+}
+@if(!Parameters.ContainsKey("Mode"))
+{
+if(control.ClientId != null){
+@:function bind_@(control.ClientId)(data){
+	@:$('#@(control.ClientId)').text('@control.Label ' + data);
+@:}
+}
+}
+else
+{
+switch((string)Parameters["Mode"]){
+case "js_render":{
+ @:var @control.ClientId = $("<@size />");
+
+ @:function bind_@(control.ClientId)(data){
+	@:@(control.ClientId).text('@control.Label ' +data);
+ @:}
+ @:bind_@(control.ClientId)('@control.Title');
+
+ break;
+}
+}
+}

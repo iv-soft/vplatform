@@ -13,6 +13,17 @@
     {
     @:odatajs.oData.read(serviceRoot + @binding.Source,
     @:function(data){
+	    foreach(var field in binding.Fields)
+	    {
+            @:bind_@(field.Target)(data["@field.Value"]);
+            }
+    @:});
+	    break;
+    }
+    case  "odata_collection":
+    {
+    @:odatajs.oData.read(serviceRoot + @binding.Source,
+    @:function(data){
         @:data.value.forEach(element => {
 	    foreach(var field in binding.Fields)
 	    {
