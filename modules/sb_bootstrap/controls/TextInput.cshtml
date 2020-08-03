@@ -8,9 +8,26 @@
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.TextInput)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var mode = (Parameters["Mode"] == null) ? "" : (string)Parameters["Mode"];
+  var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
+  if(!imports.ContainsKey("{Form}"))
+  {
+    imports.Add("{Form}", "react-bootstrap");
+  }
 }
-<div class="form-group">
-    <label for="@control.ClientId">@control.Label</label>
-    <input type="text" class="form-control" id="@control.ClientId" aria-describedby="@(control.ClientId)Help" placeholder="@control.Placeholder">
-    <small id="@(control.ClientId)Help" class="form-text text-muted">@control.Help</small>
-</div>
+@if(mode == "Inline")
+{
+  <Form.Control type="email" id="@control.ClientId" placeholder="@control.Placeholder"/>
+}
+else
+{
+  <Form.Group>
+    <Form.Label htmlFor="@control.ClientId">@control.Label</Form.Label>
+    <Form.Control
+      type="email"
+      id="@control.ClientId"
+      placeholder="@control.Placeholder"
+      aria-describedby="@(control.ClientId)HelpBlock"/>
+    <Form.Text id="@(control.ClientId)HelpBlock" muted>@control.Help</Form.Text>
+  </Form.Group>
+}

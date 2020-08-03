@@ -8,4 +8,6 @@
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.LinkList)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
-<ul id="@control.ClientId"></ul>
+<ul>
+{@(string.IsNullOrEmpty(control.Source)?"data":("data."+control.Source)).map((data, index) => ( <li><a href={"@control.Target" + data.Id}>{data.@control.Title}</a></li> ))}
+</ul>

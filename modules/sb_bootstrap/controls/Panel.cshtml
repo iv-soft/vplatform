@@ -7,6 +7,17 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.Masthead)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var control = (IVySoft.SiteBuilder.Panel)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
+  if(!imports.ContainsKey(control.Type))
+  {
+    imports.Add(control.Type, "../panels/" + control.Type);
+  }
 }
 
+<@control.Type
+@foreach(var arg in control.Arguments)
+{
+  @:@(arg.Name)=@(arg.Value)
+}
+/>

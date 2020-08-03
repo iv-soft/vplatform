@@ -9,26 +9,30 @@
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var page = db.Pages.Single(x => x.Id == (int)Parameters["PageId"]);
   var layout = db.Layouts.Single(x => x.Name == page.Layout);
+  var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
+  imports.Add("Navbar", "react-bootstrap");
+  imports.Add("NavDropdown", "react-bootstrap");
+  imports.Add("Nav", "react-bootstrap");
+
 }
-  <nav class="navbar navbar-expand-xl navbar-light bg-light">
-    <a href="#" class="navbar-brand">@Parameters["brand"]</a>
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <!-- Collection of nav links, forms, and other content for toggling -->
-    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
-      <div class="navbar-nav">
+<div>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="#home">@Parameters["brand"]</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
 @foreach(var menu_item in layout.Menu)
 {
-        <a href="@menu_item.Target" class="nav-item nav-link active">@menu_item.Title</a>
+            <Nav.Link href="@menu_item.Target">@menu_item.Title</Nav.Link>
 }
-      </div>
-    </div>
-  </nav>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
 
 @foreach(var control in page.Children.OrderBy(x => x.Order))
 {
 	var type = control.GetType().Name;
 	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
-	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = control.Id })
+	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = control.Id, ["Imports"] = imports })
 }
+</div>

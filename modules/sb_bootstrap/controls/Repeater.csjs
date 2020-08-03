@@ -9,6 +9,21 @@
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.Repeater)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
   string target;
+  string tag;
+  string item_tag;
+  if(control.Kind != null && control.Kind == "ul")
+  {
+     tag = "ul";
+     item_tag = "li";     
+  } else if(control.Kind != null && control.Kind == "ol")
+  {
+     tag = "ol";
+     item_tag = "li";     
+  } else
+  {
+     tag = "div";
+     item_tag = "div";     
+  }
 }
 @if(!Parameters.ContainsKey("Mode"))
 {
@@ -17,7 +32,7 @@
 else
 {
   target = control.ClientId;
-@:var @control.ClientId = $('<div />');
+@:var @control.ClientId = $('<@tag />');
 }
 
 function bind_@(control.ClientId)(data){
@@ -33,11 +48,11 @@ function bind_@(control.ClientId)(data){
 		@component(type + ".js", new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id, ["Mode"] = "js_render" })
 	}
     @component("Bindings", new System.Collections.Generic.Dictionary<string, object> { ["Bindings"] = control.Bindings })
-	@target
+	@(target).append($('<@item_tag />')
 	@foreach(var child in control.Children.OrderBy(x => x.Order))
 	{
 		@:.append(@child.ClientId)
 	}
-	@;
+	@);
     });
 }

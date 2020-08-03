@@ -1,0 +1,22 @@
+add_action(
+	"sb:generate_project",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+		foreach(var file in new string[] { "package.json", "public/index.html", "public/manifest.json", "src/App.js" })
+		{
+			razor.load(module_path("sb_bootstrap", "skeleton/" + file))
+			.with("Namespace", x.get("Namespace"))
+			.with("Title", x.get("Title"))
+			.with("lang", get("lang"))
+			.process(x.get("target_path") + "/" + file);
+		}
+
+		foreach(var file in new string[] { 
+			"public/favicon.ico", "public/logo192.png", "public/logo512.png", "/public/robots.txt",
+			"src/App.css", "src/App.test.js", "src/index.css", "src/index.js", "src/logo.svg",
+			"src/serviceWorker.js", "src/setupTests.js"			
+		})
+		{
+			copy(module_path("sb_bootstrap", "skeleton/" + file), x.get("target_path") + "/" + file);
+		}
+	});

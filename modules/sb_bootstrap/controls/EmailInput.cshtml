@@ -9,18 +9,25 @@
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.EmailInput)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
   var mode = (Parameters["Mode"] == null) ? "" : (string)Parameters["Mode"];
+  var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
+  if(!imports.ContainsKey("{Form}"))
+  {
+    imports.Add("{Form}", "react-bootstrap");
+  }
 }
 @if(mode == "Inline")
 {
-<div class="col-12 col-md-9 mb-2 mb-md-0">
-  <input type="email" class="form-control form-control-lg" id="@control.ClientId" placeholder="@control.Placeholder">
-</div>
+  <Form.Control type="email" id="@control.ClientId" placeholder="@control.Placeholder"/>
 }
 else
 {
-<div class="form-group">
-    <label for="@control.ClientId">@control.Label</label>
-    <input type="email" class="form-control" id="@control.ClientId" aria-describedby="@(control.ClientId)Help" placeholder="@control.Placeholder">
-    <small id="@(control.ClientId)Help" class="form-text text-muted">@control.Help</small>
-</div>
+  <Form.Group>
+    <Form.Label htmlFor="@control.ClientId">@control.Label</Form.Label>
+    <Form.Control
+      type="email"
+      id="@control.ClientId"
+      placeholder="@control.Placeholder"
+      aria-describedby="@(control.ClientId)HelpBlock"/>
+    <Form.Text id="@(control.ClientId)HelpBlock" muted>@control.Help</Form.Text>
+  </Form.Group>
 }

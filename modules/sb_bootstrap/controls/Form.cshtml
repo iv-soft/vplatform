@@ -17,27 +17,18 @@
        mode = m.ToString();
     }
   }
+  var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
+  if(!imports.ContainsKey("{Form}"))
+  {
+    imports.Add("{Form}", "react-bootstrap");
+  }
 }
 
-<form id="@control.ClientId">
-@if(mode == "Inline")
-{
-<div class="form-row">
-@foreach(var child in control.Children.OrderBy(x => x.Order))
-{
-	var type = child.GetType().Name;
-	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
-	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id, ["Mode"] = mode })
-}
-</div>
-}
-else
-{
-   foreach(var child in control.Children.OrderBy(x => x.Order))
+<Form id="@control.ClientId" @((mode == "Inline") ? "inline" : "")>
+   @foreach(var child in control.Children.OrderBy(x => x.Order))
    {
 	var type = child.GetType().Name;
 	if(type.EndsWith("Proxy")) type = type.Substring(0, type.Length - "Proxy".Length);
-	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id, ["Mode"] = mode })
+	@component(type, new System.Collections.Generic.Dictionary<string, object> { ["ControlId"] = child.Id, ["Mode"] = mode, ["Imports"] = Parameters["Imports"] })
    }
-}
-</form>
+</Form>

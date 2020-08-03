@@ -23,4 +23,5 @@ razor.add_component("LinkButton", local_path("LinkButton.cshtml"));
 razor.add_component("LinkButton.js", local_path("LinkButton.csjs"));
 razor.add_component("Repeater", local_path("Repeater.cshtml"));
 razor.add_component("Repeater.js", local_path("Repeater.csjs"));
+razor.add_component("Panel", local_path("Panel.cshtml"));
 

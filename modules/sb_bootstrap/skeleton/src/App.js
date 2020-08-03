@@ -7,6 +7,26 @@
   var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
-  var control = (IVySoft.SiteBuilder.Masthead)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
 }
 
+import React from 'react';
+import './App.css';
+import { Switch, Route, Redirect } from 'react-router-dom';
+@foreach(var page in db.Pages)
+{
+@:import @page.Name from './pages/@page.Name';
+}
+
+function App() {
+  return (
+    <Switch>
+@foreach(var page in db.Pages)
+{
+      <Route exact path='@page.Url' @("component={" + page.Name + "}") />
+}
+      <Redirect to='/' />
+    </Switch>
+    );
+}
+
+export default App;

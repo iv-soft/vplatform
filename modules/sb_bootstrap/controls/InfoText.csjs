@@ -12,6 +12,14 @@
   {
 	size = "div";
   }
+  var classes = "";
+  if(control.Inline == "Inline")
+  {
+	classes = "d-inline";
+  } else if(control.Inline == "Block")
+  {
+	classes = "d-block";
+  }
 }
 @if(!Parameters.ContainsKey("Mode"))
 {
@@ -26,6 +34,10 @@ else
 switch((string)Parameters["Mode"]){
 case "js_render":{
  @:var @control.ClientId = $("<@size />");
+ if(classes != "")
+ {
+ @:@(control.ClientId).attr('class', '@classes');
+ }
 
  @:function bind_@(control.ClientId)(data){
 	@:@(control.ClientId).text('@control.Label ' +data);

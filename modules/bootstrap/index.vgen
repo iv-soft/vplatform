@@ -3,17 +3,46 @@ add_action(
 	x => {
 		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
 
-		razor.load(module_path("bootstrap", x.get("Layout") + "/index.cshtml"))
+		razor.load(module_path("bootstrap", x.get("Layout") + "/index.jsx"))
 			.with("Title", x.get("Title"))
+			.with("Name", x.get("Name"))
 			.with("lang", get("lang"))
+			.with("Imports", x.get("Imports"))
 			.process(
 				(IVySoft.VPlatform.TemplateService.Razor.RazorTemplateInstance)x.get("content"),
-				(string)x.get("target_path") + "/index.html");
+				(string)x.get("target_path") + ".jsx");
+	});
 
-		razor.load(module_path("bootstrap", x.get("Layout") + "/index.csjs"))
+add_action(
+	"bootstrap_page_with_odata_source",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+
+		razor.load(module_path("bootstrap", x.get("Layout") + "/with_odata_source.jsx"))
 			.with("Title", x.get("Title"))
+			.with("Name", x.get("Name"))
+			.with("Source", x.get("Source"))
 			.with("lang", get("lang"))
+			.with("Imports", x.get("Imports"))
 			.process(
-				(IVySoft.VPlatform.TemplateService.Razor.RazorTemplateInstance)x.get("jscontent"),
-				(string)x.get("target_path") + "/index.js");
+				(IVySoft.VPlatform.TemplateService.Razor.RazorTemplateInstance)x.get("content"),
+				(string)x.get("target_path") + ".jsx");
+	});
+
+add_action(
+	"bootstrap_page_with_source",
+	x => {
+		var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+
+		razor.load(module_path("bootstrap", x.get("Layout") + "/index.jsx"))
+			.with("Title", x.get("Title"))
+			.with("Name", x.get("Name"))
+			.with("Table", x.get("Table"))
+			.with("FetchAction", x.get("FetchAction"))
+			.with("FetchActionParams", x.get("FetchActionParams"))
+			.with("lang", get("lang"))
+			.with("Imports", x.get("Imports"))
+			.process(
+				(IVySoft.VPlatform.TemplateService.Razor.RazorTemplateInstance)x.get("content"),
+				(string)x.get("target_path") + ".jsx");
 	});
