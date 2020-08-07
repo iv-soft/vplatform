@@ -8,7 +8,7 @@
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.SubmitButton)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
-  var mode = (Parameters["Mode"] == null) ? "" : (string)Parameters["Mode"];
+  var mode = Parameters.ContainsKey("Mode") ? (string)Parameters["Mode"] : "";
 }
 @if(mode == "Inline")
 {

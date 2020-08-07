@@ -1,0 +1,24 @@
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.Extensions.DependencyInjection;
+@{
+  var entity_manager = get_service<IVySoft.VPlatform.TemplateService.Entity.IEntityManager>();
+  var sp = entity_manager.get_db_model<IVySoft.SiteBuilder.DbModel>();
+  var scope = sp.CreateScope();
+  var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
+  var control = (IVySoft.SiteBuilder.HeadWithEdit)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
+  var size = control.Size;
+  if(size == null)
+  {
+	size = "div";
+  }
+  var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
+  if(!imports.ContainsKey("{Pencil}"))
+  {
+    imports.Add("{Pencil}", "react-bootstrap-icons");
+  }
+}
+<div>
+<@size class="d-inline">@control.Title</@size>
+<a @("href=" + control.Target) class="align-top"><Pencil /></a>
+</div>

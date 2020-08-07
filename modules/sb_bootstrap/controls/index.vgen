@@ -1,4 +1,5 @@
 var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
+razor.add_component("HeadWithEdit", local_path("HeadWithEdit.cshtml"));
 razor.add_component("Masthead", local_path("Masthead.cshtml"));
 razor.add_component("Masthead.js", local_path("Masthead.csjs"));
 razor.add_component("ImageShowcases", local_path("ImageShowcases.cshtml"));
@@ -24,4 +25,5 @@ razor.add_component("LinkButton.js", local_path("LinkButton.csjs"));
 razor.add_component("Repeater", local_path("Repeater.cshtml"));
 razor.add_component("Repeater.js", local_path("Repeater.csjs"));
 razor.add_component("Panel", local_path("Panel.cshtml"));
+
 

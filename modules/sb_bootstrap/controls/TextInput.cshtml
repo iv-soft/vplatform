@@ -8,7 +8,7 @@
   var scope = sp.CreateScope();
   var db = scope.ServiceProvider.GetService<IVySoft.SiteBuilder.DbModel>();
   var control = (IVySoft.SiteBuilder.TextInput)db.PageControls.Single(x => x.Id == (int)Parameters["ControlId"]);
-  var mode = (Parameters["Mode"] == null) ? "" : (string)Parameters["Mode"];
+  var mode = Parameters.ContainsKey("Mode") ? (string)Parameters["Mode"] : "";
   var imports = (System.Collections.Generic.Dictionary<string, string>)Parameters["Imports"];
   if(!imports.ContainsKey("{Form}"))
   {
@@ -24,10 +24,15 @@ else
   <Form.Group>
     <Form.Label htmlFor="@control.ClientId">@control.Label</Form.Label>
     <Form.Control
-      type="email"
+      type="text"
       id="@control.ClientId"
       placeholder="@control.Placeholder"
-      aria-describedby="@(control.ClientId)HelpBlock"/>
+      aria-describedby="@(control.ClientId)HelpBlock"
+@if(control.Value != null)
+{
+      @:value={this.state.data.@(control.Value)} onChange={(e) => { let data = this.state.data; data.@(control.Value) = e.target.value; this.setState({ data });}}
+}
+    />
     <Form.Text id="@(control.ClientId)HelpBlock" muted>@control.Help</Form.Text>
   </Form.Group>
 }
