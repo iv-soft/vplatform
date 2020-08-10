@@ -1,3 +1,0 @@
-var razor = get_service<IVySoft.VPlatform.TemplateService.Razor.IRazorManager>();
-razor.add_component("Bindings", local_path("Bindings.js"));
-
