@@ -40,6 +40,7 @@ namespace IVySoft.VPlatform.Network
 
         public void stop()
         {
+            this.error_handler_ = null;
             this.shutdown_.Cancel();
             this.send_thread_.join();
             this.receive_thread_.join();
@@ -126,14 +127,6 @@ namespace IVySoft.VPlatform.Network
                 }
                 return;
             }
-            catch(AggregateException ex)
-            {
-                if(ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException)
-                {
-                    return;
-                }
-                this.set_error(ex);
-            }
             catch (Exception ex)
             {
                 this.set_error(ex);
@@ -143,16 +136,22 @@ namespace IVySoft.VPlatform.Network
         private void set_error(Exception exception)
         {
             this.failed_ = exception;
-            this.error_handler_(exception);
+            if (null != this.error_handler_)
+            {
+                this.error_handler_(exception);
+            }
         }
 
         public void Dispose()
         {
             if (null != this.websocket_)
             {
-                using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30)))
+                if (this.websocket_.State == WebSocketState.Open || this.websocket_.State == WebSocketState.CloseReceived)
                 {
-                    this.websocket_.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, string.Empty, timeout.Token).Wait();
+                    using (var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30)))
+                    {
+                        this.websocket_.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, string.Empty, timeout.Token).Wait();
+                    }
                 }
                 this.stop();
                 this.websocket_.Dispose();
