@@ -34,5 +34,17 @@ namespace IVySoft.VPlatform.Utils
 
             throw new Exception($"Invalid lenght format {len}");
         }
+
+        public static string LongString(string data)
+        {
+            if(data.Length > 1000)
+            {
+                return data.Substring(0, 100) + "...[" + (data.Length - 200) + " symbols skipped]..." + data.Substring(data.Length - 100);
+            }
+            else
+            {
+                return data;
+            }
+        }
     }
 }
