@@ -57,10 +57,16 @@ namespace @Parameters["Namespace"]
 		@:[InverseProperty(nameof(@association.Right.Type.@association.Left.Property))]
 		@:public virtual IList<@association.Right.Type> @association.Right.Property { get; set; }
 		}
-		else
+		else if(string.IsNullOrWhiteSpace(association.Right.Multiplicity) || association.Right.Multiplicity == "1")
 		{
 		@:[ForeignKey(nameof(@association.Right.Property))]
 		@:public int @(association.Right.Property)Id { get; set; }
+		@:public virtual @association.Right.Type @association.Right.Property { get; set; }
+		}
+		else
+		{
+		@:[ForeignKey(nameof(@association.Right.Property))]
+		@:public int? @(association.Right.Property)Id { get; set; }
 		@:public virtual @association.Right.Type @association.Right.Property { get; set; }
 		}
 	}
@@ -71,10 +77,16 @@ namespace @Parameters["Namespace"]
 		@:[InverseProperty(nameof(@association.Left.Type.@association.Right.Property))]
 		@:public virtual IList<@association.Left.Type> @association.Left.Property { get; set; }
 		}
-		else
+		else if(string.IsNullOrWhiteSpace(association.Left.Multiplicity) || association.Left.Multiplicity == "1")
 		{
 		@:[ForeignKey(nameof(@association.Left.Property))]
 		@:public int @(association.Left.Property)Id { get; set; }
+		@:public virtual @association.Left.Type @association.Left.Property { get; set; }
+		}
+		else
+		{
+		@:[ForeignKey(nameof(@association.Left.Property))]
+		@:public int? @(association.Left.Property)Id { get; set; }
 		@:public virtual @association.Left.Type @association.Left.Property { get; set; }
 		}
 	}
