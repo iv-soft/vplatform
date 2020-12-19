@@ -41,11 +41,11 @@ namespace @Parameters["Namespace"]
 			if(string.IsNullOrWhiteSpace(field.Multiplicity) || field.Multiplicity == "1") {
 		@:[ForeignKey(nameof(@field.Name))]
 		@:public int @(field.Name)Id { get; set; }
-	        @:public @field.Type @field.Name { get; set; }
+	        @:public virtual @field.Type @field.Name { get; set; }
 			} else if(field.Multiplicity == "0..1") {
 		@:[ForeignKey(nameof(@field.Name))]
 		@:public int? @(field.Name)Id { get; set; }
-	        @:public @field.Type @field.Name { get; set; }
+	        @:public virtual @field.Type @field.Name { get; set; }
 			}
 		}
 	}

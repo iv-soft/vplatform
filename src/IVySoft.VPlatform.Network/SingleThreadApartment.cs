@@ -33,13 +33,18 @@ namespace IVySoft.VPlatform.Network
 
         public void join()
         {
+            Thread work_thread;
             lock (this)
             {
-                if (this.work_thread_ != null)
+                work_thread = this.work_thread_;
+                if (null == work_thread)
                 {
-                    this.work_thread_.Join();
+                    return;
                 }
             }
+
+            work_thread.Join();
+
         }
 
         private void process_actions()
