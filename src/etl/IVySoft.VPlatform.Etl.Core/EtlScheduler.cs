@@ -94,7 +94,7 @@ namespace IVySoft.VPlatform.Etl.Core
             while(!showtdownToken.IsCancellationRequested)
             {
                 var now = DateTime.Now;
-                DateTime nextCheck = now + TimeSpan.FromMinutes(5);
+                DateTime nextCheck = now + TimeSpan.FromSeconds(5);
 
                 foreach(var task in this.tasks_)
                 {

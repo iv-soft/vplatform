@@ -26,9 +26,12 @@ namespace IVySoft.VPlatform.Target.Notifications
             if (!string.IsNullOrWhiteSpace(email))
             {
                 mail.To.Add(new MailAddress(email));
-                mail.CC.Add(new MailAddress(this.settings_.CcEmail));
+                if (!string.IsNullOrWhiteSpace(this.settings_.CcEmail))
+                {
+                    mail.CC.Add(new MailAddress(this.settings_.CcEmail));
+                }
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(this.settings_.CcEmail))
             {
                 mail.To.Add(new MailAddress(this.settings_.CcEmail));
             }
@@ -39,9 +42,9 @@ namespace IVySoft.VPlatform.Target.Notifications
 
             using (SmtpClient smtp = new SmtpClient(this.settings_.PrimaryDomain, this.settings_.PrimaryPort))
             {
-                smtp.EnableSsl = true;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.UseDefaultCredentials = false;
+                smtp.UseDefaultCredentials = true;
+                smtp.EnableSsl = true;
                 smtp.Credentials = new NetworkCredential(
                     this.settings_.UsernameEmail,
                     this.settings_.UsernamePassword);
