@@ -6,21 +6,30 @@ namespace IVySoft.VPlatform.Process.Cmd
 {
     public class ConsoleCommand
     {
-        public static int Execute(ProcessStartInfo processStart)
+        public static int Execute(ProcessStartInfo processStart, Action<string> cmdOutput)
         {
             processStart.UseShellExecute = false;
             processStart.RedirectStandardOutput = true;
+            processStart.RedirectStandardError = true;
             processStart.CreateNoWindow = true;
-
-            var sb = new StringBuilder();
+            
             var proc = System.Diagnostics.Process.Start(processStart);
             ChildProcessTracker.AddProcess(proc);
-            while (!proc.StandardOutput.EndOfStream)
-            {
-                string line = proc.StandardOutput.ReadLine();
-                sb.Append(line);
-            }
-
+            proc.OutputDataReceived += (sender, e) => {
+                if (null != e.Data)
+                {
+                    cmdOutput(e.Data);
+                }
+            };
+            proc.ErrorDataReceived += (sender, e) => {
+                if (null != e.Data)
+                {
+                    cmdOutput(e.Data);
+                }
+            };
+            proc.BeginOutputReadLine();
+            proc.BeginErrorReadLine();
+            proc.WaitForExit();
             return proc.ExitCode;
         }
         public static System.Diagnostics.Process Start(ProcessStartInfo processStart)
