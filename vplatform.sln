@@ -55,6 +55,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization", "src\generators\TemplateService\IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization\IVySoft.VPlatform.TemplateService.ModelCore.Xml.Serialization.csproj", "{2A83CF40-5DBE-4586-A29D-BE936BC411FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbModel", "DbModel", "{30A1CDF8-0897-4417-BB7D-353067918373}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVySoft.VPlatform.Model", "src\dbmodel\IVySoft.VPlatform.Model\IVySoft.VPlatform.Model.csproj", "{65422C54-E311-4EB8-B6D2-03FBD797C0DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +129,10 @@ Global
 		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A83CF40-5DBE-4586-A29D-BE936BC411FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65422C54-E311-4EB8-B6D2-03FBD797C0DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65422C54-E311-4EB8-B6D2-03FBD797C0DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65422C54-E311-4EB8-B6D2-03FBD797C0DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65422C54-E311-4EB8-B6D2-03FBD797C0DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +154,7 @@ Global
 		{B736CC1A-2182-4147-885D-87FA7D3212B3} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{096B0774-7105-4594-A617-4A3BCC62CAEB} = {B5365A39-C6F9-4763-A604-861D4EA22551}
 		{2A83CF40-5DBE-4586-A29D-BE936BC411FC} = {B5365A39-C6F9-4763-A604-861D4EA22551}
+		{65422C54-E311-4EB8-B6D2-03FBD797C0DF} = {30A1CDF8-0897-4417-BB7D-353067918373}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D126804-D711-49E5-997D-B0FA8E1F9D44}
